@@ -1,5 +1,6 @@
 <template>
     <side-bar name="Qatelier"></side-bar>
+    <router-view></router-view>
 </template>
 
 <script>

@@ -6,11 +6,11 @@
       <ul>
         <li>
           <span class="icon"><ion-icon name="grid-outline"></ion-icon></span>
-          <span>Dashboard</span>
+          <router-link to="/dashboard">Dashboard</router-link>
         </li>
         <li>
           <span class="icon"><ion-icon name="list-outline"></ion-icon></span>
-          <span>Projects</span>
+          <router-link to="/projects">Projects</router-link>
         </li>
       </ul>
     </div>
@@ -32,6 +32,7 @@ nav {
   height: 100vh;
   background: white;
   box-shadow: 0px 2px 15px rgba(100, 100, 111, 0.1);
+  float: left;
 }
 
 h1 {
@@ -51,6 +52,11 @@ h1 {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+}
+
+a{
+  color: inherit;
+  text-decoration: none;
 }
 
 .icon {

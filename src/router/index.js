@@ -1,14 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router'
-//import Home from '../views/Home.vue'
+import DashboardView from '../views/DashboardView.vue'
+import ProjectsView from '../views/ProjectsView.vue'
 
 const routes = [
-  /*
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'dashboard',
+    component: DashboardView
   },
   {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: DashboardView
+  },
+  {
+    path: '/projects',
+    name: 'projects',
+    component: ProjectsView
+  },
+  /*{
     path: '/about',
     name: 'About',
     // route level code-splitting
