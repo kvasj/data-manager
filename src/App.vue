@@ -1,9 +1,16 @@
 <template>
-  <div id="nav">
-  </div>
-  <router-view/>
+    <side-bar name="Qatelier"></side-bar>
 </template>
 
-<style>
+<script>
+import SideBar from "./components/SideBar.vue";
 
+export default {
+  components: {
+    SideBar,
+  },
+};
+</script>
+
+<style scoped>
 </style>
