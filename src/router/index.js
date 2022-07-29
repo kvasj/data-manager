@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardView from '../views/DashboardView.vue'
 import ProjectsView from '../views/ProjectsView.vue'
-import AddProject from '../components/AddProject.vue'
+import AddProjectFormView from '../views/AddProjectFormView.vue'
 import NotFound from '../components/NotFound.vue'
 
 const routes = [
@@ -19,7 +19,7 @@ const routes = [
   {
     path: '/addProject',
     name: 'addProject',
-    component: AddProject
+    component: AddProjectFormView
   },
   {
     path: '/:NotFound(.*)*',
