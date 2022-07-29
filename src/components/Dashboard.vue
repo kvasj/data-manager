@@ -1,20 +1,20 @@
 <template>
   <div class="control-bar">
-    <base-button text="success" icon="add-outline" mode="success">
+    <base-button text="success" mode="success">
+      <span class="button-icon">
+        <ion-icon name="checkmark-done-outline"></ion-icon>
+      </span>
+    </base-button>
+
+    <base-button text="add project" mode="update">
       <span class="button-icon">
         <ion-icon name="add-outline"></ion-icon>
       </span>
     </base-button>
 
-    <base-button text="add project" icon="add-outline" mode="update">
+    <base-button text="delete" mode="delete">
       <span class="button-icon">
-        <ion-icon name="add-outline"></ion-icon>
-      </span>
-    </base-button>
-
-    <base-button text="delete" icon="add-outline" mode="delete">
-      <span class="button-icon">
-        <ion-icon name="add-outline"></ion-icon>
+        <ion-icon name="close-outline"></ion-icon>
       </span>
     </base-button>
   </div>
