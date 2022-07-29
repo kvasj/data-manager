@@ -3,24 +3,23 @@
     <side-bar name="Qatelier"></side-bar>
     <main>
       <base-control-bar>
-        <base-button text="success" mode="success">
-          <span class="button-icon">
-            <ion-icon name="checkmark-done-outline"></ion-icon>
-          </span>
-        </base-button>
+        <template #left>
+          <div class="left">
+            <base-search></base-search>
+            <base-button text="A-Z">
+              <ion-icon name="arrow-down-outline"></ion-icon>
+            </base-button>
+            <base-button text="Z-A">
+              <ion-icon name="arrow-up-outline"></ion-icon>
+            </base-button>
+          </div>
+        </template>
 
         <base-button text="add project" mode="update">
-          <span class="button-icon">
-            <ion-icon name="add-outline"></ion-icon>
-          </span>
-        </base-button>
-
-        <base-button text="delete" mode="delete">
-          <span class="button-icon">
-            <ion-icon name="close-outline"></ion-icon>
-          </span>
+          <ion-icon name="add-outline"></ion-icon>
         </base-button>
       </base-control-bar>
+
       <div class="container">
         <router-view></router-view>
       </div>
@@ -29,13 +28,11 @@
 </template>
 
 <script>
-import BaseControlBar from "./components/BaseControlBar.vue";
-import SideBar from "./components/SideBar.vue";
+import SideBar from "./components/Menu/SideBar.vue";
 
 export default {
   components: {
     SideBar,
-    BaseControlBar,
   },
 };
 </script>
@@ -64,11 +61,7 @@ main {
   margin-left: 15px;
 }
 
-.button-icon {
-  display: inline-flex;
-  align-items: center;
-  padding: 0px 5px;
-  height: 100%;
-  font-size: 1.3em;
+.left{
+  display: flex;
 }
 </style>

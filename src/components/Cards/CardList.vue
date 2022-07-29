@@ -1,6 +1,6 @@
 <template>
   <div class="cards">
-    <base-card v-for="i in 7" :key="i"></base-card>
+    <base-card v-for="i in 5" :key="i"></base-card>
   </div>
 </template>
 

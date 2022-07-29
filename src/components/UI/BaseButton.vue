@@ -1,7 +1,9 @@
 <template>
   <button :class="mode">
-    <slot></slot>
-    <span class="button-text">{{ text }}</span>
+    <span class="button-icon">
+      <slot></slot>
+    </span>
+    <span v-if="text" class="button-text">{{ text }}</span>
   </button>
 </template>
 
@@ -34,6 +36,14 @@ button {
   align-items: center;
   padding: 0px 5px;
   height: 100%;
+}
+
+.button-icon {
+  display: inline-flex;
+  align-items: center;
+  padding: 0px 5px;
+  height: 100%;
+  font-size: 1.3em;
 }
 
 .update {

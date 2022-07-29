@@ -1,9 +1,9 @@
 <template>
-  <card-list></card-list>
+    <card-list></card-list>
 </template>
 
 <script>
-import CardList from "./CardList.vue";
+import CardList from "./Cards/CardList.vue";
 
 export default {
   components: {
@@ -17,4 +17,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>
