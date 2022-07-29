@@ -15,7 +15,7 @@
           </div>
         </template>
 
-        <base-button text="add project" mode="update">
+        <base-button text="add project" mode="success">
           <ion-icon name="add-outline"></ion-icon>
         </base-button>
       </base-control-bar>
