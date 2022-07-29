@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import CardList from "./Cards/CardList.vue";
+import CardList from "./Lists/CardList.vue";
 
 export default {
   components: {
@@ -15,7 +15,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-
-</style>

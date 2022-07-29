@@ -46,6 +46,10 @@ button {
   font-size: 1.3em;
 }
 
+button:hover {
+  box-shadow: 0px 2px 15px rgba(100, 100, 111, 0.1);
+}
+
 .update {
   background-color: #ff9501;
   color: white;

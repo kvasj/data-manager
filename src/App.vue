@@ -57,7 +57,7 @@ main {
   overflow-y: scroll;
 }
 
-.control-bar button {
+.control-bar .left button {
   margin-left: 15px;
 }
 
