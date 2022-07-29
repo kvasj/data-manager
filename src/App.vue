@@ -15,7 +15,7 @@
           </div>
         </template>
 
-        <base-button text="add project" mode="success">
+        <base-button @click="redirectToAddProjectForm" text="add project" mode="success">
           <ion-icon name="add-outline"></ion-icon>
         </base-button>
       </base-control-bar>
@@ -29,10 +29,24 @@
 
 <script>
 import SideBar from "./components/Menu/SideBar.vue";
+import { useRouter } from 'vue-router'
 
 export default {
   components: {
     SideBar,
+  },
+
+  setup() {
+    const router = useRouter();
+
+
+    function redirectToAddProjectForm(){
+      router.push('/addProject')
+    }
+
+    return {
+      redirectToAddProjectForm
+    };
   },
 };
 </script>
@@ -61,7 +75,7 @@ main {
   margin-left: 15px;
 }
 
-.left{
+.left {
   display: flex;
 }
 </style>
