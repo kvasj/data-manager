@@ -28,11 +28,12 @@ nav {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 200px;
+  padding-left: 40px;
+  padding-right: 40px;
+  width: 150px;
   height: 100vh;
   background: white;
   box-shadow: 0px 2px 15px rgba(100, 100, 111, 0.1);
-  float: left;
 }
 
 h1 {
@@ -40,7 +41,7 @@ h1 {
 }
 
 .menu {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .menu ul {
@@ -51,10 +52,11 @@ h1 {
   list-style: none;
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+  padding: 10px 10px 10px 10px;
 }
 
-a{
+a {
   color: inherit;
   text-decoration: none;
 }
