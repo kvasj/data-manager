@@ -8,6 +8,7 @@ body {
     background-color: #fafafa;
     box-sizing: border-box;
     position: relative;
+    overflow: hidden;
 }
 
 h1,
@@ -18,4 +19,21 @@ h5,
 h6 {
     margin: 0px;
     padding: 0px;
+}
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(46, 45, 45, 0.158);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(46, 45, 45, 0.486);
 }
