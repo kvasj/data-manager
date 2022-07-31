@@ -1,43 +1,60 @@
 <template>
   <form @submit.prevent="submit">
-    <fieldset>
-      <legend>Name</legend>
-      <input type="text" id="name" name="name" placeholder="Project name..." />
-    </fieldset>
+    <div class="input-group">
+      <span>project name</span>
+      <input type="text" id="name" name="name" />
+      <span class="error"></span>
+    </div>
 
-    <fieldset for="featured">
-      <legend>Featured</legend>
-    <input type="text" id="featured" name="featured" placeholder="Featured with..."/>  
-    </fieldset>
-    
+    <div class="group">
+      <div class="input-group">
+        <span>featured</span>
+        <input type="text" id="featured" name="featured" />
+        <span class="error"></span>
+      </div>
 
-    <fieldset for="madeFor">
-      <legend>Made for</legend>
-      <input type="text" id="madeFor" name="madeFor" placeholder="Made for..." />
-    </fieldset>
-    
+      <div class="input-group">
+        <span>made for</span>
+        <input type="text" id="madeFor" name="madeFor" />
+        <span class="error"></span>
+      </div>
 
-    <fieldset for="year">
-      <legend>Year</legend>
-      <input type="number" id="year" name="year" />
-    </fieldset>
-    
+      <div class="input-group">
+        <span>year</span>
+        <input type="number" id="year" name="year" />
+        <span class="error"></span>
+      </div>
+    </div>
 
-    <fieldset for="aboutProject">
-      <legend>About project</legend>
-      <textarea type="text" id="aboutProject" name="aboutProject" placeholder="Type something about project..."/>
-    </fieldset>
-    
+    <div class="input-group">
+      <span>about project</span>
+      <textarea type="text" id="aboutProject" name="aboutProject" />
+      <span class="error"></span>
+    </div>
 
-    <fieldset class="checkbox-group">
-      <legend>Categories:</legend>
-      <input type="checkbox" name="interiers" id="interiers" />
-      <label for="interiers">interiéry</label>
-      <input type="checkbox" name="designActivity" id="designActivity" />
-      <label for="designActivity">projekční činnost</label>
-      <input type="checkbox" name="vizualizationa" id="vizualizationa" />
-      <label for="vizualizationa">vizualizace</label>
-    </fieldset>
+    <div class="input-group">
+      <span>categories</span>
+      <div class="boxes">
+        <div class="check">
+          <input type="checkbox" name="interiers" id="interiers" />
+          <label for="interiers">interiéry</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="designActivity" id="designActivity" />
+          <label for="designActivity">projekční činnost</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="vizualizationa" id="vizualizationa" />
+          <label for="vizualizationa">vizualizace</label>
+        </div>
+      </div>
+      <span class="error"></span>
+    </div>
+
+    <div class="input-group">
+      <span>select images</span>
+      <input type="file" id="img" name="img" accept="image/*" multiple>
+    </div>
 
     <base-button text="add project" mode="update">
       <ion-icon name="push-outline"></ion-icon>
@@ -53,32 +70,69 @@ export default {};
 input,
 textarea,
 label {
-  width: 150px;
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: inherit;
+}
+
+input, textarea{
+  padding: 10px;
+  font-size: 15px;
+  outline: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+input:focus, textarea:focus{
+  border: 1px solid #ff9501;
 }
 
 form {
   position: relative;
-  width: 800px;
+  width: 600px;
   height: 600px;
   margin: 0 auto;
-  padding: 1em;
   box-sizing: border-box;
-
-  /* we create our grid
-  display: grid;
-  grid-gap: 10px;*/
 }
 
 textarea {
-  width: 500px;
+  width: 100%;
   resize: vertical;
-  padding: 15px;
-  border-radius: 5px;
-  border: 0;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.06);
   height: 120px;
+}
+
+.input-group, button{
+  margin-top: 15px;
+}
+
+.input-group > input {
+  width: 100%;
+  height: 40px;
+}
+
+.input-group > span{
+  display: block;
+  margin-bottom: 5px;
+}
+
+.group, .boxes{
+  display: flex;
+  justify-content: space-between;
+}
+
+.check{
+  display: flex;
+  align-items: center;
+}
+
+.check > input {
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+}
+
+button{
+  width: 100%;
 }
 </style>
