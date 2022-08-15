@@ -39,7 +39,6 @@ export default {
   setup() {
     const router = useRouter();
 
-
     function redirectToAddProjectForm(){
       router.push('/addProject')
     }

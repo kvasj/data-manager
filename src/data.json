@@ -3,7 +3,7 @@
         "id": "a",
         "projectName": "Metro City",
         "categories": [
-            "projekcni cinnost",
+            "projekční činnost",
             "vizualizace"
         ],
         "madeFor": "Super tower",
@@ -18,8 +18,8 @@
         "id": "b",
         "projectName": "Roubenka Svitavov",
         "categories": [
-            "projekcni cinnost",
-            "interiery"
+            "projekční činnost",
+            "interiéry"
         ],
         "madeFor": "",
         "featured": "",
@@ -33,7 +33,7 @@
         "id": "c",
         "projectName": "Galerie umeni",
         "categories": [
-            "projekcni cinnost"
+            "projekční činnost"
         ],
         "madeFor": "Kalamary",
         "featured": "",
@@ -61,7 +61,7 @@
         "id": "e",
         "projectName": "Kavarna Rostik",
         "categories": [
-            "projekcni cinnost",
+            "projekční činnost",
             "vizualizace"
         ],
         "madeFor": "Rostik sro",
@@ -76,7 +76,7 @@
         "id": "f",
         "projectName": "Bytove domy Brno",
         "categories": [
-            "projekcni cinnost",
+            "projekční činnost",
             "vizualizace"
         ],
         "madeFor": "Brno",
@@ -91,7 +91,7 @@
         "id": "g",
         "projectName": "Hradec Kralove",
         "categories": [
-            "projekcni cinnost"
+            "projekční činnost"
         ],
         "madeFor": "",
         "featured": "Rumcajs atelier",
@@ -105,7 +105,7 @@
         "id": "h",
         "projectName": "Lobkovice",
         "categories": [
-            "interiery"
+            "interiéry"
         ],
         "madeFor": "Lobkovice",
         "featured": "Blaha arch.",
@@ -119,7 +119,7 @@
         "id": "i",
         "projectName": "Lobkovice 2",
         "categories": [
-            "interiery"
+            "interiéry"
         ],
         "madeFor": "Lobkovice",
         "featured": "Blaha arch.",
@@ -133,7 +133,7 @@
         "id": "j",
         "projectName": "Lobkovice 3",
         "categories": [
-            "interiery"
+            "interiéry"
         ],
         "madeFor": "Lobkovice",
         "featured": "Blaha arch.",
@@ -147,7 +147,7 @@
         "id": "k",
         "projectName": "Lobkovice 4",
         "categories": [
-            "interiery"
+            "interiéry"
         ],
         "madeFor": "Lobkovice",
         "featured": "Blaha arch.",
@@ -161,7 +161,7 @@
         "id": "l",
         "projectName": "Lobkovice 5",
         "categories": [
-            "interiery"
+            "interiéry"
         ],
         "madeFor": "Lobkovice",
         "featured": "Blaha arch.",
@@ -175,7 +175,7 @@
         "id": "m",
         "projectName": "Lobkovice 6",
         "categories": [
-            "interiery"
+            "interiéry"
         ],
         "madeFor": "Lobkovice",
         "featured": "Blaha arch.",
@@ -189,7 +189,7 @@
         "id": "n",
         "projectName": "Lobkovice 7",
         "categories": [
-            "interiery"
+            "interiéry"
         ],
         "madeFor": "Lobkovice",
         "featured": "Blaha arch.",

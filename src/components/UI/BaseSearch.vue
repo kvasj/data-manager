@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <input id="search" type="text" placeholder="Search..." autofocus required />
+    <input id="search" type="text" placeholder="Search..." required />
   </div>
 </template>
 

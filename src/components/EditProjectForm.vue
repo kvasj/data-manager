@@ -3,33 +3,33 @@
     <form @submit.prevent="submit">
       <div class="input-group">
         <span>project name:</span>
-        <input type="text" id="name" name="name" />
+        <input type="text" id="name" name="name" v-model="project.projectName" />
         <span class="error"></span>
       </div>
 
       <div class="group">
         <div class="input-group">
           <span>featured:</span>
-          <input type="text" id="featured" name="featured" />
+          <input type="text" id="featured" name="featured" v-model="project.featured" />
           <span class="error"></span>
         </div>
 
         <div class="input-group">
           <span>made for:</span>
-          <input type="text" id="madeFor" name="madeFor" />
+          <input type="text" id="madeFor" name="madeFor" v-model="project.madeFor" />
           <span class="error"></span>
         </div>
 
         <div class="input-group">
           <span>year:</span>
-          <input type="number" id="year" name="year" />
+          <input type="number" id="year" name="year" v-model="project.year" />
           <span class="error"></span>
         </div>
       </div>
 
       <div class="input-group">
         <span>about project:</span>
-        <textarea type="text" id="aboutProject" name="aboutProject" />
+        <textarea type="text" id="aboutProject" name="aboutProject" v-model="project.aboutProject" />
         <span class="error"></span>
       </div>
 
@@ -37,15 +37,15 @@
         <span>categories:</span>
         <div class="boxes">
           <div class="check">
-            <input type="checkbox" name="interiers" id="interiers" />
+            <input type="checkbox" name="interiers" id="interiers" :checked='isChecked(enums.interiers, project.categories)' />
             <label for="interiers">interiéry</label>
           </div>
           <div class="check">
-            <input type="checkbox" name="designActivity" id="designActivity" />
+            <input type="checkbox" name="designActivity" id="designActivity" :checked='isChecked(enums.designActivity, project.categories)'/>
             <label for="designActivity">projekční činnost</label>
           </div>
           <div class="check">
-            <input type="checkbox" name="vizualization" id="vizualization" />
+            <input type="checkbox" name="vizualization" id="vizualization" :checked='isChecked(enums.vizualization, project.categories)'/>
             <label for="vizualizationa">vizualizace</label>
           </div>
         </div>
@@ -57,7 +57,7 @@
         <input type="file" id="img" name="img" accept="image/*" multiple />
       </div>
 
-      <base-button text="add project" mode="update">
+      <base-button text="edit project" mode="update">
         <ion-icon name="push-outline"></ion-icon>
       </base-button>
     </form>
@@ -65,7 +65,55 @@
 </template>
 
 <script>
-export default {};
+import { onMounted, reactive } from "vue";
+import { useStore } from "vuex"
+import { useRoute } from "vue-router"
+export default {
+  setup() {
+    const store = useStore();
+    const route = useRoute();
+    const enums = store.getters.enums
+    const project = reactive({
+      id: '',
+      projectName: '',
+      categories: [],
+      madeFor: '',
+      featured: '',
+      aboutProject: '',
+      year: null,
+      photos: [],
+      titlePhoto: '',
+      published: false
+    });
+    
+
+    onMounted(()=>{
+      const projectId = route.params.id;
+      const searchedProject = store.getters.projects.find((element) => { return projectId === element.id });
+
+      project.id = searchedProject.projectId,
+      project.projectName = searchedProject.projectName,
+      project.categories = searchedProject.categories,
+      project.madeFor = searchedProject.madeFor,
+      project.featured = searchedProject.featured,
+      project.aboutProject = searchedProject.aboutProject,
+      project.year = searchedProject.year,
+      project.photos = searchedProject.photos,
+      project.titlePhoto = searchedProject.titlePhoto
+      project.published = searchedProject.published
+    })
+
+    function isChecked(checkboxCategory, projectCategories){
+      return projectCategories.includes(checkboxCategory)
+    }
+    
+    return {
+      project,
+      enums,
+      isChecked
+    }
+  },
+};
 </script>
 
 <style scoped>

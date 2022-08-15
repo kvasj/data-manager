@@ -4,6 +4,11 @@ import dataJSON from "../data.json";
 export default createStore({
   state: {
     projectsData: dataJSON,
+    enums: {
+      interiers: 'interiéry',
+      vizualization: 'vizualizace',
+      designActivity: 'projekční činnost'
+    }
   },
 
   mutations: {
@@ -31,6 +36,10 @@ export default createStore({
   getters: {
     projects(state) {
       return state.projectsData;
+    },
+
+    enums(state) {
+      return state.enums;
     }
   },
 

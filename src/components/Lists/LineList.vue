@@ -40,10 +40,12 @@
 <script>
 import { computed } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
     const store = useStore();
+    const router = useRouter();
 
     const projects = computed(() => {
       return store.getters.projects;
@@ -54,7 +56,7 @@ export default {
       for (let c = 0; c < categories.length; c++) {
         if (c == categories.length - 1) {
           result += categories[c];
-          return result
+          return result;
         } else {
           result += categories[c] + ", ";
         }
@@ -62,17 +64,17 @@ export default {
       return result;
     }
 
-    function setPublicity(id){
-      store.dispatch('setPublicity', id)
+    function setPublicity(id) {
+      store.dispatch("setPublicity", id);
     }
 
-    function editProject(id){
-
+    function editProject(id) {
+      router.push({ name: 'editProject', params: { id: id } });
     }
 
-    function deleteProject(id){
-      alert('Are you sure to delete this project?')
-      store.dispatch('deleteProject', id)
+    function deleteProject(id) {
+      alert("Are you sure to delete this project?");
+      store.dispatch("deleteProject", id);
     }
 
     return {
