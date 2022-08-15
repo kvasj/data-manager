@@ -72,7 +72,6 @@ main {
   width: 100%;
   height: 800px;
   overflow-y: scroll;
-  display: flex;
 }
 
 .control-bar .left button {

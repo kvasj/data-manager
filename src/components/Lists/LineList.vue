@@ -18,18 +18,18 @@
       <td>{{ d.year }}</td>
       <td>{{ d.aboutProject }}</td>
       <td>
-        <base-button mode="success" v-if="d.published">
+        <base-button @click="setPublicity(d.id)" mode="success" v-if="d.published">
           <ion-icon name="checkmark-outline"></ion-icon>
         </base-button>
-        <base-button mode="delete" v-else>
+        <base-button @click="setPublicity(d.id)" mode="delete" v-else>
           <ion-icon name="close-outline"></ion-icon>
         </base-button>
       </td>
       <td class="actions">
-        <base-button mode="update">
+        <base-button @click="editProject(d.id)" mode="update">
           <ion-icon name="create-outline"></ion-icon>
         </base-button>
-        <base-button mode="delete">
+        <base-button @click="deleteProject(d.id)" mode="delete">
           <ion-icon name="trash-outline"></ion-icon>
         </base-button>
       </td>
@@ -62,9 +62,25 @@ export default {
       return result;
     }
 
+    function setPublicity(id){
+      store.dispatch('setPublicity', id)
+    }
+
+    function editProject(id){
+
+    }
+
+    function deleteProject(id){
+      alert('Are you sure to delete this project?')
+      store.dispatch('deleteProject', id)
+    }
+
     return {
       projects,
       getCategories,
+      setPublicity,
+      editProject,
+      deleteProject,
     };
   },
 };
