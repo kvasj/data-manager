@@ -1,0 +1,202 @@
+[
+    {
+        "id": "a",
+        "projectName": "Metro City",
+        "categories": [
+            "projekcni cinnost",
+            "vizualizace"
+        ],
+        "madeFor": "Super tower",
+        "featured": "Super tower",
+        "aboutProject": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        "year": 2021,
+        "photos": [],
+        "titlePhoto": "pathOrNameOfPhoto",
+        "published": false
+    },
+    {
+        "id": "b",
+        "projectName": "Roubenka Svitavov",
+        "categories": [
+            "projekcni cinnost",
+            "interiery"
+        ],
+        "madeFor": "",
+        "featured": "",
+        "aboutProject": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        "year": 2021,
+        "photos": [],
+        "titlePhoto": "pathOrNameOfPhoto",
+        "published": true
+    },
+    {
+        "id": "c",
+        "projectName": "Galerie umeni",
+        "categories": [
+            "projekcni cinnost"
+        ],
+        "madeFor": "Kalamary",
+        "featured": "",
+        "aboutProject": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        "year": 2021,
+        "photos": [],
+        "titlePhoto": "pathOrNameOfPhoto",
+        "published": true
+    },
+    {
+        "id": "d",
+        "projectName": "Metro City",
+        "categories": [
+            "vizualizace"
+        ],
+        "madeFor": "",
+        "featured": "Kouba vojak sro",
+        "aboutProject": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        "year": 2021,
+        "photos": [],
+        "titlePhoto": "pathOrNameOfPhoto",
+        "published": false
+    },
+    {
+        "id": "e",
+        "projectName": "Kavarna Rostik",
+        "categories": [
+            "projekcni cinnost",
+            "vizualizace"
+        ],
+        "madeFor": "Rostik sro",
+        "featured": "",
+        "aboutProject": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        "year": 2021,
+        "photos": [],
+        "titlePhoto": "pathOrNameOfPhoto",
+        "published": true
+    },
+    {
+        "id": "f",
+        "projectName": "Bytove domy Brno",
+        "categories": [
+            "projekcni cinnost",
+            "vizualizace"
+        ],
+        "madeFor": "Brno",
+        "featured": "Kulich atelier",
+        "aboutProject": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        "year": 2021,
+        "photos": [],
+        "titlePhoto": "pathOrNameOfPhoto",
+        "published": false
+    },
+    {
+        "id": "g",
+        "projectName": "Hradec Kralove",
+        "categories": [
+            "projekcni cinnost"
+        ],
+        "madeFor": "",
+        "featured": "Rumcajs atelier",
+        "aboutProject": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        "year": 2021,
+        "photos": [],
+        "titlePhoto": "pathOrNameOfPhoto",
+        "published": false
+    },
+    {
+        "id": "h",
+        "projectName": "Lobkovice",
+        "categories": [
+            "interiery"
+        ],
+        "madeFor": "Lobkovice",
+        "featured": "Blaha arch.",
+        "aboutProject": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        "year": 2021,
+        "photos": [],
+        "titlePhoto": "pathOrNameOfPhoto",
+        "published": true
+    },
+    {
+        "id": "i",
+        "projectName": "Lobkovice 2",
+        "categories": [
+            "interiery"
+        ],
+        "madeFor": "Lobkovice",
+        "featured": "Blaha arch.",
+        "aboutProject": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        "year": 2021,
+        "photos": [],
+        "titlePhoto": "pathOrNameOfPhoto",
+        "published": true
+    },
+    {
+        "id": "j",
+        "projectName": "Lobkovice 3",
+        "categories": [
+            "interiery"
+        ],
+        "madeFor": "Lobkovice",
+        "featured": "Blaha arch.",
+        "aboutProject": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        "year": 2021,
+        "photos": [],
+        "titlePhoto": "pathOrNameOfPhoto",
+        "published": false
+    },
+    {
+        "id": "k",
+        "projectName": "Lobkovice 4",
+        "categories": [
+            "interiery"
+        ],
+        "madeFor": "Lobkovice",
+        "featured": "Blaha arch.",
+        "aboutProject": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        "year": 2021,
+        "photos": [],
+        "titlePhoto": "pathOrNameOfPhoto",
+        "published": true
+    },
+    {
+        "id": "k",
+        "projectName": "Lobkovice 5",
+        "categories": [
+            "interiery"
+        ],
+        "madeFor": "Lobkovice",
+        "featured": "Blaha arch.",
+        "aboutProject": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        "year": 2021,
+        "photos": [],
+        "titlePhoto": "pathOrNameOfPhoto",
+        "published": true
+    },
+    {
+        "id": "k",
+        "projectName": "Lobkovice 6",
+        "categories": [
+            "interiery"
+        ],
+        "madeFor": "Lobkovice",
+        "featured": "Blaha arch.",
+        "aboutProject": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        "year": 2021,
+        "photos": [],
+        "titlePhoto": "pathOrNameOfPhoto",
+        "published": true
+    },
+    {
+        "id": "k",
+        "projectName": "Lobkovice 7",
+        "categories": [
+            "interiery"
+        ],
+        "madeFor": "Lobkovice",
+        "featured": "Blaha arch.",
+        "aboutProject": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        "year": 2021,
+        "photos": [],
+        "titlePhoto": "pathOrNameOfPhoto",
+        "published": true
+    }
+]

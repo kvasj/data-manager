@@ -2,14 +2,15 @@
   <div class="card">
     <div class="image"></div>
     <div class="content">
-      <h3>Nazev projektu</h3>
-      <span>projekcni cinnost, vizualizace</span>
+      <h3>{{ projectName }}</h3>
+      <span>{{ categories}}</span>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: ['projectName', 'categories'],
   setup() {
     return {};
   },

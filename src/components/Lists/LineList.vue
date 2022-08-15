@@ -10,15 +10,15 @@
       <th>Published</th>
       <th>Actions</th>
     </tr>
-    <tr v-for="i in 15" :key="i">
-      <td>Hradec Kralove</td>
-      <td>projekcni cinnost, vizualizace</td>
-      <td>Q atelier</td>
-      <td>mesto Hradec Kralove sro</td>
-      <td>2022</td>
-      <td>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</td>
+    <tr v-for="d in projects" :key="d.id">
+      <td>{{ d.projectName }}</td>
+      <td>{{ getCategories(d.categories) }}</td>
+      <td>{{ d.featured }}</td>
+      <td>{{ d.madeFor }}</td>
+      <td>{{ d.year }}</td>
+      <td>{{ d.aboutProject }}</td>
       <td>
-        <base-button mode="success"  v-if="i%3 != 0">
+        <base-button mode="success" v-if="d.published">
           <ion-icon name="checkmark-outline"></ion-icon>
         </base-button>
         <base-button mode="delete" v-else>
@@ -38,7 +38,36 @@
 </template>
 
 <script>
-export default {};
+import { computed } from "vue";
+import { useStore } from "vuex";
+
+export default {
+  setup() {
+    const store = useStore();
+
+    const projects = computed(() => {
+      return store.getters.projects;
+    });
+
+    function getCategories(categories) {
+      let result = "";
+      for (let c = 0; c < categories.length; c++) {
+        if (c == categories.length - 1) {
+          result += categories[c];
+          return result
+        } else {
+          result += categories[c] + ", ";
+        }
+      }
+      return result;
+    }
+
+    return {
+      projects,
+      getCategories,
+    };
+  },
+};
 </script>
 
 <style scoped>

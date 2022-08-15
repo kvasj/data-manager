@@ -1,11 +1,40 @@
 <template>
   <div class="cards">
-    <base-card v-for="i in 3" :key="i"></base-card>
+    <base-card v-for="p in projects" :key="i" :projectName='p.projectName' :categories='getCategories(p.categories)'></base-card>
   </div>
 </template>
 
 <script>
-export default {};
+import { computed } from "vue";
+import { useStore } from "vuex";
+
+export default {
+  setup() {
+    const store = useStore();
+
+    const projects = computed(() => {
+      return store.getters.projects;
+    });
+
+    function getCategories(categories) {
+      let result = "";
+      for (let c = 0; c < categories.length; c++) {
+        if (c == categories.length - 1) {
+          result += categories[c];
+          return result;
+        } else {
+          result += categories[c] + ", ";
+        }
+      }
+      return result;
+    }
+
+    return {
+      projects,
+      getCategories,
+    };
+  },
+}
 </script>
 
 <style scoped>
