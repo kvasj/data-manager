@@ -29,11 +29,11 @@ h6 {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: rgba(46, 45, 45, 0.158);
+    background: rgba(46, 45, 45, 0.486);
     border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(46, 45, 45, 0.486);
+    background: rgba(46, 45, 45, 0.586);
 }

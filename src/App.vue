@@ -64,11 +64,15 @@ main {
   padding: 50px 80px;
 }
 
+.control-bar{
+  margin-bottom: 20px;
+}
+
 .container {
   width: 100%;
-  height: 730px;
-  padding: 10px;
+  height: 800px;
   overflow-y: scroll;
+  display: flex;
 }
 
 .control-bar .left button {

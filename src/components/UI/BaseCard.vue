@@ -20,6 +20,7 @@ export default {
 .card {
   cursor: pointer;
   width: 280px;
+  height: 235px;
   border-radius: 10px;
   overflow: hidden;
   background-color: white;

@@ -1,39 +1,39 @@
 <template>
   <form @submit.prevent="submit">
     <div class="input-group">
-      <span>project name</span>
+      <span>project name:</span>
       <input type="text" id="name" name="name" />
       <span class="error"></span>
     </div>
 
     <div class="group">
       <div class="input-group">
-        <span>featured</span>
+        <span>featured:</span>
         <input type="text" id="featured" name="featured" />
         <span class="error"></span>
       </div>
 
       <div class="input-group">
-        <span>made for</span>
+        <span>made for:</span>
         <input type="text" id="madeFor" name="madeFor" />
         <span class="error"></span>
       </div>
 
       <div class="input-group">
-        <span>year</span>
+        <span>year:</span>
         <input type="number" id="year" name="year" />
         <span class="error"></span>
       </div>
     </div>
 
     <div class="input-group">
-      <span>about project</span>
+      <span>about project:</span>
       <textarea type="text" id="aboutProject" name="aboutProject" />
       <span class="error"></span>
     </div>
 
     <div class="input-group">
-      <span>categories</span>
+      <span>categories:</span>
       <div class="boxes">
         <div class="check">
           <input type="checkbox" name="interiers" id="interiers" />
@@ -52,7 +52,7 @@
     </div>
 
     <div class="input-group">
-      <span>select images</span>
+      <span>select images:</span>
       <input type="file" id="img" name="img" accept="image/*" multiple>
     </div>
 
@@ -94,6 +94,7 @@ form {
   height: 600px;
   margin: 0 auto;
   box-sizing: border-box;
+  align-self: center;
 }
 
 textarea {
