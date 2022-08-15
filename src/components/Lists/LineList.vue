@@ -7,6 +7,7 @@
       <th>Made for</th>
       <th>Year</th>
       <th>About project</th>
+      <th>Published</th>
       <th>Actions</th>
     </tr>
     <tr v-for="i in 15" :key="i">
@@ -16,6 +17,14 @@
       <td>mesto Hradec Kralove sro</td>
       <td>2022</td>
       <td>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</td>
+      <td>
+        <base-button mode="success"  v-if="i%3 != 0">
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </base-button>
+        <base-button mode="delete" v-else>
+          <ion-icon name="close-outline"></ion-icon>
+        </base-button>
+      </td>
       <td class="actions">
         <base-button mode="update">
           <ion-icon name="create-outline"></ion-icon>
@@ -43,7 +52,7 @@ table {
 
 td,
 th {
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid #c3c3c3;
   text-align: center;
   height: 60px;
 }
@@ -53,7 +62,7 @@ td {
 }
 
 tr:nth-child(even) {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: #e5e5e5;
 }
 
 .actions button:first-child {
