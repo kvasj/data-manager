@@ -57,6 +57,12 @@
         <input type="file" id="img" name="img" accept="image/*" multiple />
       </div>
 
+      <div class="input-group">
+        <span>photos:</span>
+        
+        <span class="error"></span>
+      </div>
+
       <base-button text="edit project" mode="update">
         <ion-icon name="push-outline"></ion-icon>
       </base-button>
