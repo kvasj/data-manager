@@ -3,33 +3,38 @@
     <form @submit.prevent="submit">
       <div class="input-group">
         <span>project name:</span>
-        <input type="text" id="name" name="name" />
+        <input type="text" id="name" name="name" v-model="projectName" />
         <span class="error"></span>
       </div>
 
       <div class="group">
         <div class="input-group">
           <span>featured:</span>
-          <input type="text" id="featured" name="featured" />
+          <input type="text" id="featured" name="featured" v-model="featured" />
           <span class="error"></span>
         </div>
 
         <div class="input-group">
           <span>made for:</span>
-          <input type="text" id="madeFor" name="madeFor" />
+          <input type="text" id="madeFor" name="madeFor" v-model="madeFor" />
           <span class="error"></span>
         </div>
 
         <div class="input-group">
           <span>year:</span>
-          <input type="number" id="year" name="year" />
+          <input type="number" id="year" name="year" v-model="year" />
           <span class="error"></span>
         </div>
       </div>
 
       <div class="input-group">
         <span>about project:</span>
-        <textarea type="text" id="aboutProject" name="aboutProject" />
+        <textarea
+          type="text"
+          id="aboutProject"
+          name="aboutProject"
+          v-model="aboutProject"
+        />
         <span class="error"></span>
       </div>
 
@@ -37,16 +42,31 @@
         <span>categories:</span>
         <div class="boxes">
           <div class="check">
-            <input type="checkbox" name="interiers" id="interiers" />
-            <label for="interiers">interiéry</label>
+            <input
+              type="checkbox"
+              :name="categoryEnums.interiers"
+              :id="categoryEnums.interiers"
+              v-model="interiers"
+            />
+            <label :for="categoryEnums.interiers">interiéry</label>
           </div>
           <div class="check">
-            <input type="checkbox" name="designActivity" id="designActivity" />
-            <label for="designActivity">projekční činnost</label>
+            <input
+              type="checkbox"
+              :name="categoryEnums.designActivity"
+              :id="categoryEnums.designActivity"
+              v-model="designActivity"
+            />
+            <label :for="categoryEnums.designActivity">projekční činnost</label>
           </div>
           <div class="check">
-            <input type="checkbox" name="vizualization" id="vizualization" />
-            <label for="vizualizationa">vizualizace</label>
+            <input
+              type="checkbox"
+              :name="categoryEnums.vizualization"
+              :id="categoryEnums.vizualization"
+              v-model="vizualization"
+            />
+            <label :for="categoryEnums.vizualization">vizualizace</label>
           </div>
         </div>
         <span class="error"></span>
@@ -54,10 +74,12 @@
 
       <div class="input-group">
         <span>select images:</span>
+
+        <!-- v-on:change="photos" -->
         <input type="file" id="img" name="img" accept="image/*" multiple />
       </div>
 
-      <base-button text="add project" mode="update">
+      <base-button @click="addNewProject" text="add project" mode="update">
         <ion-icon name="push-outline"></ion-icon>
       </base-button>
     </form>
@@ -65,7 +87,72 @@
 </template>
 
 <script>
-export default {};
+import { ref, watch } from "vue";
+import { useStore } from "vuex";
+export default {
+  setup() {
+    const store = useStore();
+    const categoryEnums = store.getters.categoryEnums;
+    const projectName = ref("");
+    const featured = ref("");
+    const madeFor = ref("");
+    const year = ref("");
+    const aboutProject = ref("");
+    const interiers = ref("");
+    const designActivity = ref("");
+    const vizualization = ref("");
+    const photos = ref("");
+
+    watch(() => {
+      //console.log();
+    });
+
+    function addNewProject() {
+      const newProject = {
+        projectId: Date.now(),
+        projectName: projectName,
+        featured: featured,
+        madeFor: madeFor,
+        year: year,
+        aboutProject: aboutProject,
+        categories: getCategories(interiers, designActivity, vizualization),
+        photos: photos,
+        published: false,
+      };
+      store.dispatch("addNewProject", newProject);
+    }
+
+    function getCategories(interiers, designActivity, vizualization) {
+      let result = [];
+
+      if (interiers) {
+        result.push(categoryEnums.interiers);
+      }
+      if (designActivity) {
+        result.push(categoryEnums.designActivity);
+      }
+      if (vizualization) {
+        result.push(categoryEnums.vizualization);
+      }
+
+      return result;
+    }
+
+    return {
+      categoryEnums,
+      projectName,
+      featured,
+      madeFor,
+      year,
+      aboutProject,
+      interiers,
+      designActivity,
+      vizualization,
+      photos,
+      addNewProject,
+    };
+  },
+};
 </script>
 
 <style scoped>

@@ -20,6 +20,11 @@ export default createStore({
     deleteProject(state, id) {
       const index = state.projectsData.findIndex(element => { return id === element.id })
       state.projectsData.splice(index, 1)
+    },
+
+    addNewProject(state, newProjectObject){
+      //console.log(newProjectObject.categories)
+      //adding to database or JSON file
     }
   },
 
@@ -30,6 +35,10 @@ export default createStore({
 
     deleteProject({ commit }, payloadId) {
       commit('deleteProject', payloadId)
+    },
+
+    addNewProject({ commit }, payloadNewProjectObject) {
+      commit('addNewProject', payloadNewProjectObject)
     }
   },
   
