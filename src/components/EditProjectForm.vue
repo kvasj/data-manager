@@ -37,15 +37,15 @@
         <span>categories:</span>
         <div class="boxes">
           <div class="check">
-            <input type="checkbox" name="interiers" id="interiers" :checked='isChecked(enums.interiers, project.categories)' />
+            <input type="checkbox" name="interiers" id="interiers" :checked='isChecked(categoryEnums.interiers, project.categories)' />
             <label for="interiers">interiéry</label>
           </div>
           <div class="check">
-            <input type="checkbox" name="designActivity" id="designActivity" :checked='isChecked(enums.designActivity, project.categories)'/>
+            <input type="checkbox" name="designActivity" id="designActivity" :checked='isChecked(categoryEnums.designActivity, project.categories)'/>
             <label for="designActivity">projekční činnost</label>
           </div>
           <div class="check">
-            <input type="checkbox" name="vizualization" id="vizualization" :checked='isChecked(enums.vizualization, project.categories)'/>
+            <input type="checkbox" name="vizualization" id="vizualization" :checked='isChecked(categoryEnums.vizualization, project.categories)'/>
             <label for="vizualizationa">vizualizace</label>
           </div>
         </div>
@@ -78,7 +78,7 @@ export default {
   setup() {
     const store = useStore();
     const route = useRoute();
-    const enums = store.getters.enums
+    const categoryEnums = store.getters.categoryEnums
     const project = reactive({
       id: '',
       projectName: '',
@@ -115,7 +115,7 @@ export default {
     
     return {
       project,
-      enums,
+      categoryEnums,
       isChecked
     }
   },

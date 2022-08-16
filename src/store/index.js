@@ -4,7 +4,7 @@ import dataJSON from "../data.json";
 export default createStore({
   state: {
     projectsData: dataJSON,
-    enums: {
+    categoryEnums: {
       interiers: 'interiéry',
       vizualization: 'vizualizace',
       designActivity: 'projekční činnost'
@@ -38,8 +38,8 @@ export default createStore({
       return state.projectsData;
     },
 
-    enums(state) {
-      return state.enums;
+    categoryEnums(state) {
+      return state.categoryEnums;
     }
   },
 
