@@ -76,4 +76,22 @@ button:hover {
 .success:hover {
   box-shadow: 0px 2px 8px rgba(52, 200, 90, 0.3);
 }
+
+.info {
+  background-color: #006ee6; /* 006ee6 78C5EF */
+  color: white;
+}
+
+.info:hover {
+  box-shadow: 0px 2px 8px rgba(0, 111, 230, 0.3);
+}
+
+.info-dark{
+  background-color: #000c19;
+  color: white;
+}
+
+.info-dark:hover {
+  box-shadow: 0px 2px 8px rgba(0, 12, 25, 0.3);
+}
 </style>

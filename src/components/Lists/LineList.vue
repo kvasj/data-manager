@@ -18,11 +18,11 @@
       <td>{{ d.year }}</td>
       <td>{{ d.aboutProject }}</td>
       <td>
-        <base-button @click="setPublicity(d.id)" mode="success" v-if="d.published">
-          <ion-icon name="checkmark-outline"></ion-icon>
+        <base-button @click="setPublicity(d.id)" mode="info" v-if="d.published">
+          <ion-icon name="eye-outline"></ion-icon>
         </base-button>
-        <base-button @click="setPublicity(d.id)" mode="delete" v-else>
-          <ion-icon name="close-outline"></ion-icon>
+        <base-button @click="setPublicity(d.id)" mode="info-dark" v-else>
+          <ion-icon name="eye-off-outline"></ion-icon>
         </base-button>
       </td>
       <td class="actions">
