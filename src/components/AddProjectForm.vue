@@ -89,18 +89,19 @@
 <script>
 import { ref, watch } from "vue";
 import { useStore } from "vuex";
+
 export default {
   setup() {
     const store = useStore();
     const categoryEnums = store.getters.categoryEnums;
-    const projectName = ref("");
-    const featured = ref("");
-    const madeFor = ref("");
-    const year = ref("");
-    const aboutProject = ref("");
-    const interiers = ref("");
-    const designActivity = ref("");
-    const vizualization = ref("");
+    const projectName = ref("Kralovna");
+    const featured = ref("Kas");
+    const madeFor = ref("Kulis");
+    const year = ref(2021);
+    const aboutProject = ref("Lorem ipsum dolor sit amet, consectetuer adipiscing elit.");
+    const interiers = ref(true);
+    const designActivity = ref(false);
+    const vizualization = ref(true);
     const photos = ref("");
 
     watch(() => {
@@ -109,12 +110,11 @@ export default {
 
     function addNewProject() {
       const newProject = {
-        projectId: Date.now(),
-        projectName: projectName,
-        featured: featured,
-        madeFor: madeFor,
-        year: year,
-        aboutProject: aboutProject,
+        projectName: projectName.value,
+        featured: featured.value,
+        madeFor: madeFor.value,
+        year: year.value,
+        aboutProject: aboutProject.value,
         categories: getCategories(interiers, designActivity, vizualization),
         photos: photos,
         published: false,
