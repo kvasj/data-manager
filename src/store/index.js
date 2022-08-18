@@ -22,9 +22,12 @@ export default createStore({
       state.lastSearchedProject = state.projects[projectId]
     },
 
-    SET_PUBLICITY(state, id) {
-      //let project = state.projectsData.find((element) => { return id === element.id })
-      //project.published = !project.published;
+    SET_PUBLICITY(state, projectId) {
+      const searchedProject = state.projects[projectId]
+      axios.patch(firebaseConfig.URL + firebaseConfig.table + "/" + projectId + "/" + firebaseConfig.format, {
+        published: !searchedProject.published
+      }
+      ).then((response) => console.log(response.status + ": " + response.statusText))
     },
 
     DELETE_PROJECT(state, id) {
@@ -47,7 +50,6 @@ export default createStore({
     },
 
     EDIT_PROJECT(state, editedProject) {
-      console.log(editedProject.categories)
       axios.patch(firebaseConfig.URL + firebaseConfig.table + "/" + editedProject.id + "/" + firebaseConfig.format, {
         projectName: editedProject.projectName,
         featured: editedProject.featured,

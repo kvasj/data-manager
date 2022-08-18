@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
@@ -70,6 +70,7 @@ export default {
 
     function setPublicity(projectId) {
       store.dispatch("setPublicity", projectId);
+      store.dispatch('fetchProjects');
     }
 
     function editProject(projectId) {
