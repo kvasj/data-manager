@@ -37,15 +37,15 @@
         <span>categories:</span>
         <div class="boxes">
           <div class="check">
-            <input type="checkbox" name="interiers" id="interiers" :checked='isChecked(categoryEnums.interiers, project.categories)' />
+            <input type="checkbox" name="interiers" id="interiers" v-model="interiers" :checked='isChecked(categoryEnums.interiers, project.categories)' />
             <label for="interiers">interiéry</label>
           </div>
           <div class="check">
-            <input type="checkbox" name="designActivity" id="designActivity" :checked='isChecked(categoryEnums.designActivity, project.categories)'/>
+            <input type="checkbox" name="designActivity" id="designActivity" v-model="designActivity" :checked='isChecked(categoryEnums.designActivity, project.categories)'/>
             <label for="designActivity">projekční činnost</label>
           </div>
           <div class="check">
-            <input type="checkbox" name="vizualization" id="vizualization" :checked='isChecked(categoryEnums.vizualization, project.categories)'/>
+            <input type="checkbox" name="vizualization" id="vizualization" v-model="vizualization" :checked='isChecked(categoryEnums.vizualization, project.categories)'/>
             <label for="vizualizationa">vizualizace</label>
           </div>
         </div>
@@ -63,7 +63,7 @@
         <span class="error"></span>
       </div>
 
-      <base-button text="edit project" mode="update">
+      <base-button @click="editProject(project)" text="edit project" mode="update">
         <ion-icon name="push-outline"></ion-icon>
       </base-button>
     </form>
@@ -71,13 +71,18 @@
 </template>
 
 <script>
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useStore } from "vuex"
 import { useRoute } from "vue-router"
 export default {
   setup() {
     const store = useStore();
     const route = useRoute();
+
+    const interiers = ref(null);
+    const designActivity = ref(null);
+    const vizualization = ref(null);
+
     const categoryEnums = store.getters.categoryEnums
     const project = reactive({
       id: '',
@@ -87,8 +92,6 @@ export default {
       featured: '',
       aboutProject: '',
       year: null,
-      photos: [],
-      titlePhoto: '',
       published: false
     });
     
@@ -98,26 +101,52 @@ export default {
       store.dispatch("getProjectById", projectId);
       const searchedProject = store.getters.getProject;
 
-      project.id = searchedProject.projectId,
+      project.id = projectId
       project.projectName = searchedProject.projectName,
       project.categories = searchedProject.categories,
       project.madeFor = searchedProject.madeFor,
       project.featured = searchedProject.featured,
       project.aboutProject = searchedProject.aboutProject,
       project.year = searchedProject.year,
-      project.photos = searchedProject.photos,
-      project.titlePhoto = searchedProject.titlePhoto
       project.published = searchedProject.published
+      interiers.value = isChecked(categoryEnums.interiers, project.categories)
+      designActivity.value = isChecked(categoryEnums.designActivity, project.categories)
+      vizualization.value = isChecked(categoryEnums.vizualization, project.categories)
     })
 
     function isChecked(checkboxCategory, projectCategories){
       return projectCategories.includes(checkboxCategory)
     }
+
+    function editProject(project){
+      project.categories = getCategories(interiers, designActivity, vizualization)
+      store.dispatch('editProject', project)
+    }
+
+    function getCategories(interiers, designActivity, vizualization) {
+      let result = [];
+
+      if (interiers.value) {
+        result.push(categoryEnums.interiers);
+      }
+      if (designActivity.value) {
+        result.push(categoryEnums.designActivity);
+      }
+      if (vizualization.value) {
+        result.push(categoryEnums.vizualization);
+      }
+
+      return result;
+    }
     
     return {
       project,
+      interiers,
+      designActivity,
+      vizualization,
       categoryEnums,
-      isChecked
+      isChecked,
+      editProject,
     }
   },
 };

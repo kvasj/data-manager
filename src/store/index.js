@@ -18,7 +18,7 @@ export default createStore({
       state.projects = projects
     },
 
-    SET_LAST_SEARCHED_PROJECT(state, projectId){
+    SET_LAST_SEARCHED_PROJECT(state, projectId) {
       state.lastSearchedProject = state.projects[projectId]
     },
 
@@ -33,7 +33,7 @@ export default createStore({
     },
 
     ADD_NEW_PROJECT(state, newProjectObject) {
-      axios.post(firebaseConfig.URL + "projects.json", {
+      axios.post(firebaseConfig.URL + firebaseConfig.table + firebaseConfig.format, {
         projectName: newProjectObject.projectName,
         featured: newProjectObject.featured,
         madeFor: newProjectObject.madeFor,
@@ -45,12 +45,26 @@ export default createStore({
         console.log(response.status + ": " + response.statusText)
       })
     },
+
+    EDIT_PROJECT(state, editedProject) {
+      console.log(editedProject.categories)
+      axios.patch(firebaseConfig.URL + firebaseConfig.table + "/" + editedProject.id + "/" + firebaseConfig.format, {
+        projectName: editedProject.projectName,
+        featured: editedProject.featured,
+        madeFor: editedProject.madeFor,
+        categories: editedProject.categories,
+        aboutProject: editedProject.aboutProject,
+        year: editedProject.year,
+        published: editedProject.published
+      }
+      ).then((response) => console.log(response.status + ": " + response.statusText))
+    },
   },
 
   actions: {
     fetchProjects({ commit }) {
       try {
-        axios.get(firebaseConfig.URL + "projects.json").then(response => commit('SET_PROJECTS', response.data))
+        axios.get(firebaseConfig.URL + firebaseConfig.table + firebaseConfig.format).then(response => commit('SET_PROJECTS', response.data))
       }
       catch (error) {
         alert(error)
@@ -58,19 +72,23 @@ export default createStore({
       }
     },
 
-    setPublicity({ commit }, payloadId) {
-      commit('SET_PUBLICITY', payloadId)
+    setPublicity({ commit }, projectId) {
+      commit('SET_PUBLICITY', projectId)
     },
 
-    deleteProject({ commit }, payloadId) {
-      commit('DELETE_PROJECT', payloadId)
+    deleteProject({ commit }, projectId) {
+      commit('DELETE_PROJECT', projectId)
     },
 
-    addNewProject({ commit }, payloadNewProjectObject) {
-      commit('ADD_NEW_PROJECT', payloadNewProjectObject)
+    addNewProject({ commit }, newProjectObject) {
+      commit('ADD_NEW_PROJECT', newProjectObject)
     },
 
-    getProjectById({commit}, projectId) {
+    editProject({ commit }, editedProject) {
+      commit('EDIT_PROJECT', editedProject)
+    },
+
+    getProjectById({ commit }, projectId) {
       commit('SET_LAST_SEARCHED_PROJECT', projectId)
     },
   },
