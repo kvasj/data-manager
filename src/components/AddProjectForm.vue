@@ -87,26 +87,22 @@
 </template>
 
 <script>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { useStore } from "vuex";
 
 export default {
   setup() {
     const store = useStore();
     const categoryEnums = store.getters.categoryEnums;
-    const projectName = ref("Kralovna");
-    const featured = ref("Kas");
-    const madeFor = ref("Kulis");
-    const year = ref(2021);
-    const aboutProject = ref("Lorem ipsum dolor sit amet, consectetuer adipiscing elit.");
-    const interiers = ref(true);
-    const designActivity = ref(false);
-    const vizualization = ref(true);
+    const projectName = ref("");
+    const featured = ref("");
+    const madeFor = ref("");
+    const year = ref(null);
+    const aboutProject = ref("");
+    const interiers = ref(null);
+    const designActivity = ref(null);
+    const vizualization = ref(null);
     const photos = ref("");
-
-    watch(() => {
-      //console.log();
-    });
 
     function addNewProject() {
       const newProject = {
@@ -125,13 +121,13 @@ export default {
     function getCategories(interiers, designActivity, vizualization) {
       let result = [];
 
-      if (interiers) {
+      if (interiers.value) {
         result.push(categoryEnums.interiers);
       }
-      if (designActivity) {
+      if (designActivity.value) {
         result.push(categoryEnums.designActivity);
       }
-      if (vizualization) {
+      if (vizualization.value) {
         result.push(categoryEnums.vizualization);
       }
 

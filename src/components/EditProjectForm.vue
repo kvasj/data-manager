@@ -95,7 +95,8 @@ export default {
 
     onMounted(()=>{
       const projectId = route.params.id;
-      const searchedProject = store.getters.projects.find((element) => { return projectId === element.id });
+      store.dispatch("getProjectById", projectId);
+      const searchedProject = store.getters.getProject;
 
       project.id = searchedProject.projectId,
       project.projectName = searchedProject.projectName,

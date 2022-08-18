@@ -31,7 +31,6 @@
 import SideBar from "./components/Menu/SideBar.vue";
 import { useRouter } from 'vue-router'
 import { onMounted, provide } from 'vue';
-import { store, useStore } from 'vuex';
 
 export default {
   components: {
@@ -39,16 +38,11 @@ export default {
   },
 
   setup() {
-    const store = useStore();
     const router = useRouter();
 
     function redirectToAddProjectForm(){
       router.push('/addProject')
     }
-
-    onMounted(() => {
-      store.dispatch('fetchProjects');
-    });
 
     return {
       redirectToAddProjectForm

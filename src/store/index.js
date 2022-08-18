@@ -1,5 +1,4 @@
 import { createStore } from 'vuex'
-//import dataJSON from "../data.json"
 import axios from 'axios'
 import firebaseConfig from '../assets/firebase/config'
 
@@ -10,12 +9,17 @@ export default createStore({
       interiers: 'interiéry',
       vizualization: 'vizualizace',
       designActivity: 'projekční činnost'
-    }
+    },
+    lastSearchedProject: [],
   },
 
   mutations: {
     SET_PROJECTS(state, projects) {
       state.projects = projects
+    },
+
+    SET_LAST_SEARCHED_PROJECT(state, projectId){
+      state.lastSearchedProject = state.projects[projectId]
     },
 
     SET_PUBLICITY(state, id) {
@@ -64,7 +68,11 @@ export default createStore({
 
     addNewProject({ commit }, payloadNewProjectObject) {
       commit('ADD_NEW_PROJECT', payloadNewProjectObject)
-    }
+    },
+
+    getProjectById({commit}, projectId) {
+      commit('SET_LAST_SEARCHED_PROJECT', projectId)
+    },
   },
 
   getters: {
@@ -74,7 +82,11 @@ export default createStore({
 
     categoryEnums(state) {
       return state.categoryEnums;
-    }
+    },
+
+    getProject(state) {
+      return state.lastSearchedProject
+    },
   },
 
   modules: {

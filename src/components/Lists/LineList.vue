@@ -10,7 +10,7 @@
       <th>Published</th>
       <th>Actions</th>
     </tr>
-    <tr v-for="d in projects" :key="d.id">
+    <tr v-for="(d, projectId) in projects" :key="projectId">
       <td>{{ d.projectName }}</td>
       <td>{{ getCategories(d.categories) }}</td>
       <td>{{ d.featured }}</td>
@@ -18,18 +18,18 @@
       <td>{{ d.year }}</td>
       <td>{{ d.aboutProject }}</td>
       <td>
-        <base-button @click="setPublicity(d.id)" mode="info" v-if="d.published">
+        <base-button @click="setPublicity(projectId)" mode="info" v-if="d.published">
           <ion-icon name="eye-outline"></ion-icon>
         </base-button>
-        <base-button @click="setPublicity(d.id)" mode="info-dark" v-else>
+        <base-button @click="setPublicity(projectId)" mode="info-dark" v-else>
           <ion-icon name="eye-off-outline"></ion-icon>
         </base-button>
       </td>
       <td class="actions">
-        <base-button @click="editProject(d.id)" mode="update">
+        <base-button @click="editProject(projectId)" mode="update">
           <ion-icon name="create-outline"></ion-icon>
         </base-button>
-        <base-button @click="deleteProject(d.id)" mode="delete">
+        <base-button @click="deleteProject(projectId)" mode="delete">
           <ion-icon name="trash-outline"></ion-icon>
         </base-button>
       </td>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
@@ -46,6 +46,10 @@ export default {
   setup() {
     const store = useStore();
     const router = useRouter();
+
+    onMounted(() => {
+      store.dispatch('fetchProjects');
+    });
 
     const projects = computed(() => {
       return store.getters.projects;
@@ -64,19 +68,19 @@ export default {
       return result;
     }
 
-    function setPublicity(id) {
-      store.dispatch("setPublicity", id);
+    function setPublicity(projectId) {
+      store.dispatch("setPublicity", projectId);
     }
 
-    function editProject(id) {
-      router.push({ name: 'editProject', params: { id: id } });
+    function editProject(projectId) {
+      router.push({ name: "editProject", params: { id: projectId } });
     }
 
-    function deleteProject(id) {
+    function deleteProject(projectId) {
       alert("Are you sure to delete this project?");
-      store.dispatch("deleteProject", id);
+      store.dispatch("deleteProject", projectId);
     }
-
+    
     return {
       projects,
       getCategories,

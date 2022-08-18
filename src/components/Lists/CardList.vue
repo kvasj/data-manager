@@ -1,17 +1,26 @@
 <template>
   <div class="cards">
-    <base-card v-for="p in projects" :key="i" :projectName='p.projectName' :categories='getCategories(p.categories)'></base-card>
+    <base-card
+      v-for="p in projects"
+      :key="i"
+      :projectName="p.projectName"
+      :categories="getCategories(p.categories)"
+    ></base-card>
   </div>
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 
 export default {
   setup() {
     const store = useStore();
-
+    
+    onMounted(() => {
+      store.dispatch("fetchProjects");
+    });
+    
     const projects = computed(() => {
       return store.getters.projects;
     });
@@ -34,7 +43,7 @@ export default {
       getCategories,
     };
   },
-}
+};
 </script>
 
 <style scoped>
