@@ -39,13 +39,13 @@
 
 <script>
 import { computed, onMounted, watch } from "vue";
-import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { useStore } from 'vuex';
 
 export default {
   setup() {
-    const store = useStore();
     const router = useRouter();
+    const store = useStore();
 
     const projects = computed(() => {
       return store.getters.projects;

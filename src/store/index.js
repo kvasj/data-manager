@@ -51,7 +51,9 @@ export default createStore({
         year: newProjectObject.year,
         published: newProjectObject.published
       }).then(function (response) {
-        console.log(response.status + ": " + response.statusText)
+        if(response.status === 200){
+          //state.projects.push(newProjectObject)
+        }
       })
     },
 

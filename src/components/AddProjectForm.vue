@@ -93,6 +93,7 @@ import { useStore } from "vuex";
 export default {
   setup() {
     const store = useStore();
+
     const categoryEnums = store.getters.categoryEnums;
     const projectName = ref("");
     const featured = ref("");
