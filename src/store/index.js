@@ -32,9 +32,13 @@ export default createStore({
       state.projects[projectId].published = !state.projects[projectId].published
     },
 
-    DELETE_PROJECT(state, id) {
-      //const index = state.projectsData.findIndex(element => { return id === element.id })
-      //state.projectsData.splice(index, 1)
+    async DELETE_PROJECT(state, projectId) {
+      await axios.delete(firebaseConfig.URL + firebaseConfig.table + "/" + projectId + firebaseConfig.format
+      ).then((response) => {
+        if (response.status === 200) {
+          delete state.projects[projectId]
+        }
+      })
     },
 
     async ADD_NEW_PROJECT(state, newProjectObject) {
@@ -69,8 +73,8 @@ export default createStore({
     async fetchProjects({ commit }) {
       try {
         await axios.get(firebaseConfig.URL + firebaseConfig.table + firebaseConfig.format)
-        .then(response => 
-          commit('SET_PROJECTS', response.data)
+          .then(response =>
+            commit('SET_PROJECTS', response.data)
           )
       }
       catch (error) {

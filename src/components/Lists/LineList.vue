@@ -73,7 +73,6 @@ export default {
     }
 
     function deleteProject(projectId) {
-      alert("Are you sure to delete this project?");
       store.dispatch("deleteProject", projectId);
     }
     
