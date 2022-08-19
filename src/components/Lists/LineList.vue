@@ -47,10 +47,6 @@ export default {
     const store = useStore();
     const router = useRouter();
 
-    onMounted(() => {
-      store.dispatch('fetchProjects');
-    });
-
     const projects = computed(() => {
       return store.getters.projects;
     });
@@ -70,7 +66,6 @@ export default {
 
     function setPublicity(projectId) {
       store.dispatch("setPublicity", projectId);
-      store.dispatch('fetchProjects');
     }
 
     function editProject(projectId) {

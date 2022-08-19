@@ -17,10 +17,6 @@ export default {
   setup() {
     const store = useStore();
     
-    onMounted(() => {
-      store.dispatch("fetchProjects");
-    });
-    
     const projects = computed(() => {
       return store.getters.projects;
     });

@@ -10,7 +10,7 @@ export default createStore({
       vizualization: 'vizualizace',
       designActivity: 'projekční činnost'
     },
-    lastSearchedProject: [],
+    project: [],
   },
 
   mutations: {
@@ -18,16 +18,18 @@ export default createStore({
       state.projects = projects
     },
 
-    SET_LAST_SEARCHED_PROJECT(state, projectId) {
-      state.lastSearchedProject = state.projects[projectId]
+    SET_PROJECT(state, projectId) {
+      state.project = state.projects[projectId]
     },
 
-    SET_PUBLICITY(state, projectId) {
+    async SET_PUBLICITY(state, projectId) {
       const searchedProject = state.projects[projectId]
-      axios.patch(firebaseConfig.URL + firebaseConfig.table + "/" + projectId + "/" + firebaseConfig.format, {
+      await axios.patch(firebaseConfig.URL + firebaseConfig.table + "/" + projectId + "/" + firebaseConfig.format, {
         published: !searchedProject.published
       }
       ).then((response) => console.log(response.status + ": " + response.statusText))
+
+      state.projects[projectId].published = !state.projects[projectId].published
     },
 
     DELETE_PROJECT(state, id) {
@@ -35,8 +37,8 @@ export default createStore({
       //state.projectsData.splice(index, 1)
     },
 
-    ADD_NEW_PROJECT(state, newProjectObject) {
-      axios.post(firebaseConfig.URL + firebaseConfig.table + firebaseConfig.format, {
+    async ADD_NEW_PROJECT(state, newProjectObject) {
+      await axios.post(firebaseConfig.URL + firebaseConfig.table + firebaseConfig.format, {
         projectName: newProjectObject.projectName,
         featured: newProjectObject.featured,
         madeFor: newProjectObject.madeFor,
@@ -49,8 +51,8 @@ export default createStore({
       })
     },
 
-    EDIT_PROJECT(state, editedProject) {
-      axios.patch(firebaseConfig.URL + firebaseConfig.table + "/" + editedProject.id + "/" + firebaseConfig.format, {
+    async EDIT_PROJECT(state, editedProject) {
+      await axios.patch(firebaseConfig.URL + firebaseConfig.table + "/" + editedProject.id + "/" + firebaseConfig.format, {
         projectName: editedProject.projectName,
         featured: editedProject.featured,
         madeFor: editedProject.madeFor,
@@ -64,9 +66,12 @@ export default createStore({
   },
 
   actions: {
-    fetchProjects({ commit }) {
+    async fetchProjects({ commit }) {
       try {
-        axios.get(firebaseConfig.URL + firebaseConfig.table + firebaseConfig.format).then(response => commit('SET_PROJECTS', response.data))
+        await axios.get(firebaseConfig.URL + firebaseConfig.table + firebaseConfig.format)
+        .then(response => 
+          commit('SET_PROJECTS', response.data)
+          )
       }
       catch (error) {
         alert(error)
@@ -91,7 +96,7 @@ export default createStore({
     },
 
     getProjectById({ commit }, projectId) {
-      commit('SET_LAST_SEARCHED_PROJECT', projectId)
+      commit('SET_PROJECT', projectId)
     },
   },
 
@@ -105,7 +110,7 @@ export default createStore({
     },
 
     getProject(state) {
-      return state.lastSearchedProject
+      return state.project
     },
   },
 
