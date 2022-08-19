@@ -1,25 +1,20 @@
 <template>
-    <projects></projects>
+  <projects></projects>
 </template>
 
 <script>
-//import { reactive, toRefs } from 'vue'
-import Projects from '../components/Projects.vue'
+import Projects from "../components/Projects.vue";
 
 export default {
-    components: {
-        Projects,
-    },
-    
-    setup () {
-    
-        return {
-            
-        }
-    }
-}
+  components: {
+    Projects,
+  },
+
+  setup() {
+    return {};
+  },
+};
 </script>
 
 <style scoped>
-
 </style>
