@@ -12,7 +12,9 @@ export default createStore({
     },
     project: [],
     searchText: "",
-    ascSort: true,
+    showMessage: false,
+    messageStatus: "",
+    messageText: "",
   },
 
   mutations: {
@@ -51,6 +53,10 @@ export default createStore({
         if (response.status === 200) {
           const projectIndex = state.projects.findIndex(project => project.id === projectId)
           state.projects.splice(projectIndex, 1)
+
+          state.showMessage = true
+          state.messageStatus = "success"
+          state.messageText = "Project was succesfully deleted."
         }
       })
     },
@@ -69,6 +75,9 @@ export default createStore({
           const projectId = response.data.name;
           const project = Object.assign({ id: projectId }, newProjectObject)
           state.projects.push(project)
+          state.showMessage = true
+          state.messageStatus = "success"
+          state.messageText = "Project was succesfully created."
         }
       })
     },
@@ -89,19 +98,27 @@ export default createStore({
           const editedProjectData = response.data
           const projectIndex = state.projects.findIndex((project => project.id === projectId));
           state.projects[projectIndex].projectName = editedProjectData.projectName,
-            state.projects[projectIndex].featured = editedProjectData.featured,
-            state.projects[projectIndex].madeFor = editedProjectData.madeFor,
-            state.projects[projectIndex].categories = editedProjectData.categories,
-            state.projects[projectIndex].aboutProject = editedProjectData.aboutProject,
-            state.projects[projectIndex].year = editedProjectData.year,
-            state.projects[projectIndex].published = editedProjectData.published
+          state.projects[projectIndex].featured = editedProjectData.featured,
+          state.projects[projectIndex].madeFor = editedProjectData.madeFor,
+          state.projects[projectIndex].categories = editedProjectData.categories,
+          state.projects[projectIndex].aboutProject = editedProjectData.aboutProject,
+          state.projects[projectIndex].year = editedProjectData.year,
+          state.projects[projectIndex].published = editedProjectData.published
+
+          state.showMessage = true
+          state.messageStatus = "success"
+          state.messageText = "Project was succesfully edited."
         }
       })
     },
 
-    SET_SEARCH_TEXT(state, searchText){
+    SET_SEARCH_TEXT(state, searchText) {
       state.searchText = searchText;
     },
+
+    SET_SHOW_MESSAGE(state, showMessageValue){
+      state.showMessage = showMessageValue
+    }
   },
 
   actions: {
@@ -143,6 +160,10 @@ export default createStore({
     setSearchText({ commit }, searchText) {
       commit('SET_SEARCH_TEXT', searchText)
     },
+
+    setShowMessage({ commit }, showMessageValue) {
+      commit('SET_SHOW_MESSAGE', showMessageValue)
+    },
   },
 
   getters: {
@@ -156,6 +177,22 @@ export default createStore({
 
     getProject(state) {
       return state.project
+    },
+
+    searchText(state) {
+      return state.searchText
+    },
+
+    showMessage(state) {
+      return state.showMessage
+    },
+
+    messageStatus(state) {
+      return state.messageStatus
+    },
+
+    messageText(state) {
+      return state.messageText
     },
   },
 

@@ -30,8 +30,8 @@ nav {
   align-items: center;
   padding-left: 40px;
   padding-right: 40px;
+  padding-top: 20px;
   width: 150px;
-  height: 100vh;
   background: white;
   box-shadow: 0px 2px 15px rgba(100, 100, 111, 0.1);
 }

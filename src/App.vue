@@ -1,4 +1,9 @@
 <template>
+  <transition name="flashmessage">
+    <base-flash-message :status="messageStatus" v-if="showMessage">
+      <span>{{ messageText }}</span>
+    </base-flash-message>
+  </transition>
   <div class="wrapper">
     <side-bar name="Qatelier"></side-bar>
     <main>
@@ -36,7 +41,7 @@
 <script>
 import SideBar from "./components/Menu/SideBar.vue";
 import { useRouter } from "vue-router";
-import { onMounted, provide } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -48,6 +53,21 @@ export default {
     const store = useStore();
     const router = useRouter();
 
+    const messageStatus = computed(() => {
+      return store.getters.messageStatus;
+    });
+    const messageText = computed(() => {
+      return store.getters.messageText;
+    });
+
+    const showMessage = computed(() => {
+      return store.getters.showMessage;
+    });
+
+    watch(showMessage,()=>{
+      setTimeout(() => (store.dispatch('setShowMessage', false)), 2500)
+    })
+
     onMounted(() => {
       store.dispatch("fetchProjects");
     });
@@ -56,15 +76,12 @@ export default {
       router.push("/addProject");
     }
 
-    function ascSort(){
-      store.state.ascSort = true;
-    }
-
-    function descSort(){
-      store.state.ascSort = false;
-    }
     return {
       redirectToAddProjectForm,
+      showMessage,
+      messageStatus,
+      messageText,
+      //triggerMessage,
     };
   },
 };
@@ -99,5 +116,21 @@ main {
 
 .left {
   display: flex;
+}
+
+.flashmessage-enter-from,
+.flashmessage-leave-to {
+  opacity: 0;
+  transform: translateY(-60px);
+}
+.flashmessage-enter-to,
+.flashmessage-leave-from {
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+.flashmessage-enter-active,
+.flashmessage-leave-active {
+  transition: all 0.3s ease;
 }
 </style>

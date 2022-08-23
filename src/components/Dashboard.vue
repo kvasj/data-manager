@@ -18,7 +18,7 @@ export default {
     const projects = computed(() => {
       const projs = store.getters.projects
 
-      if(store.state.searchText == '')
+      if(store.getters.searchText == '')
         return projs;
       else {
         return projs.filter((prj) =>
