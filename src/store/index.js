@@ -127,9 +127,7 @@ export default createStore({
         await axios.get(firebaseConfig.URL + firebaseConfig.table + firebaseConfig.format)
           .then(response => {
             commit('SET_PROJECTS', response.data)
-          }
-
-          )
+          })
       }
       catch (error) {
         alert(error)

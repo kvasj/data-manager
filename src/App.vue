@@ -65,7 +65,7 @@ export default {
     });
 
     watch(showMessage,()=>{
-      setTimeout(() => (store.dispatch('setShowMessage', false)), 2500)
+      setTimeout(() => (store.dispatch('setShowMessage', false)), 1000)
     })
 
     onMounted(() => {
@@ -131,6 +131,6 @@ main {
 
 .flashmessage-enter-active,
 .flashmessage-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
 }
 </style>

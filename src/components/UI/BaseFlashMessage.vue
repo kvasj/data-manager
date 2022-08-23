@@ -21,6 +21,7 @@ export default {
   position: fixed;
   top: 20px;
   width: 100%;
+  z-index: 1000;
 }
 
 .flash-message {
