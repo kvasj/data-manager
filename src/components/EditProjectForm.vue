@@ -21,8 +21,8 @@
         </div>
 
         <div class="input-group">
-          <span>year:</span>
-          <input type="date" id="year" name="year" v-model="project.year" min="2018-01-01"/>
+          <span>date:</span>
+          <input type="date" id="date" name="date" v-model="project.date" min="2018-01-01"/>
           <span class="error"></span>
         </div>
       </div>
@@ -91,7 +91,7 @@ export default {
       madeFor: '',
       featured: '',
       aboutProject: '',
-      year: null,
+      date: null,
       published: false
     });
     
@@ -107,7 +107,7 @@ export default {
       project.madeFor = searchedProject.madeFor,
       project.featured = searchedProject.featured,
       project.aboutProject = searchedProject.aboutProject,
-      project.year = searchedProject.year,
+      project.date = searchedProject.date,
       project.published = searchedProject.published
       interiers.value = isChecked(categoryEnums.interiers, project.categories)
       designActivity.value = isChecked(categoryEnums.designActivity, project.categories)

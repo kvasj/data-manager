@@ -21,8 +21,8 @@
         </div>
 
         <div class="input-group">
-          <span>year:</span>
-          <input type="date" id="year" name="year" v-model="year" min="2018-01-01"/>
+          <span>date:</span>
+          <input type="date" id="date" name="date" v-model="date" min="2018-01-01"/>
           <span class="error"></span>
         </div>
       </div>
@@ -98,7 +98,7 @@ export default {
     const projectName = ref("");
     const featured = ref("");
     const madeFor = ref("");
-    const year = ref(null);
+    const date = ref(null);
     const aboutProject = ref("");
     const interiers = ref(null);
     const designActivity = ref(null);
@@ -110,7 +110,7 @@ export default {
         projectName: projectName.value,
         featured: featured.value,
         madeFor: madeFor.value,
-        year: year.value,
+        date: date.value,
         aboutProject: aboutProject.value,
         categories: getCategories(interiers, designActivity, vizualization),
         photos: photos,
@@ -140,7 +140,7 @@ export default {
       projectName,
       featured,
       madeFor,
-      year,
+      date,
       aboutProject,
       interiers,
       designActivity,

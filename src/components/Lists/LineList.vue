@@ -5,7 +5,7 @@
       <th>Categories</th>
       <th>Featured</th>
       <th>Made for</th>
-      <th>Year</th>
+      <th>Date</th>
       <th>About project</th>
       <th>Published</th>
       <th>Actions</th>
@@ -15,7 +15,7 @@
       <td>{{ getCategories(p.categories) }}</td>
       <td>{{ p.featured }}</td>
       <td>{{ p.madeFor }}</td>
-      <td>{{ p.year }}</td>
+      <td>{{ p.date }}</td>
       <td>{{ shorterText(p.aboutProject) }}</td>
       <td>
         <base-button @click="setPublicity(p.id)" mode="info" v-if="p.published">

@@ -68,7 +68,7 @@ export default createStore({
         madeFor: newProjectObject.madeFor,
         categories: newProjectObject.categories,
         aboutProject: newProjectObject.aboutProject,
-        year: newProjectObject.year,
+        date: newProjectObject.date,
         published: newProjectObject.published
       }).then((response) => {
         if (response.status === 200) {
@@ -89,7 +89,7 @@ export default createStore({
         madeFor: editedProject.madeFor,
         categories: editedProject.categories,
         aboutProject: editedProject.aboutProject,
-        year: editedProject.year,
+        date: editedProject.date,
         published: editedProject.published
       }
       ).then((response) => {
@@ -102,7 +102,7 @@ export default createStore({
           state.projects[projectIndex].madeFor = editedProjectData.madeFor,
           state.projects[projectIndex].categories = editedProjectData.categories,
           state.projects[projectIndex].aboutProject = editedProjectData.aboutProject,
-          state.projects[projectIndex].year = editedProjectData.year,
+          state.projects[projectIndex].date = editedProjectData.date,
           state.projects[projectIndex].published = editedProjectData.published
 
           state.showMessage = true
