@@ -10,26 +10,26 @@
       <th>Published</th>
       <th>Actions</th>
     </tr>
-    <tr v-for="(d, projectId) in projects" :key="projectId">
-      <td>{{ d.projectName }}</td>
-      <td>{{ getCategories(d.categories) }}</td>
-      <td>{{ d.featured }}</td>
-      <td>{{ d.madeFor }}</td>
-      <td>{{ d.year }}</td>
-      <td>{{ d.aboutProject }}</td>
+    <tr v-for="p in projects" :key="p.id">
+      <td>{{ p.projectName }}</td>
+      <td>{{ getCategories(p.categories) }}</td>
+      <td>{{ p.featured }}</td>
+      <td>{{ p.madeFor }}</td>
+      <td>{{ p.year }}</td>
+      <td>{{ p.aboutProject }}</td>
       <td>
-        <base-button @click="setPublicity(projectId)" mode="info" v-if="d.published">
+        <base-button @click="setPublicity(p.id)" mode="info" v-if="p.published">
           <ion-icon name="eye-outline"></ion-icon>
         </base-button>
-        <base-button @click="setPublicity(projectId)" mode="info-dark" v-else>
+        <base-button @click="setPublicity(p.id)" mode="info-dark" v-else>
           <ion-icon name="eye-off-outline"></ion-icon>
         </base-button>
       </td>
       <td class="actions">
-        <base-button @click="editProject(projectId)" mode="update">
+        <base-button @click="editProject(p.id)" mode="update">
           <ion-icon name="create-outline"></ion-icon>
         </base-button>
-        <base-button @click="deleteProject(projectId)" mode="delete">
+        <base-button @click="deleteProject(p.id)" mode="delete">
           <ion-icon name="trash-outline"></ion-icon>
         </base-button>
       </td>

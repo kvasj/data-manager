@@ -3,8 +3,6 @@
 </template>
 
 <script>
-import { onMounted } from 'vue';
-import { useStore } from 'vuex';
 import LineList from './Lists/LineList.vue'
 export default {
   components: {
@@ -12,11 +10,6 @@ export default {
   },
 
   setup() {
-    const store = useStore();
-
-    onMounted(() => {
-      store.dispatch('fetchProjects');
-    });
     return {};
   },
 };

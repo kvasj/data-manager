@@ -15,28 +15,40 @@ export default createStore({
 
   mutations: {
     SET_PROJECTS(state, projects) {
-      state.projects = projects
+      for (const projectId in projects) {
+        const project = Object.assign({ id: projectId }, projects[projectId])
+        state.projects.push(project)
+      }
     },
 
     SET_PROJECT(state, projectId) {
-      state.project = state.projects[projectId]
+      state.project = state.projects.filter(project => {
+        return project.id === projectId
+      })[0]
     },
 
     async SET_PUBLICITY(state, projectId) {
-      const searchedProject = state.projects[projectId]
+      const searchedProject = state.projects.filter(project => {
+        return project.id === projectId
+      })[0]
+
       await axios.patch(firebaseConfig.URL + firebaseConfig.table + "/" + projectId + "/" + firebaseConfig.format, {
         published: !searchedProject.published
       }
-      ).then((response) => console.log(response.status + ": " + response.statusText))
+      ).then((response) => {
+        if (response.status === 200) {
+          searchedProject.published = !searchedProject.published
+        }
+      })
 
-      state.projects[projectId].published = !state.projects[projectId].published
     },
 
     async DELETE_PROJECT(state, projectId) {
       await axios.delete(firebaseConfig.URL + firebaseConfig.table + "/" + projectId + firebaseConfig.format
       ).then((response) => {
         if (response.status === 200) {
-          delete state.projects[projectId]
+          const projectIndex = state.projects.findIndex(project => project.id === projectId)
+          state.projects.splice(projectIndex, 1)
         }
       })
     },
@@ -50,9 +62,11 @@ export default createStore({
         aboutProject: newProjectObject.aboutProject,
         year: newProjectObject.year,
         published: newProjectObject.published
-      }).then(function (response) {
-        if(response.status === 200){
-          //state.projects.push(newProjectObject)
+      }).then((response) => {
+        if (response.status === 200) {
+          const projectId = response.data.name;
+          const project = Object.assign({ id: projectId }, newProjectObject)
+          state.projects.push(project)
         }
       })
     },
@@ -67,7 +81,20 @@ export default createStore({
         year: editedProject.year,
         published: editedProject.published
       }
-      ).then((response) => console.log(response.status + ": " + response.statusText))
+      ).then((response) => {
+        if (response.status === 200) {
+          const projectId = editedProject.id;
+          const editedProjectData = response.data
+          const projectIndex = state.projects.findIndex((project => project.id === projectId));
+          state.projects[projectIndex].projectName = editedProjectData.projectName,
+          state.projects[projectIndex].featured = editedProjectData.featured,
+          state.projects[projectIndex].madeFor = editedProjectData.madeFor,
+          state.projects[projectIndex].categories = editedProjectData.categories,
+          state.projects[projectIndex].aboutProject = editedProjectData.aboutProject,
+          state.projects[projectIndex].year = editedProjectData.year,
+          state.projects[projectIndex].published = editedProjectData.published
+        }
+      })
     },
   },
 
@@ -75,8 +102,10 @@ export default createStore({
     async fetchProjects({ commit }) {
       try {
         await axios.get(firebaseConfig.URL + firebaseConfig.table + firebaseConfig.format)
-          .then(response =>
+          .then(response => {
             commit('SET_PROJECTS', response.data)
+          }
+
           )
       }
       catch (error) {
