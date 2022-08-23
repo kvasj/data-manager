@@ -22,7 +22,7 @@
 
         <div class="input-group">
           <span>year:</span>
-          <input type="number" id="year" name="year" v-model="project.year" />
+          <input type="date" id="year" name="year" v-model="project.year" min="2018-01-01"/>
           <span class="error"></span>
         </div>
       </div>

@@ -21,7 +21,7 @@ export default {
         return projs;
       else {
         return projs.filter((prj) =>
-          prj.projectName.includes(store.state.searchText)
+          prj.projectName.toLowerCase().includes(store.state.searchText.toLowerCase())
         );
       }
     });

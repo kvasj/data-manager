@@ -16,7 +16,7 @@
       <td>{{ p.featured }}</td>
       <td>{{ p.madeFor }}</td>
       <td>{{ p.year }}</td>
-      <td>{{ p.aboutProject }}</td>
+      <td>{{ shorterText(p.aboutProject) }}</td>
       <td>
         <base-button @click="setPublicity(p.id)" mode="info" v-if="p.published">
           <ion-icon name="eye-outline"></ion-icon>
@@ -40,10 +40,10 @@
 <script>
 import { computed, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
-import { useStore } from 'vuex';
+import { useStore } from "vuex";
 
 export default {
-  props: ['projects'],
+  props: ["projects"],
 
   setup() {
     const router = useRouter();
@@ -62,6 +62,10 @@ export default {
       return result;
     }
 
+    function shorterText(text) {
+      return text.substring(0, 40) + "...";
+    }
+
     function setPublicity(projectId) {
       store.dispatch("setPublicity", projectId);
     }
@@ -73,12 +77,13 @@ export default {
     function deleteProject(projectId) {
       store.dispatch("deleteProject", projectId);
     }
-    
+
     return {
       getCategories,
       setPublicity,
       editProject,
       deleteProject,
+      shorterText,
     };
   },
 };
