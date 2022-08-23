@@ -1,16 +1,34 @@
 <template>
-  <line-list></line-list>
+  <line-list :projects='projects'></line-list>
 </template>
 
 <script>
 import LineList from './Lists/LineList.vue'
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 export default {
   components: {
     LineList
   },
 
   setup() {
-    return {};
+    const store = useStore();
+
+    const projects = computed(() => {
+      const projs = store.getters.projects
+
+      if(store.state.searchText == '')
+        return projs;
+      else {
+        return projs.filter((prj) =>
+          prj.projectName.includes(store.state.searchText)
+        );
+      }
+    });
+
+    return {
+      projects
+    };
   },
 };
 </script>

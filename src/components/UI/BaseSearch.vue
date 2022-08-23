@@ -1,13 +1,35 @@
 <template>
   <div class="search">
-    <input id="search" type="text" placeholder="Search..." required />
+    <input
+      id="search"
+      type="text"
+      placeholder="Search..."
+      v-model="search"
+      required
+    />
   </div>
 </template>
 
 <script>
+import { ref, watch } from "vue";
+import { useStore } from "vuex";
 export default {
   setup() {
-    return {};
+    const store = useStore();
+    const search = ref("");
+
+    watch(() => {
+      searchProject(search.value);
+    });
+
+    function searchProject(searchText) {
+      store.dispatch("setSearchText", searchText);
+    }
+
+    return {
+      search,
+      searchProject
+    };
   },
 };
 </script>

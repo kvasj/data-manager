@@ -11,6 +11,7 @@ export default createStore({
       designActivity: 'projekční činnost'
     },
     project: [],
+    searchText: "",
   },
 
   mutations: {
@@ -87,14 +88,18 @@ export default createStore({
           const editedProjectData = response.data
           const projectIndex = state.projects.findIndex((project => project.id === projectId));
           state.projects[projectIndex].projectName = editedProjectData.projectName,
-          state.projects[projectIndex].featured = editedProjectData.featured,
-          state.projects[projectIndex].madeFor = editedProjectData.madeFor,
-          state.projects[projectIndex].categories = editedProjectData.categories,
-          state.projects[projectIndex].aboutProject = editedProjectData.aboutProject,
-          state.projects[projectIndex].year = editedProjectData.year,
-          state.projects[projectIndex].published = editedProjectData.published
+            state.projects[projectIndex].featured = editedProjectData.featured,
+            state.projects[projectIndex].madeFor = editedProjectData.madeFor,
+            state.projects[projectIndex].categories = editedProjectData.categories,
+            state.projects[projectIndex].aboutProject = editedProjectData.aboutProject,
+            state.projects[projectIndex].year = editedProjectData.year,
+            state.projects[projectIndex].published = editedProjectData.published
         }
       })
+    },
+
+    SET_SEARCH_TEXT(state, searchText){
+      state.searchText = searchText;
     },
   },
 
@@ -132,6 +137,10 @@ export default createStore({
 
     getProjectById({ commit }, projectId) {
       commit('SET_PROJECT', projectId)
+    },
+
+    setSearchText({ commit }, searchText) {
+      commit('SET_SEARCH_TEXT', searchText)
     },
   },
 

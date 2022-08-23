@@ -43,13 +43,11 @@ import { useRouter } from "vue-router";
 import { useStore } from 'vuex';
 
 export default {
+  props: ['projects'],
+
   setup() {
     const router = useRouter();
     const store = useStore();
-
-    const projects = computed(() => {
-      return store.getters.projects;
-    });
 
     function getCategories(categories) {
       let result = "";
@@ -77,7 +75,6 @@ export default {
     }
     
     return {
-      projects,
       getCategories,
       setPublicity,
       editProject,
