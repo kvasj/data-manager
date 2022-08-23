@@ -6,12 +6,14 @@
         <template #left>
           <div class="left">
             <base-search></base-search>
-            <base-button text="A-Z">
+            <!--
+              <base-button @click="ascSort" text="A-Z">
               <ion-icon name="arrow-down-outline"></ion-icon>
             </base-button>
-            <base-button text="Z-A">
+            <base-button @click="descSort" text="Z-A">
               <ion-icon name="arrow-up-outline"></ion-icon>
             </base-button>
+              -->
           </div>
         </template>
 
@@ -54,6 +56,13 @@ export default {
       router.push("/addProject");
     }
 
+    function ascSort(){
+      store.state.ascSort = true;
+    }
+
+    function descSort(){
+      store.state.ascSort = false;
+    }
     return {
       redirectToAddProjectForm,
     };

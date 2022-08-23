@@ -2,9 +2,10 @@
   <div class="cards">
     <base-card
       v-for="p in projects"
-      :key="i"
+      :key="p.id"
       :projectName="p.projectName"
       :categories="getCategories(p.categories)"
+      @click="editProject(p.id)"
     ></base-card>
   </div>
 </template>
@@ -12,9 +13,13 @@
 <script>
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from 'vue-router';
 
 export default {
+  props: ['projects'],
+
   setup() {
+    const router = useRouter()
     const store = useStore();
     
     const projects = computed(() => {
@@ -34,9 +39,13 @@ export default {
       return result;
     }
 
+    function editProject(projectId) {
+      router.push({ name: "editProject", params: { id: projectId } });
+    }
+
     return {
-      projects,
       getCategories,
+      editProject
     };
   },
 };
