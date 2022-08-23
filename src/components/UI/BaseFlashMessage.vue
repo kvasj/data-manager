@@ -28,8 +28,8 @@ export default {
   display: flex;
   margin: 0px auto;
   color: white;
-  width: 400px;
-  height: 80px;
+  width: 500px;
+  height: 60px;
   border-radius: 5px;
   align-items: center;
   justify-content: center;

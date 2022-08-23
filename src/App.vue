@@ -65,7 +65,7 @@ export default {
     });
 
     watch(showMessage,()=>{
-      setTimeout(() => (store.dispatch('setShowMessage', false)), 1000)
+      setTimeout(() => (store.dispatch('setShowMessage', false)), 1300)
     })
 
     onMounted(() => {
@@ -81,7 +81,6 @@ export default {
       showMessage,
       messageStatus,
       messageText,
-      //triggerMessage,
     };
   },
 };
