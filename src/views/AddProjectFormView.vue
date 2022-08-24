@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import AddProjectForm from "../components/AddProjectForm.vue";
+import AddProjectForm from "../components/Forms/AddProjectForm.vue";
 
 export default {
   components: {
