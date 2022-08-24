@@ -4,7 +4,7 @@ import firebaseConfig from '../assets/firebase/config'
 export default {
     async fetchProjects({ commit }) {
         try {
-            await axios.get(firebaseConfig.URL + firebaseConfig.table + firebaseConfig.format)
+            await axios.get(firebaseConfig.databaseURL + '/' + firebaseConfig.table + firebaseConfig.format)
                 .then(response => {
                     commit('SET_PROJECTS', response.data)
                 })

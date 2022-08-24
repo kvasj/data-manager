@@ -20,7 +20,7 @@ export default {
       return project.id === projectId
     })[0]
 
-    await axios.patch(firebaseConfig.URL + firebaseConfig.table + "/" + projectId + "/" + firebaseConfig.format, {
+    await axios.patch(firebaseConfig.databaseURL + '/' + firebaseConfig.table + "/" + projectId + "/" + firebaseConfig.format, {
       published: !searchedProject.published
     }
     ).then((response) => {
@@ -37,7 +37,7 @@ export default {
   },
 
   async ADD_NEW_PROJECT(state, newProjectObject) {
-    await axios.post(firebaseConfig.URL + firebaseConfig.table + firebaseConfig.format, {
+    await axios.post(firebaseConfig.databaseURL + '/' + firebaseConfig.table + firebaseConfig.format, {
       projectName: newProjectObject.projectName,
       featured: newProjectObject.featured,
       madeFor: newProjectObject.madeFor,
@@ -64,7 +64,7 @@ export default {
   },
 
   async EDIT_PROJECT(state, editedProject) {
-    await axios.patch(firebaseConfig.URL + firebaseConfig.table + "/" + editedProject.id + "/" + firebaseConfig.format, {
+    await axios.patch(firebaseConfig.databaseURL + '/' + firebaseConfig.table + "/" + editedProject.id + "/" + firebaseConfig.format, {
       projectName: editedProject.projectName,
       featured: editedProject.featured,
       madeFor: editedProject.madeFor,
@@ -100,7 +100,7 @@ export default {
   },
 
   async DELETE_PROJECT(state, projectId) {
-    await axios.delete(firebaseConfig.URL + firebaseConfig.table + '/' + projectId + firebaseConfig.format
+    await axios.delete(firebaseConfig.databaseURL + '/' + firebaseConfig.table + '/' + projectId + firebaseConfig.format
     ).then((response) => {
       if (response.status === 200 && response.data === null) {
         const projectIndex = state.projects.findIndex(project => project.id === projectId)
