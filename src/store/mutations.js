@@ -2,7 +2,7 @@ import axios from 'axios'
 import firebaseConfigAPI from '../assets/firebase/configAPI'
 
 import { ref as stRef, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
-import { ref as dbRef, push, set, onValue, update, remove } from "firebase/database";
+import { ref as dbRef, push, set, get, update, remove, onValue } from "firebase/database";
 import { database, storage } from "../assets/firebase/firebase";
 
 
@@ -10,19 +10,27 @@ export default {
 
   SET_PROJECTS(state) {
     const databaseReference = dbRef(database, firebaseConfigAPI.table);
-    onValue(databaseReference, function (snapshot) {
-      snapshot.forEach((childSnapschot) => {
-        const key = childSnapschot.key
-        const projectData = childSnapschot.val();
-        var imagesUrls = [];
+    get(databaseReference).then((snapshot) => {
+      if (snapshot.exists) {
+        snapshot.forEach((childSnapschot) => {
+          const key = childSnapschot.key
+          const projectData = childSnapschot.val();
+          var imagesUrls = [];
 
-        const storageRefDownload = stRef(storage, "images/" + 'Screenshot 2022-08-18 125812.png');
-        getDownloadURL(storageRefDownload).then((url) => {
-          imagesUrls.push(url)
+          const storageRefDownload = stRef(storage, "images/" + 'Screenshot 2022-08-18 125812.png');
+          getDownloadURL(storageRefDownload).then((url) => {
+            imagesUrls.push(url)
+          });
+          const project = Object.assign({ id: key, images: imagesUrls }, projectData)
+          state.projects.push(project)
         });
-        const project = Object.assign({ id: key, images: imagesUrls }, projectData)
-        state.projects.push(project)
-      });
+      } else {
+        throw Error
+      }
+    }).catch(() => {
+      state.showMessage = true
+      state.messageStatus = "error"
+      state.messageText = "ERROR: No data!"
     });
   },
 
@@ -47,7 +55,7 @@ export default {
     TODO: Catch errors
       state.showMessage = true
       state.messageStatus = "error"
-      state.messageText = error + ": Something went wrong."
+      state.messageText = "ERROR: Something went wrong."
     */
   },
 
@@ -71,10 +79,10 @@ export default {
       } else {
         throw Error();
       }
-    }).catch((error) => {
+    }).catch(() => {
       state.showMessage = true
       state.messageStatus = "error"
-      state.messageText = error + ": Something went wrong."
+      state.messageText = "ERROR: Something went wrong."
     })
   },
 
@@ -107,10 +115,10 @@ export default {
       } else {
         throw Error();
       }
-    }).catch((error) => {
+    }).catch(() => {
       state.showMessage = true
       state.messageStatus = "error"
-      state.messageText = error + ": Something went wrong."
+      state.messageText = "ERROR: Something went wrong."
     })
   },
 
@@ -128,10 +136,10 @@ export default {
         //bad api url or internet connection
         throw Error();
       }
-    }).catch((error) => {
+    }).catch(() => {
       state.showMessage = true
       state.messageStatus = "error"
-      state.messageText = error + ": Faild to delete project."
+      state.messageText = "ERROR: Faild to delete project."
     })
   },
 
