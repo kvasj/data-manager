@@ -37,20 +37,18 @@ export default {
       return project.id === projectId
     })[0]
 
-    await axios.patch(firebaseConfigAPI.databaseURL + '/' + firebaseConfigAPI.table + "/" + projectId + "/" + firebaseConfigAPI.format, {
-      published: !searchedProject.published
-    }
-    ).then((response) => {
-      if (response.status === 200 && response.data != null) {
-        searchedProject.published = !searchedProject.published
-      } else {
-        throw Error();
-      }
-    }).catch((error) => {
+    const databaseReference = dbRef(database, firebaseConfigAPI.table + '/' + projectId);
+    update(databaseReference, {
+      "published": !searchedProject.published
+    });
+
+    searchedProject.published = !searchedProject.published
+    /*
+    TODO: Catch errors
       state.showMessage = true
       state.messageStatus = "error"
       state.messageText = error + ": Something went wrong."
-    })
+    */
   },
 
   async ADD_NEW_PROJECT(state, newProjectObject) {
