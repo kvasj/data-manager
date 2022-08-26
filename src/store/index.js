@@ -5,7 +5,7 @@ import actions from './actions'
 import getters from './getters'
 
 export default createStore({
-  state: {
+  state: {    
     projects: [],
     categoryEnums: {
       interiers: 'interiéry',

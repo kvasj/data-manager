@@ -1,12 +1,29 @@
 import axios from 'axios'
-import firebaseConfig from '../assets/firebase/config'
+import firebaseConfigAPI from '../assets/firebase/configAPI'
+
+import { ref as stRef, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
+import { ref as dbRef, push, set, onValue, update, remove } from "firebase/database";
+import { database, storage } from "../assets/firebase/firebase";
+
 
 export default {
-  SET_PROJECTS(state, projects) {
-    for (const projectId in projects) {
-      const project = Object.assign({ id: projectId }, projects[projectId])
-      state.projects.push(project)
-    }
+
+  SET_PROJECTS(state) {
+    const databaseReference = dbRef(database, firebaseConfigAPI.table);
+    onValue(databaseReference, function (snapshot) {
+      snapshot.forEach((childSnapschot) => {
+        const key = childSnapschot.key
+        const projectData = childSnapschot.val();
+        var imagesUrls = [];
+
+        const storageRefDownload = stRef(storage, "images/" + 'Screenshot 2022-08-18 125812.png');
+        getDownloadURL(storageRefDownload).then((url) => {
+          imagesUrls.push(url)
+        });
+        const project = Object.assign({ id: key, images: imagesUrls }, projectData)
+        state.projects.push(project)
+      });
+    });
   },
 
   SET_PROJECT(state, projectId) {
@@ -20,7 +37,7 @@ export default {
       return project.id === projectId
     })[0]
 
-    await axios.patch(firebaseConfig.databaseURL + '/' + firebaseConfig.table + "/" + projectId + "/" + firebaseConfig.format, {
+    await axios.patch(firebaseConfigAPI.databaseURL + '/' + firebaseConfigAPI.table + "/" + projectId + "/" + firebaseConfigAPI.format, {
       published: !searchedProject.published
     }
     ).then((response) => {
@@ -37,7 +54,7 @@ export default {
   },
 
   async ADD_NEW_PROJECT(state, newProjectObject) {
-    await axios.post(firebaseConfig.databaseURL + '/' + firebaseConfig.table + firebaseConfig.format, {
+    await axios.post(firebaseConfigAPI.databaseURL + '/' + firebaseConfigAPI.table + firebaseConfigAPI.format, {
       projectName: newProjectObject.projectName,
       featured: newProjectObject.featured,
       madeFor: newProjectObject.madeFor,
@@ -64,7 +81,7 @@ export default {
   },
 
   async EDIT_PROJECT(state, editedProject) {
-    await axios.patch(firebaseConfig.databaseURL + '/' + firebaseConfig.table + "/" + editedProject.id + "/" + firebaseConfig.format, {
+    await axios.patch(firebaseConfigAPI.databaseURL + '/' + firebaseConfigAPI.table + "/" + editedProject.id + "/" + firebaseConfigAPI.format, {
       projectName: editedProject.projectName,
       featured: editedProject.featured,
       madeFor: editedProject.madeFor,
@@ -100,7 +117,7 @@ export default {
   },
 
   async DELETE_PROJECT(state, projectId) {
-    await axios.delete(firebaseConfig.databaseURL + '/' + firebaseConfig.table + '/' + projectId + firebaseConfig.format
+    await axios.delete(firebaseConfigAPI.databaseURL + '/' + firebaseConfigAPI.table + '/' + projectId + firebaseConfigAPI.format
     ).then((response) => {
       if (response.status === 200 && response.data === null) {
         const projectIndex = state.projects.findIndex(project => project.id === projectId)
