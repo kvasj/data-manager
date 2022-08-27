@@ -40,7 +40,7 @@ export default {
     })[0]
   },
 
-  async SET_PUBLICITY(state, projectId) {
+  SET_PUBLICITY(state, projectId) {
     const searchedProject = state.projects.filter(project => {
       return project.id === projectId
     })[0]
@@ -59,31 +59,39 @@ export default {
     */
   },
 
-  async ADD_NEW_PROJECT(state, newProjectObject) {
-    await axios.post(firebaseConfigAPI.databaseURL + '/' + firebaseConfigAPI.table + firebaseConfigAPI.format, {
-      projectName: newProjectObject.projectName,
-      featured: newProjectObject.featured,
-      madeFor: newProjectObject.madeFor,
-      categories: newProjectObject.categories,
-      aboutProject: newProjectObject.aboutProject,
-      date: newProjectObject.date,
-      published: newProjectObject.published
-    }).then((response) => {
-      if (response.status === 200 && response.data != null) {
-        const projectId = response.data.name;
-        const project = Object.assign({ id: projectId }, newProjectObject)
-        state.projects.push(project)
-        state.showMessage = true
-        state.messageStatus = "success"
-        state.messageText = "Project was succesfully CREATED."
-      } else {
-        throw Error();
-      }
-    }).catch(() => {
+  ADD_NEW_PROJECT(state, newProjectObject) {
+
+    const storageRef = stRef(storage, 'images/')
+    const databaseReference = dbRef(database, firebaseConfigAPI.table)
+
+    uploadBytes(storageRef, newProjectObject).then(function (snapshot) {
+      var newProjectRef = push(databaseReference);
+      set(newProjectRef, {
+        projectName: newProjectObject.projectName,
+        featured: newProjectObject.featured,
+        madeFor: newProjectObject.madeFor,
+        categories: newProjectObject.categories,
+        aboutProject: newProjectObject.aboutProject,
+        date: newProjectObject.date,
+        //images: newProjectObject.images,
+        published: newProjectObject.published,
+      });
+
+      const project = Object.assign({ id: newProjectRef.key }, newProjectObject)
+      state.projects.push(project)
+    });
+
+    state.showMessage = true
+    state.messageStatus = "success"
+    state.messageText = "Project was succesfully CREATED."
+
+    /*
+    .catch(() => {
       state.showMessage = true
       state.messageStatus = "error"
       state.messageText = "ERROR: Something went wrong."
     })
+    */
   },
 
   async EDIT_PROJECT(state, editedProject) {
