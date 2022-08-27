@@ -122,25 +122,32 @@ export default {
     })
   },
 
-  async DELETE_PROJECT(state, projectId) {
-    await axios.delete(firebaseConfigAPI.databaseURL + '/' + firebaseConfigAPI.table + '/' + projectId + firebaseConfigAPI.format
-    ).then((response) => {
-      if (response.status === 200 && response.data === null) {
-        const projectIndex = state.projects.findIndex(project => project.id === projectId)
-        state.projects.splice(projectIndex, 1)
+  DELETE_PROJECT(state, projectId) {
+    //delete data Database
+    const databaseReference = dbRef(database, firebaseConfigAPI.table + '/' + projectId);
+    remove(databaseReference);
 
-        state.showMessage = true
-        state.messageStatus = "success"
-        state.messageText = "Project was succesfully DELETED."
-      } else {
-        //bad api url or internet connection
-        throw Error();
-      }
-    }).catch(() => {
+    const projectIndex = state.projects.findIndex(project => project.id === projectId)
+    state.projects.splice(projectIndex, 1)
+
+    /*
+    //delete data from Storage
+    var filename = 'asdadas.jpg'
+    const deleteStorageReference = stRef(storage, 'myPics/' + filename)
+    deleteObject(deleteStorageReference)
+    */
+
+    state.showMessage = true
+    state.messageStatus = "success"
+    state.messageText = "Project was succesfully DELETED."
+
+    /*
+    .catch(() => {
       state.showMessage = true
       state.messageStatus = "error"
       state.messageText = "ERROR: Faild to delete project."
     })
+    */
   },
 
   SET_SEARCH_TEXT(state, searchText) {
