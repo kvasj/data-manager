@@ -94,40 +94,40 @@ export default {
     */
   },
 
-  async EDIT_PROJECT(state, editedProject) {
-    await axios.patch(firebaseConfigAPI.databaseURL + '/' + firebaseConfigAPI.table + "/" + editedProject.id + "/" + firebaseConfigAPI.format, {
+  EDIT_PROJECT(state, editedProject) {
+
+    const databaseReference = dbRef(database, firebaseConfigAPI.table + '/' + editedProject.id);
+    update(databaseReference, {
       projectName: editedProject.projectName,
       featured: editedProject.featured,
       madeFor: editedProject.madeFor,
       categories: editedProject.categories,
       aboutProject: editedProject.aboutProject,
       date: editedProject.date,
+      //images: editedProject.images,
       published: editedProject.published
-    }
-    ).then((response) => {
-      if (response.status === 200 && response.data != null) {
-        const projectId = editedProject.id;
-        const editedProjectData = response.data
-        const projectIndex = state.projects.findIndex((project => project.id === projectId));
-        state.projects[projectIndex].projectName = editedProjectData.projectName,
-          state.projects[projectIndex].featured = editedProjectData.featured,
-          state.projects[projectIndex].madeFor = editedProjectData.madeFor,
-          state.projects[projectIndex].categories = editedProjectData.categories,
-          state.projects[projectIndex].aboutProject = editedProjectData.aboutProject,
-          state.projects[projectIndex].date = editedProjectData.date,
-          state.projects[projectIndex].published = editedProjectData.published
+    });
 
-        state.showMessage = true
-        state.messageStatus = "success"
-        state.messageText = "Project was succesfully EDITED."
-      } else {
-        throw Error();
-      }
-    }).catch(() => {
+    const projectIndex = state.projects.findIndex((project => project.id === editedProject.id));
+    state.projects[projectIndex].projectName = editedProject.projectName,
+    state.projects[projectIndex].featured = editedProject.featured,
+    state.projects[projectIndex].madeFor = editedProject.madeFor,
+    state.projects[projectIndex].categories = editedProject.categories,
+    state.projects[projectIndex].aboutProject = editedProject.aboutProject,
+    state.projects[projectIndex].date = editedProject.date,
+    state.projects[projectIndex].published = editedProject.published
+
+    state.showMessage = true
+    state.messageStatus = "success"
+    state.messageText = "Project was succesfully EDITED."
+
+    /*
+    .catch(() => {
       state.showMessage = true
       state.messageStatus = "error"
       state.messageText = "ERROR: Something went wrong."
     })
+    */
   },
 
   DELETE_PROJECT(state, projectId) {
