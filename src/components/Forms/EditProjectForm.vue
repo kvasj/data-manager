@@ -54,8 +54,8 @@
 
       <div class="input-group">
         <span>images:</span>
-        <div class="image">
-          <!--<img :src="" alt="" srcset="">-->
+        <div class="image" v-for="imageData in project.images" :key="imageData[0]">
+          <img :src="imageData[1]" :alt="imageData[0]" width="100" height="50">
         </div>
         <span class="error"></span>
       </div>
@@ -116,6 +116,7 @@ export default {
       interiers.value = isChecked(categoryEnums.interiers, project.categories)
       designActivity.value = isChecked(categoryEnums.designActivity, project.categories)
       vizualization.value = isChecked(categoryEnums.vizualization, project.categories)
+      console.log(project.images)
     })
 
     function isChecked(checkboxCategory, projectCategories){
