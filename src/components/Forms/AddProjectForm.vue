@@ -1,5 +1,6 @@
 <template>
   <div class="form-wrapper">
+    <!-- {{ uploading }} -->
     <form @submit.prevent="submit">
       <div class="input-group">
         <span>project name:</span>
@@ -22,7 +23,13 @@
 
         <div class="input-group">
           <span>date:</span>
-          <input type="date" id="date" name="date" v-model="date" min="2018-01-01"/>
+          <input
+            type="date"
+            id="date"
+            name="date"
+            v-model="date"
+            min="2018-01-01"
+          />
           <span class="error"></span>
         </div>
       </div>
@@ -76,7 +83,14 @@
         <span>select images:</span>
 
         <!-- v-on:change="images" -->
-        <input type="file" id="img" name="img" accept="image/*" multiple @change="uploadedFiles"/>
+        <input
+          type="file"
+          id="img"
+          name="img"
+          accept="image/*"
+          multiple
+          @change="uploadedFiles"
+        />
       </div>
 
       <base-button @click="addNewProject" text="add project" mode="update">
@@ -87,7 +101,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed} from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -105,6 +119,10 @@ export default {
     const vizualization = ref(null);
     var images = [];
 
+    const uploading = computed(() => {
+      return store.getters.uploading;
+    });
+
     function addNewProject() {
       const newProject = {
         projectName: projectName.value,
@@ -116,7 +134,7 @@ export default {
         images: images,
         published: false,
       };
-      
+
       store.dispatch("addNewProject", newProject);
     }
 
@@ -136,9 +154,9 @@ export default {
       return result;
     }
 
-    function uploadedFiles(e){
+    function uploadedFiles(e) {
       images = [];
-      images.push(e.target.files)
+      images.push(e.target.files);
     }
 
     return {
@@ -154,6 +172,7 @@ export default {
       images,
       addNewProject,
       uploadedFiles,
+      uploading,
     };
   },
 };

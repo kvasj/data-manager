@@ -1,7 +1,7 @@
 import axios from 'axios'
 import firebaseConfigAPI from '../assets/firebase/configAPI'
 
-import { ref as stRef, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
+import { ref as stRef, getDownloadURL, uploadBytesResumable, deleteObject, connectStorageEmulator } from "firebase/storage";
 import { ref as dbRef, push, set, get, update, remove } from "firebase/database";
 import { database, storage } from "../assets/firebase/firebase";
 
@@ -63,9 +63,9 @@ export default {
     */
   },
 
-  ADD_NEW_PROJECT(state, newProjectObject) {
+  async ADD_NEW_PROJECT(state, newProjectObject) {
+    state.uploading = true;
     var imagesData = [];
-
     const databaseReference = dbRef(database, firebaseConfigAPI.table)
 
     var newProjectRef = push(databaseReference);
@@ -74,8 +74,18 @@ export default {
     for (let i = 0; i < newProjectObject.images[0].length; i++) {
       const imageFile = newProjectObject.images[0][i];
       const storageRef = stRef(storage, newProjectRef.key + '/' + imageFile.name)
-      uploadBytes(storageRef, imageFile)
-      imagesData.push(storageRef.fullPath)
+
+      /*
+      uploadBytesResumable(storageRef, imageFile).on('state_changed', (snapshot) => {
+        var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      })
+      */
+     
+      var uploadResult = await uploadBytesResumable(storageRef, imageFile)
+
+      var downloadURL = await getDownloadURL(storageRef).then((resultURL) => {
+        imagesData.push([imageFile.name, resultURL])
+      })
     }
 
     const newProject = {
@@ -92,11 +102,11 @@ export default {
     //insert data to database
     set(newProjectRef, newProject);
 
-    
     //update state 
     const project = Object.assign({ id: newProjectRef.key }, newProjectObject)
     state.projects.push(project)
 
+    state.uploading = false
     state.showMessage = true
     state.messageStatus = "success"
     state.messageText = "Project was succesfully CREATED."

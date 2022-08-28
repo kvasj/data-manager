@@ -26,4 +26,8 @@ export default {
     messageText(state) {
         return state.messageText
     },
+
+    uploading(state) {
+        return state.uploading
+    },
 }

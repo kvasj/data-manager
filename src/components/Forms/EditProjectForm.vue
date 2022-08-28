@@ -53,14 +53,16 @@
       </div>
 
       <div class="input-group">
-        <span>select images:</span>
-        <input type="file" id="img" name="img" accept="image/*" multiple />
+        <span>images:</span>
+        <div class="image">
+          <!--<img :src="" alt="" srcset="">-->
+        </div>
+        <span class="error"></span>
       </div>
 
       <div class="input-group">
-        <span>photos:</span>
-        
-        <span class="error"></span>
+        <span>select images:</span>
+        <input type="file" id="img" name="img" accept="image/*" multiple />
       </div>
 
       <base-button @click="editProject(project)" text="edit project" mode="update">
@@ -92,6 +94,7 @@ export default {
       featured: '',
       aboutProject: '',
       date: null,
+      images: [],
       published: false
     });
     
@@ -109,6 +112,7 @@ export default {
       project.aboutProject = searchedProject.aboutProject,
       project.date = searchedProject.date,
       project.published = searchedProject.published
+      project.images = searchedProject.images
       interiers.value = isChecked(categoryEnums.interiers, project.categories)
       designActivity.value = isChecked(categoryEnums.designActivity, project.categories)
       vizualization.value = isChecked(categoryEnums.vizualization, project.categories)

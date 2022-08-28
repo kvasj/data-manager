@@ -5,7 +5,7 @@
     </base-flash-message>
   </transition>
   <div class="wrapper">
-    <side-bar name="Qatelier"></side-bar>
+    <!-- <side-bar name="Qatelier"></side-bar> -->
     <main>
       <base-control-bar>
         <template #left>
