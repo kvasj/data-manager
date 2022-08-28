@@ -75,8 +75,8 @@
       <div class="input-group">
         <span>select images:</span>
 
-        <!-- v-on:change="photos" -->
-        <input type="file" id="img" name="img" accept="image/*" multiple />
+        <!-- v-on:change="images" -->
+        <input type="file" id="img" name="img" accept="image/*" multiple @change="uploadedFiles"/>
       </div>
 
       <base-button @click="addNewProject" text="add project" mode="update">
@@ -103,7 +103,7 @@ export default {
     const interiers = ref(null);
     const designActivity = ref(null);
     const vizualization = ref(null);
-    const photos = ref("");
+    var images = [];
 
     function addNewProject() {
       const newProject = {
@@ -113,9 +113,10 @@ export default {
         date: date.value,
         aboutProject: aboutProject.value,
         categories: getCategories(interiers, designActivity, vizualization),
-        photos: photos,
+        images: images,
         published: false,
       };
+      
       store.dispatch("addNewProject", newProject);
     }
 
@@ -135,6 +136,11 @@ export default {
       return result;
     }
 
+    function uploadedFiles(e){
+      images = [];
+      images.push(e.target.files)
+    }
+
     return {
       categoryEnums,
       projectName,
@@ -145,8 +151,9 @@ export default {
       interiers,
       designActivity,
       vizualization,
-      photos,
+      images,
       addNewProject,
+      uploadedFiles,
     };
   },
 };
