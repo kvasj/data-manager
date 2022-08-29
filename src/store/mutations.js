@@ -66,23 +66,21 @@ export default {
   async ADD_NEW_PROJECT(state, newProjectObject) {
     state.uploading = true;
     var imagesData = [];
-    const databaseReference = dbRef(database, firebaseConfigAPI.table)
-
-    var newProjectRef = push(databaseReference);
+  
+    if(state.projectRefrence == null){
+      const databaseReference = dbRef(database, firebaseConfigAPI.table)
+      state.projectRefrence = push(databaseReference)
+    }
 
     //insert images to strorage to folder named by ID/key generated in database
     for (let i = 0; i < newProjectObject.images[0].length; i++) {
+
       const imageFile = newProjectObject.images[0][i];
-      const storageRef = stRef(storage, newProjectRef.key + '/' + imageFile.name)
+      const storageRef = stRef(storage, state.projectRefrence.key + '/' + imageFile.name)
 
-      /*
-      uploadBytesResumable(storageRef, imageFile).on('state_changed', (snapshot) => {
-        var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-      })
-      */
+      //var uploadResult = await uploadBytesResumable(storageRef, imageFile)
 
-      var uploadResult = await uploadBytesResumable(storageRef, imageFile)
-
+      
       var downloadURL = await getDownloadURL(storageRef).then((resultURL) => {
         imagesData.push([imageFile.name, resultURL])
       })
@@ -100,13 +98,16 @@ export default {
     }
 
     //insert data to database
-    set(newProjectRef, newProject);
+    set(state.projectRefrence, newProject);
 
     //update state 
-    const project = Object.assign({ id: newProjectRef.key }, newProjectObject)
+    const project = Object.assign({ id: state.projectRefrence.key }, newProject)
     state.projects.push(project)
 
     state.uploading = false
+    state.projectRefrence = null
+    //state.uploadedFilesNames = []
+    //state.uploadedFilesPercents = []
     state.showMessage = true
     state.messageStatus = "success"
     state.messageText = "Project was succesfully CREATED."
@@ -120,13 +121,15 @@ export default {
   },
 
   UPLOAD_IMAGES(state, images) {
-    const databaseReference = dbRef(database, firebaseConfigAPI.table)
-
-    var newProjectRef = push(databaseReference);
+    if(state.projectRefrence == null){
+      const databaseReference = dbRef(database, firebaseConfigAPI.table)
+      state.projectRefrence = push(databaseReference)
+    }
 
     for (let i = 0; i < images[0].length; i++) {
       const imageFile = images[0][i];
-      const storageRef = stRef(storage, newProjectRef.key + '/' + imageFile.name)
+      const storageRef = stRef(storage, state.projectRefrence.key + '/' + imageFile.name)
+      
       state.uploadedFilesNames.push(imageFile.name)
 
       uploadBytesResumable(storageRef, imageFile).on('state_changed', (snapshot) => {

@@ -13,6 +13,7 @@ export default createStore({
       designActivity: 'projekční činnost'
     },
     project: [],
+    projectReference: null,
     searchText: "",
     showMessage: false,
     messageStatus: "",

@@ -270,7 +270,6 @@ textarea:focus {
 }
 
 .form-wrapper {
-  display: flex;
   height: 100%;
 }
 

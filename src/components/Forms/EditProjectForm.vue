@@ -57,7 +57,7 @@
               <base-button>
                 <ion-icon name="star-outline"></ion-icon>
               </base-button>
-              <base-button mode="update">
+              <base-button mode="title-image">
                 <ion-icon name="star"></ion-icon>
               </base-button>
               <base-button mode="delete">
@@ -113,6 +113,8 @@ export default {
       store.dispatch("getProjectById", projectId);
       const searchedProject = store.getters.getProject;
 
+      console.log(searchedProject)
+
       project.id = projectId
       project.projectName = searchedProject.projectName,
       project.categories = searchedProject.categories,
@@ -125,7 +127,6 @@ export default {
       interiers.value = isChecked(categoryEnums.interiers, project.categories)
       designActivity.value = isChecked(categoryEnums.designActivity, project.categories)
       vizualization.value = isChecked(categoryEnums.vizualization, project.categories)
-      console.log(project.images)
     })
 
     function isChecked(checkboxCategory, projectCategories){
@@ -210,7 +211,7 @@ textarea {
 }
 
 .input-group,
-button {
+form > button {
   margin-top: 15px;
 }
 
@@ -257,9 +258,10 @@ button {
 
 .image .actions {
   position: absolute;
+  z-index: 1000;
   width: 100%;
-  top: -25px;
-  right: -10px;
+  top: 3px;
+  right: 3px;
   display: flex;
   justify-content: flex-end;
 }
