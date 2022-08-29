@@ -4,33 +4,31 @@
       <div class="input-group">
         <span>project name:</span>
         <input type="text" id="name" name="name" v-model="project.projectName" />
-        <span class="error"></span>
       </div>
 
       <div class="group">
         <div class="input-group">
           <span>featured:</span>
           <input type="text" id="featured" name="featured" v-model="project.featured" />
-          <span class="error"></span>
+
         </div>
 
         <div class="input-group">
           <span>made for:</span>
           <input type="text" id="madeFor" name="madeFor" v-model="project.madeFor" />
-          <span class="error"></span>
+
         </div>
 
         <div class="input-group">
           <span>date:</span>
           <input type="date" id="date" name="date" v-model="project.date" min="2018-01-01"/>
-          <span class="error"></span>
+
         </div>
       </div>
 
       <div class="input-group">
         <span>about project:</span>
         <textarea type="text" id="aboutProject" name="aboutProject" v-model="project.aboutProject" />
-        <span class="error"></span>
       </div>
 
       <div class="input-group">
@@ -49,15 +47,26 @@
             <label for="vizualizationa">vizualizace</label>
           </div>
         </div>
-        <span class="error"></span>
       </div>
 
       <div class="input-group">
         <span>images:</span>
-        <div class="image" v-for="imageData in project.images" :key="imageData[0]">
-          <img :src="imageData[1]" :alt="imageData[0]" width="100" height="50">
+        <div class="images">
+          <div class="image" v-for="imageData in project.images" :key="imageData[0]">
+            <div class="actions">
+              <base-button>
+                <ion-icon name="star-outline"></ion-icon>
+              </base-button>
+              <base-button mode="update">
+                <ion-icon name="star"></ion-icon>
+              </base-button>
+              <base-button mode="delete">
+                <ion-icon name="close-outline"></ion-icon>
+              </base-button>
+            </div>
+            <img :src="imageData[1]" :alt="imageData[0]" width="290" height="180">
+          </div>
         </div>
-        <span class="error"></span>
       </div>
 
       <div class="input-group">
@@ -182,13 +191,12 @@ textarea:focus {
 }
 
 .form-wrapper {
-  display: flex;
   height: 100%;
 }
 
 form {
   position: relative;
-  width: 600px;
+  width: 900px;
   height: 600px;
   margin: 0 auto;
   box-sizing: border-box;
@@ -216,6 +224,10 @@ button {
   margin-bottom: 5px;
 }
 
+.group > .input-group{
+  width: 28%;
+}
+
 .group,
 .boxes {
   display: flex;
@@ -231,6 +243,32 @@ button {
   margin-right: 10px;
   width: 18px;
   height: 18px;
+}
+
+.images{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.image{
+  position: relative;
+}
+
+.image .actions {
+  position: absolute;
+  width: 100%;
+  top: -25px;
+  right: -10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.image button{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-left: 2px;
 }
 
 button {
