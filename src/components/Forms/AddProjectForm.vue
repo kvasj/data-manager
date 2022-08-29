@@ -91,6 +91,24 @@
           multiple
           @change="uploadedFiles"
         />
+
+        <div class="uploaded-files" v-for="file in uploadedFilesNames " :key="file">
+          <div class="uploaded-file">
+            <span class="file-name">{{ file }}</span>
+            <div class="actions">
+              <base-button>
+                <ion-icon name="star-outline"></ion-icon>
+              </base-button>
+              <base-button mode="title-image">
+                <ion-icon name="star"></ion-icon>
+              </base-button>
+              <base-button mode="delete" @click="deleteUploadedImage(file)">
+                <ion-icon name="close-outline"></ion-icon>
+              </base-button>
+            </div>
+            <div class="progress-bar" :style="{'width':uploadedFilesPercents[file]+'%'}"></div>
+          </div>
+        </div>
       </div>
 
       <base-button @click="addNewProject" text="add project" mode="update">
@@ -101,7 +119,7 @@
 </template>
 
 <script>
-import { ref, computed} from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -121,6 +139,14 @@ export default {
 
     const uploading = computed(() => {
       return store.getters.uploading;
+    }); 
+
+    const uploadedFilesPercents = computed(() => {
+      return store.getters.uploadedFilesPercents;
+    });
+
+    const uploadedFilesNames = computed(() => {
+      return store.getters.uploadedFilesNames;
     });
 
     function addNewProject() {
@@ -154,9 +180,15 @@ export default {
       return result;
     }
 
+    function deleteUploadedImage(imageName){
+       alert(imageName)
+    }
+
     function uploadedFiles(e) {
       images = [];
       images.push(e.target.files);
+
+      store.dispatch("uploadImages", images);
     }
 
     return {
@@ -173,12 +205,47 @@ export default {
       addNewProject,
       uploadedFiles,
       uploading,
+      uploadedFilesPercents,
+      uploadedFilesNames,
+      deleteUploadedImage,
     };
   },
 };
 </script>
 
 <style scoped>
+.uploaded-files{
+  display: flex;
+  justify-content: space-between;
+}
+.uploaded-file{
+  position: relative;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  height: 60px;
+  border-radius: 5px;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 3px;
+  justify-content: space-between;
+}
+.uploaded-file button{
+  width: 30px;
+  height: 30px;
+  margin-left: 2px;
+}
+.uploaded-file .progress-bar{
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  height: 6px;
+  background-color: #34c85a;
+}
+
+
 input,
 textarea,
 label {
@@ -222,8 +289,7 @@ textarea {
   height: 120px;
 }
 
-.input-group,
-button {
+.input-group, form > button {
   margin-top: 15px;
 }
 

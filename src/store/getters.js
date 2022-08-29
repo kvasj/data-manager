@@ -30,4 +30,12 @@ export default {
     uploading(state) {
         return state.uploading
     },
+
+    uploadedFilesNames(state){
+        return state.uploadedFilesNames
+    },
+
+    uploadedFilesPercents(state){
+        return state.uploadedFilesPercents
+    },    
 }

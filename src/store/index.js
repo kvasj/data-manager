@@ -17,7 +17,9 @@ export default createStore({
     showMessage: false,
     messageStatus: "",
     messageText: "",
-    uploading: false
+    uploading: false,
+    uploadedFilesNames: [],
+    uploadedFilesPercents: [],
   },
 
   mutations,

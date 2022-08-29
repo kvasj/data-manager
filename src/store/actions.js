@@ -4,24 +4,28 @@ export default {
         commit('SET_PROJECTS')
     },
 
-    setPublicity({ commit }, projectId) {
-        commit('SET_PUBLICITY', projectId)
-    },
-
-    deleteProject({ commit }, projectId) {
-        commit('DELETE_PROJECT', projectId)
-    },
-
     addNewProject({ commit }, newProjectObject) {
         commit('ADD_NEW_PROJECT', newProjectObject)
+    },
+
+    uploadImages({ commit }, images) {
+        commit('UPLOAD_IMAGES', images)
     },
 
     editProject({ commit }, editedProject) {
         commit('EDIT_PROJECT', editedProject)
     },
 
+    deleteProject({ commit }, projectId) {
+        commit('DELETE_PROJECT', projectId)
+    },
+
     getProjectById({ commit }, projectId) {
         commit('SET_PROJECT', projectId)
+    },
+
+    setPublicity({ commit }, projectId) {
+        commit('SET_PUBLICITY', projectId)
     },
 
     setSearchText({ commit }, searchText) {

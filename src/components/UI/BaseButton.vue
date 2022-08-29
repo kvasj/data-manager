@@ -94,4 +94,12 @@ button:hover {
 .info-dark:hover {
   box-shadow: 0px 2px 8px rgba(0, 12, 25, 0.3);
 }
+
+.title-image{
+  color: #ffd60a;
+}
+
+.title-image:hover {
+  box-shadow: 0px 2px 8px rgba(255, 214, 10, 0.3);
+}
 </style>

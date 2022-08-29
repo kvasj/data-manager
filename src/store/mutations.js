@@ -80,7 +80,7 @@ export default {
         var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
       })
       */
-     
+
       var uploadResult = await uploadBytesResumable(storageRef, imageFile)
 
       var downloadURL = await getDownloadURL(storageRef).then((resultURL) => {
@@ -117,6 +117,23 @@ export default {
       state.messageText = "ERROR: Something went wrong."
     })
     */
+  },
+
+  UPLOAD_IMAGES(state, images) {
+    const databaseReference = dbRef(database, firebaseConfigAPI.table)
+
+    var newProjectRef = push(databaseReference);
+
+    for (let i = 0; i < images[0].length; i++) {
+      const imageFile = images[0][i];
+      const storageRef = stRef(storage, newProjectRef.key + '/' + imageFile.name)
+      state.uploadedFilesNames.push(imageFile.name)
+
+      uploadBytesResumable(storageRef, imageFile).on('state_changed', (snapshot) => {
+        var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        state.uploadedFilesPercents[imageFile.name] = percentage
+      })
+    }
   },
 
   EDIT_PROJECT(state, editedProject) {
