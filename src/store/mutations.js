@@ -119,8 +119,7 @@ export default {
 
   EDIT_PROJECT(state, editedProject) {
 
-    const databaseReference = dbRef(database, firebaseConfigAPI.table + '/' + editedProject.id);
-    update(databaseReference, {
+    const updateDataObject = {
       projectName: editedProject.projectName,
       featured: editedProject.featured,
       madeFor: editedProject.madeFor,
@@ -129,7 +128,8 @@ export default {
       date: editedProject.date,
       //images: editedProject.images,
       published: editedProject.published
-    });
+    }
+    FirebaseService.updateDatabase(firebaseConfigAPI.table + '/' + editedProject.id, updateDataObject)
 
     const projectIndex = state.projects.findIndex((project => project.id === editedProject.id));
     state.projects[projectIndex].projectName = editedProject.projectName,
@@ -153,21 +153,13 @@ export default {
     */
   },
 
-  //TODO: delete images too
-  async DELETE_PROJECT(state, projectId) {
-    const projectIndex = state.projects.findIndex(project => project.id === projectId)
+  DELETE_PROJECT(state, projectId) {
+    const index = state.projects.findIndex(project => project.id === projectId)
+    const project = state.projects[index]
 
-    //delete storage data
-    state.projects[projectIndex].images.forEach(image => {
-      const deleteStorageReference = stRef(storage, projectId + '/' + image[0])
-      deleteObject(deleteStorageReference)
-    })
+    FirebaseService.deleteProject(project, firebaseConfigAPI.table)
 
-    //delete data Database
-    const databaseReference = dbRef(database, firebaseConfigAPI.table + '/' + projectId);
-    remove(databaseReference);
-
-    state.projects.splice(projectIndex, 1)
+    state.projects.splice(index, 1)
 
     state.showMessage = true
     state.messageStatus = "success"
@@ -211,19 +203,19 @@ export default {
 
   DELETE_IMAGE(state, imageName) {
     var filePath = state.projectRefrence.key + '/' + imageName
-    const deleteStorageReference = stRef(storage, filePath)
-    deleteObject(deleteStorageReference)
+    FirebaseService.deleteProjectStorageImage(filePath)
+
     const projectIndex = state.uploadedFilesNames.findIndex(project =>
       project === imageName
     )
+
     state.uploadedFilesNames.splice(projectIndex, 1)
   },
 
   DELETE_IMAGES(state, images) {
     images.forEach(image => {
       var filePath = state.projectRefrence.key + '/' + image
-      const deleteStorageReference = stRef(storage, filePath)
-      deleteObject(deleteStorageReference)
+      FirebaseService.deleteProjectStorageImage(filePath)
     });
   }
 }
