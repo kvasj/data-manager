@@ -268,10 +268,6 @@ textarea:focus {
   border: 1px solid #ff9501;
 }
 
-.form-wrapper {
-  height: 100%;
-}
-
 form {
   position: relative;
   width: 600px;
