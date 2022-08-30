@@ -1,6 +1,5 @@
 <template>
   <div class="form-wrapper">
-    <!-- {{ uploading }} -->
     <form @submit.prevent="submit">
       <div class="input-group">
         <span>project name:</span>
@@ -82,7 +81,6 @@
       <div class="input-group">
         <span>select images:</span>
 
-        <!-- v-on:change="images" -->
         <input
           type="file"
           id="img"
@@ -143,10 +141,6 @@ export default {
     const designActivity = ref(null);
     const vizualization = ref(null);
     var images = [];
-
-    const uploading = computed(() => {
-      return store.getters.uploading;
-    });
 
     const uploadedFilesPercents = computed(() => {
       return store.getters.uploadedFilesPercents;
@@ -211,7 +205,6 @@ export default {
       images,
       addNewProject,
       uploadedFiles,
-      uploading,
       uploadedFilesPercents,
       uploadedFilesNames,
       deleteImage,

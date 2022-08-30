@@ -64,7 +64,6 @@ export default {
   },
 
   async ADD_NEW_PROJECT(state, newProjectObject) {
-    state.uploading = true;
     var imagesData = [];
 
     if (state.projectRefrence == null) {
@@ -77,10 +76,7 @@ export default {
 
       const imageFile = newProjectObject.images[0][i];
       const storageRef = stRef(storage, state.projectRefrence.key + '/' + imageFile.name)
-
-      //var uploadResult = await uploadBytesResumable(storageRef, imageFile)
-
-
+      
       var downloadURL = await getDownloadURL(storageRef).then((resultURL) => {
         imagesData.push([imageFile.name, resultURL])
       })
@@ -104,7 +100,6 @@ export default {
     const project = Object.assign({ id: state.projectRefrence.key }, newProject)
     state.projects.push(project)
 
-    state.uploading = false
     state.projectRefrence = null
     //state.uploadedFilesNames = []
     //state.uploadedFilesPercents = []
@@ -157,20 +152,20 @@ export default {
   },
 
   //TODO: delete images too
-  DELETE_PROJECT(state, projectId) {
+  async DELETE_PROJECT(state, projectId) {
+    const projectIndex = state.projects.findIndex(project => project.id === projectId)
+
+    //delete storage data
+    state.projects[projectIndex].images.forEach(image => {
+      const deleteStorageReference = stRef(storage, projectId + '/' + image[0])
+      deleteObject(deleteStorageReference)
+    })
+
     //delete data Database
     const databaseReference = dbRef(database, firebaseConfigAPI.table + '/' + projectId);
     remove(databaseReference);
 
-    const projectIndex = state.projects.findIndex(project => project.id === projectId)
     state.projects.splice(projectIndex, 1)
-
-    /*
-    //delete data from Storage
-    var filename = 'asdadas.jpg'
-    const deleteStorageReference = stRef(storage, 'myPics/' + filename)
-    deleteObject(deleteStorageReference)
-    */
 
     state.showMessage = true
     state.messageStatus = "success"
@@ -193,7 +188,7 @@ export default {
     state.showMessage = showMessageValue
   },
 
-  UPLOAD_IMAGES(state, images) {
+  UPLOAD_IMAGES(state, images) {    
     if (state.projectRefrence == null) {
       const databaseReference = dbRef(database, firebaseConfigAPI.table)
       state.projectRefrence = push(databaseReference)

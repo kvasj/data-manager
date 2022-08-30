@@ -12,15 +12,7 @@ export default {
         commit('EDIT_PROJECT', editedProject)
     },
 
-    deleteProject({ commit, state }, projectId) {
-        var images = [];
-        var project = state.projects.filter(project => {
-            return project.id === projectId
-          })[0]
-        project.images.forEach(image => {
-            images.push(image[0])
-        });
-        commit('DELETE_IMAGES', images)
+    deleteProject({ commit }, projectId) {
         commit('DELETE_PROJECT', projectId)
     },
 
