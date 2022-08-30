@@ -92,7 +92,11 @@
           @change="uploadedFiles"
         />
 
-        <div class="uploaded-files" v-for="file in uploadedFilesNames " :key="file">
+        <div
+          class="uploaded-files"
+          v-for="file in uploadedFilesNames"
+          :key="file"
+        >
           <div class="uploaded-file">
             <span class="file-name">{{ file }}</span>
             <div class="actions">
@@ -102,11 +106,14 @@
               <base-button mode="title-image">
                 <ion-icon name="star"></ion-icon>
               </base-button>
-              <base-button mode="delete" @click="deleteUploadedImage(file)">
+              <base-button mode="delete" @click="deleteImage(file)">
                 <ion-icon name="close-outline"></ion-icon>
               </base-button>
             </div>
-            <div class="progress-bar" :style="{'width':uploadedFilesPercents[file]+'%'}"></div>
+            <div
+              class="progress-bar"
+              :style="{ width: uploadedFilesPercents[file] + '%' }"
+            ></div>
           </div>
         </div>
       </div>
@@ -139,7 +146,7 @@ export default {
 
     const uploading = computed(() => {
       return store.getters.uploading;
-    }); 
+    });
 
     const uploadedFilesPercents = computed(() => {
       return store.getters.uploadedFilesPercents;
@@ -180,8 +187,8 @@ export default {
       return result;
     }
 
-    function deleteUploadedImage(imageName){
-       alert(imageName)
+    function deleteImage(imageName) {
+      store.dispatch("deleteImage", imageName);
     }
 
     function uploadedFiles(e) {
@@ -207,18 +214,18 @@ export default {
       uploading,
       uploadedFilesPercents,
       uploadedFilesNames,
-      deleteUploadedImage,
+      deleteImage,
     };
   },
 };
 </script>
 
 <style scoped>
-.uploaded-files{
+.uploaded-files {
   display: flex;
   justify-content: space-between;
 }
-.uploaded-file{
+.uploaded-file {
   position: relative;
   padding-left: 20px;
   padding-right: 20px;
@@ -232,19 +239,18 @@ export default {
   margin-top: 3px;
   justify-content: space-between;
 }
-.uploaded-file button{
+.uploaded-file button {
   width: 30px;
   height: 30px;
   margin-left: 2px;
 }
-.uploaded-file .progress-bar{
+.uploaded-file .progress-bar {
   position: absolute;
   bottom: 0px;
   left: 0;
   height: 6px;
   background-color: #34c85a;
 }
-
 
 input,
 textarea,
@@ -288,7 +294,8 @@ textarea {
   height: 120px;
 }
 
-.input-group, form > button {
+.input-group,
+form > button {
   margin-top: 15px;
 }
 

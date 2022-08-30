@@ -8,15 +8,19 @@ export default {
         commit('ADD_NEW_PROJECT', newProjectObject)
     },
 
-    uploadImages({ commit }, images) {
-        commit('UPLOAD_IMAGES', images)
-    },
-
     editProject({ commit }, editedProject) {
         commit('EDIT_PROJECT', editedProject)
     },
 
-    deleteProject({ commit }, projectId) {
+    deleteProject({ commit, state }, projectId) {
+        var images = [];
+        var project = state.projects.filter(project => {
+            return project.id === projectId
+          })[0]
+        project.images.forEach(image => {
+            images.push(image[0])
+        });
+        commit('DELETE_IMAGES', images)
         commit('DELETE_PROJECT', projectId)
     },
 
@@ -35,4 +39,12 @@ export default {
     setShowMessage({ commit }, showMessageValue) {
         commit('SET_SHOW_MESSAGE', showMessageValue)
     },
+
+    uploadImages({ commit }, images) {
+        commit('UPLOAD_IMAGES', images)
+    },
+
+    deleteImage({commit}, image){
+        commit('DELETE_IMAGE', image)
+    }
 }

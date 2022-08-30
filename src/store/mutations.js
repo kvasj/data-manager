@@ -1,7 +1,7 @@
 import axios from 'axios'
 import firebaseConfigAPI from '../assets/firebase/configAPI'
 
-import { ref as stRef, getDownloadURL, uploadBytesResumable, deleteObject, connectStorageEmulator } from "firebase/storage";
+import { ref as stRef, getDownloadURL, uploadBytesResumable, deleteObject } from "firebase/storage";
 import { ref as dbRef, push, set, get, update, remove } from "firebase/database";
 import { database, storage } from "../assets/firebase/firebase";
 
@@ -66,8 +66,8 @@ export default {
   async ADD_NEW_PROJECT(state, newProjectObject) {
     state.uploading = true;
     var imagesData = [];
-  
-    if(state.projectRefrence == null){
+
+    if (state.projectRefrence == null) {
       const databaseReference = dbRef(database, firebaseConfigAPI.table)
       state.projectRefrence = push(databaseReference)
     }
@@ -80,7 +80,7 @@ export default {
 
       //var uploadResult = await uploadBytesResumable(storageRef, imageFile)
 
-      
+
       var downloadURL = await getDownloadURL(storageRef).then((resultURL) => {
         imagesData.push([imageFile.name, resultURL])
       })
@@ -118,25 +118,6 @@ export default {
       state.messageText = "ERROR: Something went wrong."
     })
     */
-  },
-
-  UPLOAD_IMAGES(state, images) {
-    if(state.projectRefrence == null){
-      const databaseReference = dbRef(database, firebaseConfigAPI.table)
-      state.projectRefrence = push(databaseReference)
-    }
-
-    for (let i = 0; i < images[0].length; i++) {
-      const imageFile = images[0][i];
-      const storageRef = stRef(storage, state.projectRefrence.key + '/' + imageFile.name)
-      
-      state.uploadedFilesNames.push(imageFile.name)
-
-      uploadBytesResumable(storageRef, imageFile).on('state_changed', (snapshot) => {
-        var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        state.uploadedFilesPercents[imageFile.name] = percentage
-      })
-    }
   },
 
   EDIT_PROJECT(state, editedProject) {
@@ -210,5 +191,42 @@ export default {
 
   SET_SHOW_MESSAGE(state, showMessageValue) {
     state.showMessage = showMessageValue
+  },
+
+  UPLOAD_IMAGES(state, images) {
+    if (state.projectRefrence == null) {
+      const databaseReference = dbRef(database, firebaseConfigAPI.table)
+      state.projectRefrence = push(databaseReference)
+    }
+
+    for (let i = 0; i < images[0].length; i++) {
+      const imageFile = images[0][i];
+      const storageRef = stRef(storage, state.projectRefrence.key + '/' + imageFile.name)
+
+      state.uploadedFilesNames.push(imageFile.name)
+
+      uploadBytesResumable(storageRef, imageFile).on('state_changed', (snapshot) => {
+        var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        state.uploadedFilesPercents[imageFile.name] = percentage
+      })
+    }
+  },
+
+  DELETE_IMAGE(state, imageName) {
+    var filePath = state.projectRefrence.key + '/' + imageName
+    const deleteStorageReference = stRef(storage, filePath)
+    deleteObject(deleteStorageReference)
+    const projectIndex = state.uploadedFilesNames.findIndex(project =>
+      project === imageName
+    )
+    state.uploadedFilesNames.splice(projectIndex, 1)
+  },
+
+  DELETE_IMAGES(state, images) {
+    images.forEach(image => {
+      var filePath = state.projectRefrence.key + '/' + image
+      const deleteStorageReference = stRef(storage, filePath)
+      deleteObject(deleteStorageReference)
+    });
   }
 }
