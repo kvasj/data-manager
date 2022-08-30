@@ -113,8 +113,6 @@ export default {
       store.dispatch("getProjectById", projectId);
       const searchedProject = store.getters.getProject;
 
-      console.log(searchedProject)
-
       project.id = projectId
       project.projectName = searchedProject.projectName,
       project.categories = searchedProject.categories,

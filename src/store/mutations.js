@@ -1,30 +1,20 @@
 import firebaseConfigAPI from '../assets/firebase/configAPI'
-
-import { ref as stRef, getDownloadURL, uploadBytesResumable, deleteObject } from "firebase/storage";
-import { ref as dbRef, push, set, get, update, remove } from "firebase/database";
-import { database, storage } from "../assets/firebase/firebase";
-import FirebaseService from '../service/firebaseService';
+import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { get } from "firebase/database";
+import FirebaseService from '../services/firebaseService';
 
 
 export default {
 
   SET_PROJECTS(state) {
-    const databaseReference = dbRef(database, firebaseConfigAPI.table);
+    const databaseReference = FirebaseService.getDatabaseReference(firebaseConfigAPI.table);
     get(databaseReference).then((snapshot) => {
       if (snapshot.exists) {
         snapshot.forEach((childSnapschot) => {
           const key = childSnapschot.key
           const projectData = childSnapschot.val();
-          var imagesData = [];
-          /*
-          const storageRefDownload = stRef(storage, key + '/' + 'Screenshot 2022-08-18 125812.png');
-          getDownloadURL(storageRefDownload).then((url) => {
-            imagesData.push({
-              name: 'Screenshot 2022-08-18 125812.png',
-              url: url
-            })
-          });
-          */
+          const imagesData = []
+          
           const project = Object.assign({ id: key, images: imagesData }, projectData)
           state.projects.push(project)
         });
@@ -184,13 +174,13 @@ export default {
 
   UPLOAD_IMAGES(state, images) {
     if (state.projectRefrence == null) {
-      const databaseReference = dbRef(database, firebaseConfigAPI.table)
-      state.projectRefrence = push(databaseReference)
+      const databaseReference = FirebaseService.getDatabaseReference(firebaseConfigAPI.table)
+      state.projectRefrence = FirebaseService.createProjectReference(databaseReference)
     }
 
     for (let i = 0; i < images[0].length; i++) {
       const imageFile = images[0][i];
-      const storageRef = stRef(storage, state.projectRefrence.key + '/' + imageFile.name)
+      const storageRef = FirebaseService.getStorageReference(state.projectRefrence.key + '/' + imageFile.name)
 
       state.uploadedFilesNames.push(imageFile.name)
 

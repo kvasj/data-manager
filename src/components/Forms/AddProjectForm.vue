@@ -182,6 +182,7 @@ export default {
     }
 
     function deleteImage(imageName) {
+      //TODO delete file image from images if uploaded image was deleted before add project
       store.dispatch("deleteImage", imageName);
     }
 
