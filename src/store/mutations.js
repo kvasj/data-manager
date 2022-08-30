@@ -1,9 +1,9 @@
-import axios from 'axios'
 import firebaseConfigAPI from '../assets/firebase/configAPI'
 
 import { ref as stRef, getDownloadURL, uploadBytesResumable, deleteObject } from "firebase/storage";
 import { ref as dbRef, push, set, get, update, remove } from "firebase/database";
 import { database, storage } from "../assets/firebase/firebase";
+import FirebaseService from '../service/firebaseService';
 
 
 export default {
@@ -49,10 +49,12 @@ export default {
       return project.id === projectId
     })[0]
 
-    const databaseReference = dbRef(database, firebaseConfigAPI.table + '/' + projectId);
-    update(databaseReference, {
+    const path = firebaseConfigAPI.table + '/' + projectId;
+    const updateDataObject = {
       "published": !searchedProject.published
-    });
+    };
+
+    FirebaseService.updateDatabase(path, updateDataObject);
 
     searchedProject.published = !searchedProject.published
     /*
@@ -67,16 +69,16 @@ export default {
     var imagesData = [];
 
     if (state.projectRefrence == null) {
-      const databaseReference = dbRef(database, firebaseConfigAPI.table)
-      state.projectRefrence = push(databaseReference)
+      const databaseReference = FirebaseService.getDatabaseReference(firebaseConfigAPI.table)
+      state.projectRefrence = FirebaseService.createProjectReference(databaseReference)
     }
 
     //insert images to strorage to folder named by ID/key generated in database
     for (let i = 0; i < newProjectObject.images[0].length; i++) {
 
       const imageFile = newProjectObject.images[0][i];
-      const storageRef = stRef(storage, state.projectRefrence.key + '/' + imageFile.name)
-      
+      const storageRef = FirebaseService.getStorageReference(state.projectRefrence.key + '/' + imageFile.name)
+
       var downloadURL = await getDownloadURL(storageRef).then((resultURL) => {
         imagesData.push([imageFile.name, resultURL])
       })
@@ -94,7 +96,7 @@ export default {
     }
 
     //insert data to database
-    set(state.projectRefrence, newProject);
+    FirebaseService.insertDataToDatabase(state.projectRefrence, newProject)
 
     //update state 
     const project = Object.assign({ id: state.projectRefrence.key }, newProject)
@@ -188,7 +190,7 @@ export default {
     state.showMessage = showMessageValue
   },
 
-  UPLOAD_IMAGES(state, images) {    
+  UPLOAD_IMAGES(state, images) {
     if (state.projectRefrence == null) {
       const databaseReference = dbRef(database, firebaseConfigAPI.table)
       state.projectRefrence = push(databaseReference)
