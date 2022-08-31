@@ -3,7 +3,7 @@
     <base-card
       v-for="p in projects"
       :key="p.id"
-      :projectName="p.projectName"
+      :name="p.name"
       :categories="getCategories(p.categories)"
       @click="editProject(p.id)"
     ></base-card>

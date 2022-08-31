@@ -3,7 +3,7 @@
     <form @submit.prevent="submit">
       <div class="input-group">
         <span>project name:</span>
-        <input type="text" id="name" name="name" v-model="projectName" />
+        <input type="text" id="name" name="name" v-model="name" />
         <span class="error"></span>
       </div>
 
@@ -132,14 +132,14 @@ export default {
     const store = useStore();
 
     const categoryEnums = store.getters.categoryEnums;
-    const projectName = ref("");
+    const name = ref("");
     const featured = ref("");
     const madeFor = ref("");
-    const date = ref(null);
+    const date = ref("");
     const aboutProject = ref("");
-    const interiers = ref(null);
-    const designActivity = ref(null);
-    const vizualization = ref(null);
+    const interiers = ref(false);
+    const designActivity = ref(false);
+    const vizualization = ref(false);
     var images = [];
 
     const uploadedFilesPercents = computed(() => {
@@ -152,12 +152,12 @@ export default {
 
     function addNewProject() {
       const newProject = {
-        projectName: projectName.value,
+        name: name.value,
         featured: featured.value,
         madeFor: madeFor.value,
         date: date.value,
         aboutProject: aboutProject.value,
-        categories: getCategories(interiers, designActivity, vizualization),
+        categories: processCategories(interiers, designActivity, vizualization),
         images: images,
         published: false,
       };
@@ -165,18 +165,20 @@ export default {
       store.dispatch("addNewProject", newProject);
     }
 
-    function getCategories(interiers, designActivity, vizualization) {
+    function processCategories(interiers, designActivity, vizualization) {
       let result = [];
-
-      if (interiers.value) {
-        result.push(categoryEnums.interiers);
-      }
-      if (designActivity.value) {
-        result.push(categoryEnums.designActivity);
-      }
-      if (vizualization.value) {
-        result.push(categoryEnums.vizualization);
-      }
+      result.push([
+        categoryEnums.interiers,
+        interiers.value
+      ])
+      result.push([
+        categoryEnums.designActivity,
+        designActivity.value
+      ])
+      result.push([
+        categoryEnums.vizualization,
+        vizualization.value
+      ])
 
       return result;
     }
@@ -195,7 +197,7 @@ export default {
 
     return {
       categoryEnums,
-      projectName,
+      name,
       featured,
       madeFor,
       date,

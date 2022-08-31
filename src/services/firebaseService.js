@@ -19,7 +19,7 @@ class FirebaseService {
 
     static deleteProject(project, table) {
         project.images.forEach(image => {
-            this.deleteProjectStorageImage(project.id + '/' + image[0])
+            this.deleteProjectStorageImage(project.id + '/' + image.name)
         })
         this.deleteDatabaseProject(table + '/' + project.id);
     }

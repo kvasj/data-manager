@@ -2,7 +2,7 @@
   <div class="card">
     <div class="image"></div>
     <div class="content">
-      <h3>{{ projectName }}</h3>
+      <h3>{{ name }}</h3>
       <span>{{ categories}}</span>
     </div>
   </div>
@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  props: ['projectName', 'categories'],
+  props: ['name', 'categories'],
   setup() {
     return {};
   },

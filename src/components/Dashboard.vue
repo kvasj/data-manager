@@ -22,7 +22,7 @@ export default {
         return projs;
       else {
         return projs.filter((prj) =>
-          prj.projectName.includes(store.state.searchText)
+          prj.name.includes(store.state.searchText)
         );
       }
     });

@@ -10,26 +10,26 @@
       <th>Published</th>
       <th>Actions</th>
     </tr>
-    <tr v-for="p in projects" :key="p.id">
-      <td>{{ p.projectName }}</td>
-      <td>{{ getCategories(p.categories) }}</td>
-      <td>{{ p.featured }}</td>
-      <td>{{ p.madeFor }}</td>
-      <td>{{ p.date }}</td>
-      <td>{{ shorterText(p.aboutProject) }}</td>
+    <tr v-for="project in projects" :key="project.id">
+      <td>{{ project.name }}</td>
+      <td>{{ getCategories(project.categories) }}</td>
+      <td>{{ project.featured }}</td>
+      <td>{{ project.madeFor }}</td>
+      <td>{{ project.date }}</td>
+      <td>{{ shorterText(project.aboutProject) }}</td>
       <td>
-        <base-button @click="setPublicity(p.id)" mode="info" v-if="p.published">
+        <base-button @click="setPublicity(project.id)" mode="info" v-if="project.published">
           <ion-icon name="eye-outline"></ion-icon>
         </base-button>
-        <base-button @click="setPublicity(p.id)" mode="info-dark" v-else>
+        <base-button @click="setPublicity(project.id)" mode="info-dark" v-else>
           <ion-icon name="eye-off-outline"></ion-icon>
         </base-button>
       </td>
       <td class="actions">
-        <base-button @click="editProject(p.id)" mode="update">
+        <base-button @click="editProject(project.id)" mode="update">
           <ion-icon name="create-outline"></ion-icon>
         </base-button>
-        <base-button @click="deleteProject(p.id)" mode="delete">
+        <base-button @click="deleteProject(project.id)" mode="delete">
           <ion-icon name="trash-outline"></ion-icon>
         </base-button>
       </td>
@@ -51,14 +51,13 @@ export default {
 
     function getCategories(categories) {
       let result = "";
-      for (let c = 0; c < categories.length; c++) {
-        if (c == categories.length - 1) {
-          result += categories[c];
-          return result;
-        } else {
-          result += categories[c] + ", ";
+      for (let i = 0; i < categories.length; i++) {
+        const category = categories[i];
+        if (category.status) {
+          result += category.name + ", ";
         }
       }
+      result = result.slice(0, -2)
       return result;
     }
 

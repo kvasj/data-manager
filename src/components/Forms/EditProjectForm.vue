@@ -3,7 +3,7 @@
     <form @submit.prevent="submit">
       <div class="input-group">
         <span>project name:</span>
-        <input type="text" id="name" name="name" v-model="project.projectName" />
+        <input type="text" id="name" name="name" v-model="project.name" />
       </div>
 
       <div class="group">
@@ -34,17 +34,9 @@
       <div class="input-group">
         <span>categories:</span>
         <div class="boxes">
-          <div class="check">
-            <input type="checkbox" name="interiers" id="interiers" v-model="interiers" :checked='isChecked(categoryEnums.interiers, project.categories)' />
-            <label for="interiers">interiéry</label>
-          </div>
-          <div class="check">
-            <input type="checkbox" name="designActivity" id="designActivity" v-model="designActivity" :checked='isChecked(categoryEnums.designActivity, project.categories)'/>
-            <label for="designActivity">projekční činnost</label>
-          </div>
-          <div class="check">
-            <input type="checkbox" name="vizualization" id="vizualization" v-model="vizualization" :checked='isChecked(categoryEnums.vizualization, project.categories)'/>
-            <label for="vizualizationa">vizualizace</label>
+          <div class="check" v-for="(category, index) in project.categories" :key="index">
+            <input type="checkbox" v-model="category.status" :checked='category.status' />
+            <label for="interiers">{{ category.name }}</label>
           </div>
         </div>
       </div>
@@ -52,7 +44,7 @@
       <div class="input-group">
         <span>images:</span>
         <div class="images">
-          <div class="image" v-for="imageData in project.images" :key="imageData[0]">
+          <div class="image" v-for="(imageData, index) in project.images" :key="index">
             <div class="actions">
               <base-button>
                 <ion-icon name="star-outline"></ion-icon>
@@ -64,7 +56,7 @@
                 <ion-icon name="close-outline"></ion-icon>
               </base-button>
             </div>
-            <img :src="imageData[1]" :alt="imageData[0]" width="290" height="180">
+            <img :src="imageData.url" :alt="imageData.name" width="290" height="180">
           </div>
         </div>
       </div>
@@ -82,83 +74,19 @@
 </template>
 
 <script>
-import { onMounted, reactive, ref } from "vue";
-import { useStore } from "vuex"
-import { useRoute } from "vue-router"
+import { useStore } from 'vuex'
+
 export default {
+  props: ['project'],
+
   setup() {
-    const store = useStore();
-    const route = useRoute();
-
-    const interiers = ref(null);
-    const designActivity = ref(null);
-    const vizualization = ref(null);
-
-    const categoryEnums = store.getters.categoryEnums
-    const project = reactive({
-      id: '',
-      projectName: '',
-      categories: [],
-      madeFor: '',
-      featured: '',
-      aboutProject: '',
-      date: null,
-      images: [],
-      published: false
-    });
-    
-
-    onMounted(()=>{
-      const projectId = route.params.id;
-      store.dispatch("getProjectById", projectId);
-      const searchedProject = store.getters.getProject;
-
-      project.id = projectId
-      project.projectName = searchedProject.projectName,
-      project.categories = searchedProject.categories,
-      project.madeFor = searchedProject.madeFor,
-      project.featured = searchedProject.featured,
-      project.aboutProject = searchedProject.aboutProject,
-      project.date = searchedProject.date,
-      project.published = searchedProject.published
-      project.images = searchedProject.images
-      interiers.value = isChecked(categoryEnums.interiers, project.categories)
-      designActivity.value = isChecked(categoryEnums.designActivity, project.categories)
-      vizualization.value = isChecked(categoryEnums.vizualization, project.categories)
-    })
-
-    function isChecked(checkboxCategory, projectCategories){
-      return projectCategories.includes(checkboxCategory)
-    }
+    const store = useStore()
 
     function editProject(project){
-      project.categories = getCategories(interiers, designActivity, vizualization)
       store.dispatch('editProject', project)
-    }
-
-    function getCategories(interiers, designActivity, vizualization) {
-      let result = [];
-
-      if (interiers.value) {
-        result.push(categoryEnums.interiers);
-      }
-      if (designActivity.value) {
-        result.push(categoryEnums.designActivity);
-      }
-      if (vizualization.value) {
-        result.push(categoryEnums.vizualization);
-      }
-
-      return result;
     }
     
     return {
-      project,
-      interiers,
-      designActivity,
-      vizualization,
-      categoryEnums,
-      isChecked,
       editProject,
     }
   },

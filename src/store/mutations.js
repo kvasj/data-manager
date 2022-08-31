@@ -2,29 +2,26 @@ import firebaseConfigAPI from '../assets/firebase/configAPI'
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { get } from "firebase/database";
 import FirebaseService from '../services/firebaseService';
+import Project from '../utils/project';
 
 
 export default {
 
   SET_PROJECTS(state) {
     const databaseReference = FirebaseService.getDatabaseReference(firebaseConfigAPI.table);
-    get(databaseReference).then((snapshot) => {
-      if (snapshot.exists) {
-        snapshot.forEach((childSnapschot) => {
-          const key = childSnapschot.key
-          const projectData = childSnapschot.val();
-          const imagesData = []
-          
-          const project = Object.assign({ id: key, images: imagesData }, projectData)
-          state.projects.push(project)
-        });
-      } else {
-        throw Error
-      }
+
+    get(databaseReference).then(snapshot => {
+      snapshot.forEach((childSnapshot) => {
+        const key = childSnapshot.key
+        const projectData = childSnapshot.val();
+        const project = new Project(key, projectData.name, projectData.featured, projectData.madeFor, projectData.date, projectData.aboutProject, projectData.categories, projectData.images, projectData.published)
+
+        state.projects.push(project)
+      });
     }).catch(() => {
       state.showMessage = true
       state.messageStatus = "error"
-      state.messageText = "ERROR: No data!"
+      state.messageText = "ERROR: Something went wrong with fetching data!"
     });
   },
 
@@ -32,6 +29,7 @@ export default {
     state.project = state.projects.filter(project => {
       return project.id === projectId
     })[0]
+    console.log(state.project)
   },
 
   SET_PUBLICITY(state, projectId) {
@@ -47,6 +45,7 @@ export default {
     FirebaseService.updateDatabase(path, updateDataObject);
 
     searchedProject.published = !searchedProject.published
+
     /*
     TODO: Catch errors
       state.showMessage = true
@@ -74,8 +73,8 @@ export default {
       })
     }
 
-    const newProject = {
-      projectName: newProjectObject.projectName,
+    const newFirebaseProject = {
+      name: newProjectObject.name,
       featured: newProjectObject.featured,
       madeFor: newProjectObject.madeFor,
       categories: newProjectObject.categories,
@@ -84,13 +83,12 @@ export default {
       images: imagesData,
       published: newProjectObject.published,
     }
-
     //insert data to database
-    FirebaseService.insertDataToDatabase(state.projectRefrence, newProject)
+    FirebaseService.insertDataToDatabase(state.projectRefrence, newFirebaseProject)
 
     //update state 
-    const project = Object.assign({ id: state.projectRefrence.key }, newProject)
-    state.projects.push(project)
+    const newProject = new Project(state.projectRefrence.key, newProjectObject.name, newProjectObject.featured, newProjectObject.madeFor, newProjectObject.date, newProjectObject.aboutProject, newProjectObject.categories, imagesData, newProjectObject.published)
+    state.projects.push(newProject)
 
     state.projectRefrence = null
     //state.uploadedFilesNames = []
@@ -110,25 +108,26 @@ export default {
   EDIT_PROJECT(state, editedProject) {
 
     const updateDataObject = {
-      projectName: editedProject.projectName,
+      name: editedProject.name,
       featured: editedProject.featured,
       madeFor: editedProject.madeFor,
       categories: editedProject.categories,
       aboutProject: editedProject.aboutProject,
       date: editedProject.date,
-      //images: editedProject.images,
-      published: editedProject.published
+      images: editedProject.images,
+      published: editedProject.published,
     }
+
     FirebaseService.updateDatabase(firebaseConfigAPI.table + '/' + editedProject.id, updateDataObject)
 
     const projectIndex = state.projects.findIndex((project => project.id === editedProject.id));
-    state.projects[projectIndex].projectName = editedProject.projectName,
-      state.projects[projectIndex].featured = editedProject.featured,
-      state.projects[projectIndex].madeFor = editedProject.madeFor,
-      state.projects[projectIndex].categories = editedProject.categories,
-      state.projects[projectIndex].aboutProject = editedProject.aboutProject,
-      state.projects[projectIndex].date = editedProject.date,
-      state.projects[projectIndex].published = editedProject.published
+    state.projects[projectIndex].name = editedProject.name
+    state.projects[projectIndex].featured = editedProject.featured
+    state.projects[projectIndex].madeFor = editedProject.madeFor
+    state.projects[projectIndex].categories = editedProject.categories
+    state.projects[projectIndex].aboutProject = editedProject.aboutProject
+    state.projects[projectIndex].date = editedProject.date
+    state.projects[projectIndex].published = editedProject.published
 
     state.showMessage = true
     state.messageStatus = "success"
@@ -201,11 +200,4 @@ export default {
 
     state.uploadedFilesNames.splice(projectIndex, 1)
   },
-
-  DELETE_IMAGES(state, images) {
-    images.forEach(image => {
-      var filePath = state.projectRefrence.key + '/' + image
-      FirebaseService.deleteProjectStorageImage(filePath)
-    });
-  }
 }
