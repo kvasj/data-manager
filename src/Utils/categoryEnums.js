@@ -1,5 +1,5 @@
 export default {
     interiers: 'interiéry',
+    designActivity: 'projekční činnost',
     vizualization: 'vizualizace',
-    designActivity: 'projekční činnost'
 }

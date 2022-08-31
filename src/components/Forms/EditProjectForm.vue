@@ -44,7 +44,7 @@
       <div class="input-group">
         <span>images:</span>
         <div class="images">
-          <div class="image" v-for="(imageData, index) in project.images" :key="index">
+          <div class="image" v-for="(image, index) in project.images" :key="index">
             <div class="actions">
               <base-button>
                 <ion-icon name="star-outline"></ion-icon>
@@ -52,11 +52,11 @@
               <base-button mode="title-image">
                 <ion-icon name="star"></ion-icon>
               </base-button>
-              <base-button mode="delete">
+              <base-button mode="delete" @click="deleteImage(image.name, project.id)">
                 <ion-icon name="close-outline"></ion-icon>
               </base-button>
             </div>
-            <img :src="imageData.url" :alt="imageData.name" width="290" height="180">
+            <img :src="image.url" :alt="image.name" width="290" height="180">
           </div>
         </div>
       </div>
@@ -85,9 +85,14 @@ export default {
     function editProject(project){
       store.dispatch('editProject', project)
     }
+
+    function deleteImage(imageName, projectId){
+      store.dispatch('deleteImage', { imageName: imageName, projectId: projectId })
+    }
     
     return {
       editProject,
+      deleteImage,
     }
   },
 };

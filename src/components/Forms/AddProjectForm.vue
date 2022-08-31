@@ -140,7 +140,8 @@ export default {
     const interiers = ref(false);
     const designActivity = ref(false);
     const vizualization = ref(false);
-    var images = [];
+    var allImageFiles = [];
+    var currentlyUploadedImageFiles = [];
 
     const uploadedFilesPercents = computed(() => {
       return store.getters.uploadedFilesPercents;
@@ -157,8 +158,8 @@ export default {
         madeFor: madeFor.value,
         date: date.value,
         aboutProject: aboutProject.value,
-        categories: processCategories(interiers, designActivity, vizualization),
-        images: images,
+        categories: processCategories([interiers, designActivity, vizualization]),
+        images: allImageFiles,
         published: false,
       };
 
@@ -167,32 +168,28 @@ export default {
 
     function processCategories(interiers, designActivity, vizualization) {
       let result = [];
-      result.push([
-        categoryEnums.interiers,
-        interiers.value
-      ])
-      result.push([
-        categoryEnums.designActivity,
-        designActivity.value
-      ])
-      result.push([
-        categoryEnums.vizualization,
-        vizualization.value
-      ])
+      result.push([categoryEnums.interiers, interiers.value]);
+      result.push([categoryEnums.designActivity, designActivity.value]);
+      result.push([categoryEnums.vizualization, vizualization.value]);
 
       return result;
     }
 
     function deleteImage(imageName) {
       //TODO delete file image from images if uploaded image was deleted before add project
-      store.dispatch("deleteImage", imageName);
+      const fileIndex = allImageFiles.findIndex((file) => {
+        return file.name === imageName
+      })
+      allImageFiles.splice(fileIndex, 1)
+
+      store.dispatch("deleteImage", {imageName: imageName, projectId: null});
     }
 
     function uploadedFiles(e) {
-      images = [];
-      images.push(e.target.files);
+      var fileList = Array.from(e.target.files);
+      allImageFiles = allImageFiles.concat(fileList)
 
-      store.dispatch("uploadImages", images);
+      store.dispatch("uploadImages", fileList);
     }
 
     return {
@@ -205,7 +202,7 @@ export default {
       interiers,
       designActivity,
       vizualization,
-      images,
+      allImageFiles,
       addNewProject,
       uploadedFiles,
       uploadedFilesPercents,

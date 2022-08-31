@@ -29,7 +29,6 @@ export default {
     state.project = state.projects.filter(project => {
       return project.id === projectId
     })[0]
-    console.log(state.project)
   },
 
   SET_PUBLICITY(state, projectId) {
@@ -63,9 +62,9 @@ export default {
     }
 
     //insert images to strorage to folder named by ID/key generated in database
-    for (let i = 0; i < newProjectObject.images[0].length; i++) {
+    for (let i = 0; i < newProjectObject.images.length; i++) {
 
-      const imageFile = newProjectObject.images[0][i];
+      const imageFile = newProjectObject.images[i];
       const storageRef = FirebaseService.getStorageReference(state.projectRefrence.key + '/' + imageFile.name)
 
       var downloadURL = await getDownloadURL(storageRef).then((resultURL) => {
@@ -177,8 +176,8 @@ export default {
       state.projectRefrence = FirebaseService.createProjectReference(databaseReference)
     }
 
-    for (let i = 0; i < images[0].length; i++) {
-      const imageFile = images[0][i];
+    for (let i = 0; i < images.length; i++) {
+      const imageFile = images[i];
       const storageRef = FirebaseService.getStorageReference(state.projectRefrence.key + '/' + imageFile.name)
 
       state.uploadedFilesNames.push(imageFile.name)
@@ -190,14 +189,32 @@ export default {
     }
   },
 
-  DELETE_IMAGE(state, imageName) {
-    var filePath = state.projectRefrence.key + '/' + imageName
-    FirebaseService.deleteProjectStorageImage(filePath)
+  DELETE_IMAGE(state, { imageName, projectId }) {
+    var imageStorageFilePath = ''
+    var imageDatabaseFilePath = ''
 
-    const projectIndex = state.uploadedFilesNames.findIndex(project =>
-      project === imageName
-    )
+    if (projectId != null) {
+      const imageIndex = state.project.images.findIndex(image =>
+        image.name === imageName
+      )
+      const projectIndex = state.projects.findIndex(project =>
+        project.id === projectId
+      )
+      imageStorageFilePath = projectId + '/' + imageName
+      imageDatabaseFilePath = firebaseConfigAPI.table + '/' + projectId + '/images/' + imageIndex
 
-    state.uploadedFilesNames.splice(projectIndex, 1)
+      FirebaseService.deleteProjectStorageImage(imageStorageFilePath)
+      FirebaseService.deleteDatabaseProjectItem(imageDatabaseFilePath)
+      state.projects[projectIndex].images.splice(imageIndex, 1)
+      //state.project.images.splice(imageIndex, 1)
+    } else {
+      imageStorageFilePath = state.projectRefrence.key + '/' + imageName
+      const uploadedImageIndex = state.uploadedFilesNames.findIndex(image =>
+        image === imageName
+      )
+
+      FirebaseService.deleteProjectStorageImage(imageStorageFilePath)
+      state.uploadedFilesNames.splice(uploadedImageIndex, 1)
+    }
   },
 }

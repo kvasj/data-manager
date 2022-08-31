@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import { computed, onMounted } from "@vue/runtime-core";
 import EditProjectForm from "../components/Forms/EditProjectForm.vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 export default {

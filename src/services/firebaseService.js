@@ -33,6 +33,11 @@ class FirebaseService {
         remove(databaseReference);
     }
 
+    static deleteDatabaseProjectItem(path) {
+        const databaseReference = this.getDatabaseReference(path);
+        remove(databaseReference);
+    }
+
     //storage functions
     static getStorageReference(path) {
         return stRef(storage, path)

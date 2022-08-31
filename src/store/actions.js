@@ -36,7 +36,7 @@ export default {
         commit('UPLOAD_IMAGES', images)
     },
 
-    deleteImage({commit}, image){
-        commit('DELETE_IMAGE', image)
+    deleteImage({commit}, payload){
+        commit('DELETE_IMAGE', payload)
     }
 }
