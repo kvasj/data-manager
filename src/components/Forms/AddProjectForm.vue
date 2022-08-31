@@ -158,7 +158,7 @@ export default {
         madeFor: madeFor.value,
         date: date.value,
         aboutProject: aboutProject.value,
-        categories: processCategories([interiers, designActivity, vizualization]),
+        categories: processCategories(),
         images: allImageFiles,
         published: false,
       };
@@ -166,7 +166,7 @@ export default {
       store.dispatch("addNewProject", newProject);
     }
 
-    function processCategories(interiers, designActivity, vizualization) {
+    function processCategories() {
       let result = [];
       result.push([categoryEnums.interiers, interiers.value]);
       result.push([categoryEnums.designActivity, designActivity.value]);
