@@ -12,10 +12,8 @@ export default {
 
     get(databaseReference).then(snapshot => {
       snapshot.forEach((childSnapshot) => {
-        const key = childSnapshot.key
         const projectData = childSnapshot.val();
-        const project = new Project(key, projectData.name, projectData.featured, projectData.madeFor, projectData.date, projectData.aboutProject, projectData.categories, projectData.images, projectData.published)
-
+        const project = new Project(projectData)
         state.projects.push(project)
       });
     }).catch(() => {
@@ -68,25 +66,21 @@ export default {
       const storageRef = FirebaseService.getStorageReference(state.projectRefrence.key + '/' + imageFile.name)
 
       var downloadURL = await getDownloadURL(storageRef).then((resultURL) => {
-        imagesData.push([imageFile.name, resultURL])
+        imagesData.push({
+          name: imageFile.name,
+          url: resultURL
+        })
       })
     }
 
-    const newFirebaseProject = {
-      name: newProjectObject.name,
-      featured: newProjectObject.featured,
-      madeFor: newProjectObject.madeFor,
-      categories: newProjectObject.categories,
-      aboutProject: newProjectObject.aboutProject,
-      date: newProjectObject.date,
-      images: imagesData,
-      published: newProjectObject.published,
-    }
+    newProjectObject.images = imagesData
+    const newProject = new Project(newProjectObject)
+    newProject.id = state.projectRefrence.key
+
     //insert data to database
-    FirebaseService.insertDataToDatabase(state.projectRefrence, newFirebaseProject)
+    FirebaseService.insertDataToDatabase(state.projectRefrence, newProject)
 
     //update state 
-    const newProject = new Project(state.projectRefrence.key, newProjectObject.name, newProjectObject.featured, newProjectObject.madeFor, newProjectObject.date, newProjectObject.aboutProject, newProjectObject.categories, imagesData, newProjectObject.published)
     state.projects.push(newProject)
 
     state.projectRefrence = null
@@ -106,18 +100,7 @@ export default {
 
   EDIT_PROJECT(state, editedProject) {
 
-    const updateDataObject = {
-      name: editedProject.name,
-      featured: editedProject.featured,
-      madeFor: editedProject.madeFor,
-      categories: editedProject.categories,
-      aboutProject: editedProject.aboutProject,
-      date: editedProject.date,
-      images: editedProject.images,
-      published: editedProject.published,
-    }
-
-    FirebaseService.updateDatabase(firebaseConfigAPI.table + '/' + editedProject.id, updateDataObject)
+    FirebaseService.updateDatabase(firebaseConfigAPI.table + '/' + editedProject.id, editedProject)
 
     const projectIndex = state.projects.findIndex((project => project.id === editedProject.id));
     state.projects[projectIndex].name = editedProject.name

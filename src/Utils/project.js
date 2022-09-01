@@ -9,18 +9,16 @@ class Project {
     images = []
     published = false
 
-    constructor(id, name, featured, madeFor, date, aboutProject, categories, images, published) {
-        const processedImages = this.#processImages(images)
-        const processedCategories = this.#processCategories(categories)
-        this.setId(id)
-        this.setName(name)
-        this.setFeatured(featured)
-        this.setMadeFor(madeFor)
-        this.setDate(date)
-        this.setAboutProject(aboutProject)
-        this.setCategories(processedCategories)
-        this.setImages(processedImages)
-        this.setPublicity(published)
+    constructor(objectData) {
+        this.setId(objectData.id)
+        this.setName(objectData.name)
+        this.setFeatured(objectData.featured)
+        this.setMadeFor(objectData.madeFor)
+        this.setDate(objectData.date)
+        this.setAboutProject(objectData.aboutProject)
+        this.setCategories(objectData.categories)
+        this.setImages(objectData.images)
+        this.setPublicity(objectData.published)
     }
 
     isPublished() {

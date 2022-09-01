@@ -168,9 +168,18 @@ export default {
 
     function processCategories() {
       let result = [];
-      result.push([categoryEnums.interiers, interiers.value]);
-      result.push([categoryEnums.designActivity, designActivity.value]);
-      result.push([categoryEnums.vizualization, vizualization.value]);
+      result.push({
+        name: categoryEnums.interiers, 
+        status: interiers.value
+      });
+      result.push({
+        name: categoryEnums.designActivity, 
+        status: designActivity.value
+      });
+      result.push({
+        name: categoryEnums.vizualization,
+        status: vizualization.value
+      });
 
       return result;
     }
