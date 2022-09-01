@@ -203,20 +203,24 @@ export default {
         }
       })
 
+      console.log(imageIndex)
+
       const projectIndex = state.projects.findIndex(project => {
         return project.id === projectId
       })
 
       imageStorageFilePath = projectId + '/' + imageName
-      imageDatabaseFilePath = firebaseConfigAPI.table + '/' + projectId + '/images/' + imageIndex
-      
-      FirebaseService.deleteProjectStorageImage(imageStorageFilePath)
-      FirebaseService.deleteDatabaseProjectItem(imageDatabaseFilePath)
+      imageDatabaseFilePath = firebaseConfigAPI.table + '/' + projectId // + '/images/' + imageIndex
+
       state.projects[projectIndex].images.splice(imageIndex, 1)
+
       //filtering cause splice remove image but write null instead of removed image
       state.projects[projectIndex].images = state.projects[projectIndex].images.filter((image)=>{
         return !Array.isArray(image)
       })
+
+      FirebaseService.updateDatabase(imageDatabaseFilePath, state.projects[projectIndex])
+      FirebaseService.deleteProjectStorageImage(imageStorageFilePath)
     } else {
       //else-case: adding new project and uploading/deleting before submit
       imageStorageFilePath = state.projectRefrence.key + '/' + imageName
