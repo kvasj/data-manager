@@ -4,12 +4,12 @@ export default {
         commit('SET_PROJECTS')
     },
 
-    addNewProject({ commit }, newProjectObject) {
-        commit('ADD_NEW_PROJECT', newProjectObject)
+    addNewProject({ commit }, newProjectPayload) {
+        commit('ADD_NEW_PROJECT', newProjectPayload)
     },
 
-    editProject({ commit }, editedProject) {
-        commit('EDIT_PROJECT', editedProject)
+    editProject({ commit }, editedProjectPayload) {
+        commit('EDIT_PROJECT', editedProjectPayload)
     },
 
     deleteProject({ commit }, projectId) {
@@ -32,8 +32,8 @@ export default {
         commit('SET_SHOW_MESSAGE', showMessageValue)
     },
 
-    uploadImages({ commit }, images) {
-        commit('UPLOAD_IMAGES', images)
+    uploadImages({ commit }, payload) {
+        commit('UPLOAD_IMAGES', payload)
     },
 
     deleteImage({commit}, payload){

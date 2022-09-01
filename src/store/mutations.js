@@ -51,20 +51,20 @@ export default {
     */
   },
 
-  async ADD_NEW_PROJECT(state, newProjectObject) {
+  async ADD_NEW_PROJECT(state, { project, uploadedImages }) {
     var imagesData = [];
 
-    if (state.projectRefrence == null) {
+    if (!state.projectRefrence) {
+      console.log("good")
       const databaseReference = FirebaseService.getDatabaseReference(firebaseConfigAPI.table)
       state.projectRefrence = FirebaseService.createProjectReference(databaseReference)
     }
 
     //insert images to strorage to folder named by ID/key generated in database
-    for (let i = 0; i < newProjectObject.images.length; i++) {
-
-      const imageFile = newProjectObject.images[i];
+    for (let i = 0; i < uploadedImages.length; i++) {
+      const imageFile = uploadedImages[i];
       const storageRef = FirebaseService.getStorageReference(state.projectRefrence.key + '/' + imageFile.name)
-
+      console.log(storageRef)
       var downloadURL = await getDownloadURL(storageRef).then((resultURL) => {
         imagesData.push({
           name: imageFile.name,
@@ -73,8 +73,8 @@ export default {
       })
     }
 
-    newProjectObject.images = imagesData
-    const newProject = new Project(newProjectObject)
+    project.images = imagesData
+    const newProject = new Project(project)
     newProject.id = state.projectRefrence.key
 
     //insert data to database
@@ -98,11 +98,32 @@ export default {
     */
   },
 
-  EDIT_PROJECT(state, editedProject) {
-    console.log(editedProject)
+  async EDIT_PROJECT(state, { project, uploadedImages }) {
+    var imagesData = []
+    //insert images to strorage to folder named by ID/key generated in database
+    for (let i = 0; i < uploadedImages.length; i++) {
+      const imageFile = uploadedImages[i];
+      const storageRef = FirebaseService.getStorageReference(project.id + '/' + imageFile.name)
 
-    FirebaseService.updateDatabase(firebaseConfigAPI.table + '/' + editedProject.id, editedProject)
+      var downloadURL = await getDownloadURL(storageRef).then((resultURL) => {
+        imagesData.push({
+          name: imageFile.name,
+          url: resultURL
+        })
+      })
+    }
 
+    //cause if edited project has not images
+    if (project.images) {
+      project.images = project.images.concat(imagesData)
+    } else {
+      project.images = [].concat(imagesData)
+    }
+
+    FirebaseService.updateDatabase(firebaseConfigAPI.table + '/' + project.id, project)
+
+    state.uploadedFilesNames = []
+    state.uploadedFilesPercents = []
     state.showMessage = true
     state.messageStatus = "success"
     state.messageText = "Project was succesfully EDITED."
@@ -145,15 +166,21 @@ export default {
     state.showMessage = showMessageValue
   },
 
-  UPLOAD_IMAGES(state, images) {
-    if (state.projectRefrence == null) {
-      const databaseReference = FirebaseService.getDatabaseReference(firebaseConfigAPI.table)
-      state.projectRefrence = FirebaseService.createProjectReference(databaseReference)
+  UPLOAD_IMAGES(state, { images, projectId }) {
+
+    if (typeof (projectId) !== 'string') {
+      if (state.projectRefrence == undefined) {
+        const databaseReference = FirebaseService.getDatabaseReference(firebaseConfigAPI.table)
+        state.projectRefrence = FirebaseService.createProjectReference(databaseReference)
+        projectId = state.projectRefrence.key
+      } else {
+        projectId = state.projectRefrence.key
+      }
     }
 
     for (let i = 0; i < images.length; i++) {
       const imageFile = images[i];
-      const storageRef = FirebaseService.getStorageReference(state.projectRefrence.key + '/' + imageFile.name)
+      const storageRef = FirebaseService.getStorageReference(projectId + '/' + imageFile.name)
 
       state.uploadedFilesNames.push(imageFile.name)
 
@@ -169,24 +196,33 @@ export default {
     var imageDatabaseFilePath = ''
 
     if (projectId != null) {
-      const imageIndex = state.project.images.findIndex(image =>
-        image.name === imageName
-      )
-      const projectIndex = state.projects.findIndex(project =>
-        project.id === projectId
-      )
+      //if-case: editing images of existing project
+      const imageIndex = state.project.images.findIndex(image => {
+        if (image) {
+          return image.name === imageName
+        }
+      })
+
+      const projectIndex = state.projects.findIndex(project => {
+        return project.id === projectId
+      })
+
       imageStorageFilePath = projectId + '/' + imageName
       imageDatabaseFilePath = firebaseConfigAPI.table + '/' + projectId + '/images/' + imageIndex
-
+      
       FirebaseService.deleteProjectStorageImage(imageStorageFilePath)
       FirebaseService.deleteDatabaseProjectItem(imageDatabaseFilePath)
       state.projects[projectIndex].images.splice(imageIndex, 1)
-      //state.project.images.splice(imageIndex, 1)
+      //filtering cause splice remove image but write null instead of removed image
+      state.projects[projectIndex].images = state.projects[projectIndex].images.filter((image)=>{
+        return !Array.isArray(image)
+      })
     } else {
+      //else-case: adding new project and uploading/deleting before submit
       imageStorageFilePath = state.projectRefrence.key + '/' + imageName
-      const uploadedImageIndex = state.uploadedFilesNames.findIndex(image =>
-        image === imageName
-      )
+      const uploadedImageIndex = state.uploadedFilesNames.findIndex(image => {
+        return image === imageName
+      })
 
       FirebaseService.deleteProjectStorageImage(imageStorageFilePath)
       state.uploadedFilesNames.splice(uploadedImageIndex, 1)

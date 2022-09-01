@@ -1,21 +1,18 @@
 <template>
-  <!-- <add-project-form></add-project-form> -->
-  <formes :project='newProject' @submitProject='addNewProject'></formes>
+  <formular :project='newProject' @submitProject='addNewProject'></formular>
 </template>
 
 <script>
 import { computed, onMounted, provide, reactive } from 'vue';
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-//import AddProjectForm from "../components/Forms/AddProjectForm.vue";
-import Formes from "../components/Forms/Form.vue";
+import Formular from "../components/Forms/Form.vue";
 import Project from "../utils/project"
 
 
 export default {
   components: {
-    //AddProjectForm,
-    Formes
+    Formular
   },
 
   setup() {
@@ -23,9 +20,8 @@ export default {
     const router = useRouter()
     const newProject = new Project()
 
-    function addNewProject(newProject){
-      console.log(newProject)
-      store.dispatch("addNewProject", newProject);
+    function addNewProject(newProjectPayload){
+      store.dispatch("addNewProject", newProjectPayload);
       router.push('/projects')
     }
 

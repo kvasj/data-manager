@@ -69,7 +69,7 @@
         <span class="error"></span>
       </div>
 
-      <div class="input-group">
+      <div class="input-group" v-if="isEditingProject">
         <span>images:</span>
         <div class="images">
           <div
@@ -77,21 +77,28 @@
             v-for="(image, index) in project.images"
             :key="index"
           >
-            <div class="actions">
-              <base-button>
-                <ion-icon name="star-outline"></ion-icon>
-              </base-button>
-              <base-button mode="title-image">
-                <ion-icon name="star"></ion-icon>
-              </base-button>
-              <base-button
-                mode="delete"
-                @click="deleteImage(image.name, project.id)"
-              >
-                <ion-icon name="close-outline"></ion-icon>
-              </base-button>
+            <div v-if="image != null">
+              <div class="actions">
+                <base-button>
+                  <ion-icon name="star-outline"></ion-icon>
+                </base-button>
+                <base-button mode="title-image">
+                  <ion-icon name="star"></ion-icon>
+                </base-button>
+                <base-button
+                  mode="delete"
+                  @click="deleteImage(image.name, project.id)"
+                >
+                  <ion-icon name="close-outline"></ion-icon>
+                </base-button>
+              </div>
+              <img
+                :src="image.url"
+                :alt="image.name"
+                width="290"
+                height="180"
+              />
             </div>
-            <img :src="image.url" :alt="image.name" width="290" height="180" />
           </div>
         </div>
       </div>
@@ -131,14 +138,10 @@
             ></div>
           </div>
         </div>
-        <!-- <upload-image :images="project.images"></upload-image> -->
+        <upload-image :images="project.images"></upload-image>
       </div>
 
-      <base-button
-        @click="submitForm(project)"
-        text="submit"
-        mode="update"
-      >
+      <base-button @click="submitForm(project)" text="submit" mode="update">
         <ion-icon name="push-outline"></ion-icon>
       </base-button>
     </form>
@@ -147,21 +150,28 @@
 
 <script>
 //import UploadImage from "../UploadImage.vue";
-import { ref, computed } from "vue";
+import { ref, computed, defineProps } from "vue";
 import { useStore } from "vuex";
 
 export default {
-  props: ["project"],
+  props: {
+    project: Object,
+    isEditingProject: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
   emits: ["submitProject"],
 
   components: {
     //UploadImage,
   },
 
-  setup(props, context){
+  setup(props, context) {
     var allImageFiles = [];
     var currentlyUploadedImageFiles = [];
-    const store = useStore()
+    const store = useStore();
 
     const uploadedFilesPercents = computed(() => {
       return store.getters.uploadedFilesPercents;
@@ -187,13 +197,17 @@ export default {
       var fileList = Array.from(e.target.files);
       allImageFiles = allImageFiles.concat(fileList);
 
-      store.dispatch("uploadImages", fileList);
+      store.dispatch("uploadImages", {
+        images: fileList,
+        projectId: props.project.id,
+      });
     }
 
-    function submitForm(project){
-      project.images = allImageFiles
-      console.log(project.images)
-      context.emit('submitProject', project)
+    function submitForm(project) {
+      context.emit("submitProject", {
+        project: project,
+        uploadedImages: allImageFiles,
+      });
     }
 
     return {
@@ -202,8 +216,8 @@ export default {
       deleteImage,
       uploadedFiles,
       submitForm,
-    }
-  }
+    };
+  },
 };
 </script>
 
@@ -261,7 +275,7 @@ form > button {
   margin-bottom: 5px;
 }
 
-.group > .input-group{
+.group > .input-group {
   width: 28%;
 }
 
@@ -286,13 +300,13 @@ button {
   width: 100%;
 }
 
-.images{
+.images {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
 
-.image{
+.image {
   position: relative;
 }
 
@@ -306,7 +320,7 @@ button {
   justify-content: flex-end;
 }
 
-.image button{
+.image button {
   width: 30px;
   height: 30px;
   border-radius: 50%;

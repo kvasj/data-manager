@@ -1,23 +1,22 @@
 <template>
-  <!-- <edit-project-form :project="searchedProject"></edit-project-form> -->
-  <formes :project="searchedProject" @submitProject='editProject'></formes>
+{{searchedProject}}
+  <formular :project="searchedProject" @submitProject='editProject' :isEditingProject='true'></formular>
 </template>
 
 <script>
-//import EditProjectForm from "../components/Forms/EditProjectForm.vue";
-import Formes from "../components/Forms/Form.vue";
+import Formular from "../components/Forms/Form.vue";
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 export default {
   components: {
-    //EditProjectForm,
-    Formes
+    Formular
   },
 
   setup() {
-    const store = useStore();
-    const route = useRoute();
+    const store = useStore()
+    const route = useRoute()
+    const router = useRouter()
 
     var searchedProject = computed(() => {
       return store.getters.project;
@@ -28,8 +27,9 @@ export default {
       store.dispatch("setProject", projectId);
     });
 
-    function editProject(editedProject){
-      store.dispatch('editProject', editedProject)
+    function editProject(projectPayload){
+      store.dispatch('editProject', projectPayload)
+      router.push('/projects')
     }
     
     return {
