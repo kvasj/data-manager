@@ -1,33 +1,5 @@
 <template>
-  <input
-    type="file"
-    id="img"
-    name="img"
-    accept="image/*"
-    multiple
-    @change="uploadedFiles"
-  />
-
-  <div class="uploaded-files" v-for="file in uploadedFilesNames" :key="file">
-    <div class="uploaded-file">
-      <span class="file-name">{{ file }}</span>
-      <div class="actions">
-        <base-button>
-          <ion-icon name="star-outline"></ion-icon>
-        </base-button>
-        <base-button mode="title-image">
-          <ion-icon name="star"></ion-icon>
-        </base-button>
-        <base-button mode="delete" @click="deleteImage(file)">
-          <ion-icon name="close-outline"></ion-icon>
-        </base-button>
-      </div>
-      <div
-        class="progress-bar"
-        :style="{ width: uploadedFilesPercents[file] + '%' }"
-      ></div>
-    </div>
-  </div>
+ 
 </template>
 
 <script>

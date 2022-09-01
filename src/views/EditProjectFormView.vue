@@ -28,9 +28,8 @@ export default {
       store.dispatch("setProject", projectId);
     });
 
-    function editProject(){
-      console.log(searchedProject.value)
-      store.dispatch('editProject', searchedProject.value)
+    function editProject(editedProject){
+      store.dispatch('editProject', editedProject)
     }
     
     return {

@@ -84,8 +84,8 @@ export default {
     state.projects.push(newProject)
 
     state.projectRefrence = null
-    //state.uploadedFilesNames = []
-    //state.uploadedFilesPercents = []
+    state.uploadedFilesNames = []
+    state.uploadedFilesPercents = []
     state.showMessage = true
     state.messageStatus = "success"
     state.messageText = "Project was succesfully CREATED."

@@ -69,7 +69,6 @@
         <span class="error"></span>
       </div>
 
-<!--
       <div class="input-group">
         <span>images:</span>
         <div class="images">
@@ -99,11 +98,47 @@
 
       <div class="input-group">
         <span>select images:</span>
-        <upload-image :images='project.images'></upload-image>
-      </div>
-      -->
+        <input
+          type="file"
+          id="img"
+          name="img"
+          accept="image/*"
+          multiple
+          @change="uploadedFiles"
+        />
 
-      <base-button @click='$emit("submitProject")' text="submit" mode="update">
+        <div
+          class="uploaded-files"
+          v-for="file in uploadedFilesNames"
+          :key="file"
+        >
+          <div class="uploaded-file">
+            <span class="file-name">{{ file }}</span>
+            <div class="actions">
+              <base-button>
+                <ion-icon name="star-outline"></ion-icon>
+              </base-button>
+              <base-button mode="title-image">
+                <ion-icon name="star"></ion-icon>
+              </base-button>
+              <base-button mode="delete" @click="deleteImage(file)">
+                <ion-icon name="close-outline"></ion-icon>
+              </base-button>
+            </div>
+            <div
+              class="progress-bar"
+              :style="{ width: uploadedFilesPercents[file] + '%' }"
+            ></div>
+          </div>
+        </div>
+        <!-- <upload-image :images="project.images"></upload-image> -->
+      </div>
+
+      <base-button
+        @click="submitForm(project)"
+        text="submit"
+        mode="update"
+      >
         <ion-icon name="push-outline"></ion-icon>
       </base-button>
     </form>
@@ -111,7 +146,7 @@
 </template>
 
 <script>
-import UploadImage from "../UploadImage.vue";
+//import UploadImage from "../UploadImage.vue";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 
@@ -120,8 +155,55 @@ export default {
   emits: ["submitProject"],
 
   components: {
-    UploadImage,
+    //UploadImage,
   },
+
+  setup(props, context){
+    var allImageFiles = [];
+    var currentlyUploadedImageFiles = [];
+    const store = useStore()
+
+    const uploadedFilesPercents = computed(() => {
+      return store.getters.uploadedFilesPercents;
+    });
+
+    const uploadedFilesNames = computed(() => {
+      return store.getters.uploadedFilesNames;
+    });
+
+    function deleteImage(imageName, projectId) {
+      const fileIndex = allImageFiles.findIndex((file) => {
+        return file.name === imageName;
+      });
+      allImageFiles.splice(fileIndex, 1);
+
+      store.dispatch("deleteImage", {
+        imageName: imageName,
+        projectId: projectId,
+      });
+    }
+
+    function uploadedFiles(e) {
+      var fileList = Array.from(e.target.files);
+      allImageFiles = allImageFiles.concat(fileList);
+
+      store.dispatch("uploadImages", fileList);
+    }
+
+    function submitForm(project){
+      project.images = allImageFiles
+      console.log(project.images)
+      context.emit('submitProject', project)
+    }
+
+    return {
+      uploadedFilesPercents,
+      uploadedFilesNames,
+      deleteImage,
+      uploadedFiles,
+      submitForm,
+    }
+  }
 };
 </script>
 
@@ -151,7 +233,7 @@ textarea:focus {
 
 form {
   position: relative;
-  width: 600px;
+  width: 900px;
   height: 600px;
   margin: 0 auto;
   box-sizing: border-box;
@@ -179,6 +261,10 @@ form > button {
   margin-bottom: 5px;
 }
 
+.group > .input-group{
+  width: 28%;
+}
+
 .group,
 .boxes {
   display: flex;
@@ -198,5 +284,64 @@ form > button {
 
 button {
   width: 100%;
+}
+
+.images{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.image{
+  position: relative;
+}
+
+.image .actions {
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+  top: 3px;
+  right: 3px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.image button{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-left: 2px;
+}
+
+.uploaded-files {
+  display: flex;
+  justify-content: space-between;
+}
+.uploaded-file {
+  position: relative;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  height: 60px;
+  border-radius: 5px;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 3px;
+  justify-content: space-between;
+  overflow: hidden;
+}
+.uploaded-file button {
+  width: 30px;
+  height: 30px;
+  margin-left: 2px;
+}
+.uploaded-file .progress-bar {
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  height: 6px;
+  background-color: #34c85a;
 }
 </style>

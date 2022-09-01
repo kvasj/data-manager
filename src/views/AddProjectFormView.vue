@@ -21,7 +21,8 @@ export default {
     const store = useStore()
     const newProject = new Project()
 
-    function addNewProject(){
+    function addNewProject(newProject){
+      console.log(newProject)
       store.dispatch("addNewProject", newProject);
     }
 
