@@ -1,13 +1,13 @@
 export default {
     projects(state) {
-        return state.projects;
+        return state.projects
     },
 
     categoryEnums(state) {
-        return state.categoryEnums;
+        return state.categoryEnums
     },
 
-    getProject(state) {
+    project(state) {
         return state.project
     },
 

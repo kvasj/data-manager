@@ -16,7 +16,7 @@ export default {
         commit('DELETE_PROJECT', projectId)
     },
 
-    getProjectById({ commit }, projectId) {
+    setProject({ commit }, projectId) {
         commit('SET_PROJECT', projectId)
     },
 

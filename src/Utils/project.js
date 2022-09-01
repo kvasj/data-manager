@@ -1,3 +1,4 @@
+import categoryEmuns from './categoryEnums'
 class Project {
     id = 0
     name = ''
@@ -5,20 +6,35 @@ class Project {
     madeFor = ''
     date = ''
     aboutProject = ''
-    categories = []
+    categories = [
+        {
+            name: categoryEmuns.interiers,
+            status: false
+        },
+        {
+            name: categoryEmuns.designActivity,
+            status: false
+        },
+        {
+            name: categoryEmuns.vizualization,
+            status: false
+        },
+    ]
     images = []
     published = false
 
     constructor(objectData) {
-        this.setId(objectData.id)
-        this.setName(objectData.name)
-        this.setFeatured(objectData.featured)
-        this.setMadeFor(objectData.madeFor)
-        this.setDate(objectData.date)
-        this.setAboutProject(objectData.aboutProject)
-        this.setCategories(objectData.categories)
-        this.setImages(objectData.images)
-        this.setPublicity(objectData.published)
+        if (objectData) {
+            this.setId(objectData.id)
+            this.setName(objectData.name)
+            this.setFeatured(objectData.featured)
+            this.setMadeFor(objectData.madeFor)
+            this.setDate(objectData.date)
+            this.setAboutProject(objectData.aboutProject)
+            this.setCategories(objectData.categories)
+            this.setImages(objectData.images)
+            this.setPublicity(objectData.published)
+        }
     }
 
     isPublished() {
@@ -113,23 +129,6 @@ class Project {
         }
         return result;
     }
-    /*
-    processCategories(interiers, designActivity, vizualization) {
-        let result = [];
-
-        if (interiers.value) {
-            result.push(categoryEnums.interiers);
-        }
-        if (designActivity.value) {
-            result.push(categoryEnums.designActivity);
-        }
-        if (vizualization.value) {
-            result.push(categoryEnums.vizualization);
-        }
-
-        return result;
-    }
-    */
 }
 
 export default Project

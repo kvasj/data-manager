@@ -99,17 +99,9 @@ export default {
   },
 
   EDIT_PROJECT(state, editedProject) {
+    console.log(editedProject)
 
     FirebaseService.updateDatabase(firebaseConfigAPI.table + '/' + editedProject.id, editedProject)
-
-    const projectIndex = state.projects.findIndex((project => project.id === editedProject.id));
-    state.projects[projectIndex].name = editedProject.name
-    state.projects[projectIndex].featured = editedProject.featured
-    state.projects[projectIndex].madeFor = editedProject.madeFor
-    state.projects[projectIndex].categories = editedProject.categories
-    state.projects[projectIndex].aboutProject = editedProject.aboutProject
-    state.projects[projectIndex].date = editedProject.date
-    state.projects[projectIndex].published = editedProject.published
 
     state.showMessage = true
     state.messageStatus = "success"

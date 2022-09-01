@@ -1,17 +1,34 @@
 <template>
-  <add-project-form></add-project-form>
+  <!-- <add-project-form></add-project-form> -->
+  <formes :project='newProject' @submitProject='addNewProject'></formes>
 </template>
 
 <script>
-import AddProjectForm from "../components/Forms/AddProjectForm.vue";
+import { computed, onMounted, provide, reactive } from 'vue';
+import { useStore } from 'vuex'
+//import AddProjectForm from "../components/Forms/AddProjectForm.vue";
+import Formes from "../components/Forms/Form.vue";
+import Project from "../utils/project"
+
 
 export default {
   components: {
-    AddProjectForm,
+    //AddProjectForm,
+    Formes
   },
 
   setup() {
-    return {};
+    const store = useStore()
+    const newProject = new Project()
+
+    function addNewProject(){
+      store.dispatch("addNewProject", newProject);
+    }
+
+    return {
+      newProject,
+      addNewProject
+    };
   },
 };
 </script>
