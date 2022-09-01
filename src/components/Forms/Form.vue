@@ -79,12 +79,13 @@
           >
             <div v-if="image != null">
               <div class="actions">
-                <base-button>
-                  <ion-icon name="star-outline"></ion-icon>
-                </base-button>
-                <base-button mode="title-image">
+                <base-button mode="title-image" v-if="project.titleImage == index">
                   <ion-icon name="star"></ion-icon>
                 </base-button>
+                <base-button v-else>
+                  <ion-icon name="star-outline"></ion-icon>
+                </base-button>
+                
                 <base-button
                   mode="delete"
                   @click="deleteImage(image.name, project.id)"

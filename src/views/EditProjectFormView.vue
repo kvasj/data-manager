@@ -1,5 +1,4 @@
 <template>
-{{searchedProject}}
   <formular :project="searchedProject" @submitProject='editProject' :isEditingProject='true'></formular>
 </template>
 
