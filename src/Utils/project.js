@@ -24,10 +24,11 @@ class Project {
         {
             name: null,
             url: null,
+            isTitle: false
         },
     ]
     published = false
-    titleImage = 0
+    isNews = false
 
     constructor(objectData) {
         if (objectData) {
@@ -39,7 +40,7 @@ class Project {
             this.setAboutProject(objectData.aboutProject)
             this.setCategories(objectData.categories)
             this.setImages(objectData.images)
-            this.setTitleImage(objectData.titleImage)
+            this.setIsNews(objectData.isNews)
             this.setPublicity(objectData.published)
         }
     }
@@ -112,8 +113,8 @@ class Project {
         this.published = value
     }
 
-    setTitleImage(index) {
-        this.titleImage = index
+    setIsNews(value) {
+        this.isNews = value
     }
     //#endregion
 

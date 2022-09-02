@@ -4,7 +4,6 @@
       <div class="input-group">
         <span>project name:</span>
         <input type="text" id="name" name="name" v-model="project.name" />
-        <span class="error"></span>
       </div>
 
       <div class="group">
@@ -16,7 +15,6 @@
             name="featured"
             v-model="project.featured"
           />
-          <span class="error"></span>
         </div>
 
         <div class="input-group">
@@ -27,7 +25,6 @@
             name="madeFor"
             v-model="project.madeFor"
           />
-          <span class="error"></span>
         </div>
 
         <div class="input-group">
@@ -39,7 +36,6 @@
             min="2018-01-01"
             v-model="project.date"
           />
-          <span class="error"></span>
         </div>
       </div>
 
@@ -51,7 +47,6 @@
           name="aboutProject"
           v-model="project.aboutProject"
         />
-        <span class="error"></span>
       </div>
 
       <div class="input-group">
@@ -66,7 +61,7 @@
             <label>{{ category.name }}</label>
           </div>
         </div>
-        <span class="error"></span>
+
       </div>
 
       <div class="input-group" v-if="isEditingProject">
@@ -77,29 +72,22 @@
             v-for="(image, index) in project.images"
             :key="index"
           >
-            <div v-if="image != null">
-              <div class="actions">
-                <base-button mode="title-image" v-if="project.titleImage == index">
-                  <ion-icon name="star"></ion-icon>
-                </base-button>
-                <base-button v-else>
-                  <ion-icon name="star-outline"></ion-icon>
-                </base-button>
-                
-                <base-button
-                  mode="delete"
-                  @click="deleteImage(image.name, project.id)"
-                >
-                  <ion-icon name="close-outline"></ion-icon>
-                </base-button>
-              </div>
-              <img
-                :src="image.url"
-                :alt="image.name"
-                width="290"
-                height="180"
-              />
+            <div class="actions">
+              <base-button mode="title-image" @click="setTitleImage(image.name)" v-if="image.isTitle">
+                <ion-icon name="star"></ion-icon>
+              </base-button>
+              <base-button @click="setTitleImage(image.name)" v-else>
+                <ion-icon name="star-outline"></ion-icon>
+              </base-button>
+
+              <base-button
+                mode="delete"
+                @click="deleteImage(image.name, project.id)"
+              >
+                <ion-icon name="close-outline"></ion-icon>
+              </base-button>
             </div>
+            <img :src="image.url" :alt="image.name" width="290" height="180" />
           </div>
         </div>
       </div>
@@ -123,13 +111,7 @@
           <div class="uploaded-file">
             <span class="file-name">{{ file }}</span>
             <div class="actions">
-              <base-button>
-                <ion-icon name="star-outline"></ion-icon>
-              </base-button>
-              <base-button mode="title-image">
-                <ion-icon name="star"></ion-icon>
-              </base-button>
-              <base-button mode="delete" @click="deleteImage(file)">
+              <base-button mode="delete" @click="deleteImage(file, project.id)">
                 <ion-icon name="close-outline"></ion-icon>
               </base-button>
             </div>
@@ -139,7 +121,7 @@
             ></div>
           </div>
         </div>
-        <upload-image :images="project.images"></upload-image>
+        <!-- <upload-image :images="project.images"></upload-image> -->
       </div>
 
       <base-button @click="submitForm(project)" text="submit" mode="update">
@@ -204,6 +186,31 @@ export default {
       });
     }
 
+    function setTitleImage(imageName){
+      if(isTitleImageExist(props.project.images)){
+        var image = props.project.images.find(image => {
+          return image.isTitle
+        })
+        image.isTitle = !image.isTitle
+      } 
+
+      var image = props.project.images.find(image => {
+        return image.name === imageName
+      })
+      image.isTitle = !image.isTitle
+    }
+
+    function isTitleImageExist(images){
+      var isExist = false;
+      images.forEach(image => {
+        if(image.isTitle){
+          isExist = true
+          return isExist
+        }
+      });
+      return isExist
+    }
+
     function submitForm(project) {
       context.emit("submitProject", {
         project: project,
@@ -216,6 +223,7 @@ export default {
       uploadedFilesNames,
       deleteImage,
       uploadedFiles,
+      setTitleImage,
       submitForm,
     };
   },
@@ -263,7 +271,10 @@ textarea {
 
 .input-group,
 form > button {
-  margin-top: 15px;
+  margin-top: 10px;
+}
+form > button {
+  margin-bottom: 20px;
 }
 
 .input-group > input {

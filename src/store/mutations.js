@@ -42,13 +42,6 @@ export default {
     FirebaseService.updateDatabase(path, updateDataObject);
 
     searchedProject.published = !searchedProject.published
-
-    /*
-    TODO: Catch errors
-      state.showMessage = true
-      state.messageStatus = "error"
-      state.messageText = "ERROR: Something went wrong."
-    */
   },
 
   async ADD_NEW_PROJECT(state, { project, uploadedImages }) {
@@ -68,7 +61,8 @@ export default {
       var downloadURL = await getDownloadURL(storageRef).then((resultURL) => {
         imagesData.push({
           name: imageFile.name,
-          url: resultURL
+          url: resultURL,
+          isTitle: false
         })
       })
     }
@@ -89,13 +83,6 @@ export default {
     state.showMessage = true
     state.messageStatus = "success"
     state.messageText = "Project was succesfully CREATED."
-    /*
-    .catch(() => {
-      state.showMessage = true
-      state.messageStatus = "error"
-      state.messageText = "ERROR: Something went wrong."
-    })
-    */
   },
 
   async EDIT_PROJECT(state, { project, uploadedImages }) {
@@ -127,14 +114,6 @@ export default {
     state.showMessage = true
     state.messageStatus = "success"
     state.messageText = "Project was succesfully EDITED."
-
-    /*
-    .catch(() => {
-      state.showMessage = true
-      state.messageStatus = "error"
-      state.messageText = "ERROR: Something went wrong."
-    })
-    */
   },
 
   DELETE_PROJECT(state, projectId) {
@@ -148,14 +127,6 @@ export default {
     state.showMessage = true
     state.messageStatus = "success"
     state.messageText = "Project was succesfully DELETED."
-
-    /*
-    .catch(() => {
-      state.showMessage = true
-      state.messageStatus = "error"
-      state.messageText = "ERROR: Faild to delete project."
-    })
-    */
   },
 
   SET_SEARCH_TEXT(state, searchText) {
@@ -195,32 +166,47 @@ export default {
     var imageStorageFilePath = ''
     var imageDatabaseFilePath = ''
 
-    if (projectId != null) {
-      //if-case: editing images of existing project
+    //3 cases of deleting image
+    //1. editing uploaded images. images are written into project.images
+    //2. editing curently uploaded images while editing project. images are written into storage until submit editing project
+    //3. creating new project
+
+    //if-case: editing images of existing project
+    if (projectId != 0) {
       const imageIndex = state.project.images.findIndex(image => {
         if (image) {
           return image.name === imageName
         }
       })
+      //if-case: is deleting image currently uploaded file or is stored in project database?
+      if (imageIndex != -1) {
+        //is strored in project database
+        const projectIndex = state.projects.findIndex(project => {
+          return project.id === projectId
+        })
 
-      console.log(imageIndex)
+        imageStorageFilePath = projectId + '/' + imageName
+        imageDatabaseFilePath = firebaseConfigAPI.table + '/' + projectId
 
-      const projectIndex = state.projects.findIndex(project => {
-        return project.id === projectId
-      })
+        state.projects[projectIndex].images.splice(imageIndex, 1)
 
-      imageStorageFilePath = projectId + '/' + imageName
-      imageDatabaseFilePath = firebaseConfigAPI.table + '/' + projectId // + '/images/' + imageIndex
+        //filtering cause splice remove image but write null instead of removed image
+        state.projects[projectIndex].images = state.projects[projectIndex].images.filter((image) => {
+          return !Array.isArray(image)
+        })
 
-      state.projects[projectIndex].images.splice(imageIndex, 1)
+        FirebaseService.updateDatabase(imageDatabaseFilePath, state.projects[projectIndex])
+        FirebaseService.deleteProjectStorageImage(imageStorageFilePath)
+      } else {
+        //is currently uploaded and is stored in storage
+        imageStorageFilePath = projectId + '/' + imageName
+        const uploadedImageIndex = state.uploadedFilesNames.findIndex(image => {
+          return image === imageName
+        })
 
-      //filtering cause splice remove image but write null instead of removed image
-      state.projects[projectIndex].images = state.projects[projectIndex].images.filter((image)=>{
-        return !Array.isArray(image)
-      })
-
-      FirebaseService.updateDatabase(imageDatabaseFilePath, state.projects[projectIndex])
-      FirebaseService.deleteProjectStorageImage(imageStorageFilePath)
+        FirebaseService.deleteProjectStorageImage(imageStorageFilePath)
+        state.uploadedFilesNames.splice(uploadedImageIndex, 1)
+      }
     } else {
       //else-case: adding new project and uploading/deleting before submit
       imageStorageFilePath = state.projectRefrence.key + '/' + imageName
