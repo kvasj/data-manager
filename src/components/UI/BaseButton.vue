@@ -50,6 +50,15 @@ button:hover {
   box-shadow: 0px 2px 15px rgba(100, 100, 111, 0.1);
 }
 
+button:disabled {
+  background-color: #c7c7cc;
+}
+
+button:disabled:hover{
+  cursor: default;
+  box-shadow: none
+}
+
 .update {
   background-color: #ff9501;
   color: white;

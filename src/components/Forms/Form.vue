@@ -111,7 +111,7 @@
           <div class="uploaded-file">
             <span class="file-name">{{ file }}</span>
             <div class="actions">
-              <base-button mode="delete" @click="deleteImage(file, project.id)">
+              <base-button mode="delete" @click="deleteImage(file, project.id)" :disabled='uploadedFilesPercents[file] != 100'>
                 <ion-icon name="close-outline"></ion-icon>
               </base-button>
             </div>
